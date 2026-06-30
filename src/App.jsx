@@ -61,6 +61,49 @@ const SUBGROUPS_BY_GRUPPE = { "Iced Drinks": ICED_SUBGROUPS, "Bowls": BOWL_SUBGR
 const DEFAULT_UNTERGRUPPE = { "Bowls": "Salatbowls" };
 const untergruppeVon = (p) => p.untergruppe || DEFAULT_UNTERGRUPPE[p.gruppe] || null;
 
+// ============================================================
+//  PREIS-ABGLEICH: Zutatenname → Preisliste (tolerant)
+// ============================================================
+// Füllwörter/Qualifier, die für den Namensvergleich ignoriert werden.
+const PL_FILLER = new Set([
+  "tk", "ig", "bio", "immergrün", "immergruen", "frisch", "natur", "geröstet", "geroestet",
+  "gekocht", "gegart", "gerieben", "gehackt", "vegan", "veg", "art", "stk", "mit", "und",
+  "der", "die", "das", "topping", "sorte", "gross", "groß", "klein", "hausgem", "hausgemacht",
+]);
+function ztCompact(s) {
+  return String(s || "").toLowerCase()
+    .replace(/[,(].*$/, "")            // alles ab Komma/Klammer abschneiden
+    .replace(/[0-9]+/g, " ")
+    .replace(/[^a-zäöüß ]/g, " ")
+    .split(/\s+/).filter(t => t && !PL_FILLER.has(t)).join("");
+}
+const sortChars = (s) => s.split("").sort().join("");
+function buildPlIndex(priceList) {
+  return Object.values(priceList || {})
+    .map(e => ({ proG: e?.price_per_gram_ml, comp: ztCompact(e?.ingredient_name || "") }))
+    .filter(e => e.comp && e.proG);
+}
+// Liefert preis_pro_g aus der Preisliste oder 0. Reihenfolge: exakt > Präfix > Anagramm > Teilstring.
+function findPreisProG(name, plIndex) {
+  const q = ztCompact(name);
+  if (q.length < 3) return 0;
+  const qs = sortChars(q);
+  let best = null, bestScore = 0, bestDiff = 1e9;
+  for (const e of plIndex) {
+    const c = e.comp;
+    let sc = 0;
+    if (c === q) sc = 4;
+    else if ((q.startsWith(c) || c.startsWith(q)) && Math.min(q.length, c.length) >= 4) sc = 3;
+    else if (q.length >= 6 && c.length >= 6 && sortChars(c) === qs) sc = 2;
+    else if (q.length >= 6 && c.length >= 6 && (q.includes(c) || c.includes(q))) sc = 1;
+    if (sc > 0) {
+      const diff = Math.abs(q.length - c.length);
+      if (sc > bestScore || (sc === bestScore && diff < bestDiff)) { best = e; bestScore = sc; bestDiff = diff; }
+    }
+  }
+  return best ? (best.proG || 0) : 0;
+}
+
 const MWST_IN  = 0.19; // Im Haus
 const MWST_OUT = 0.07; // Außer Haus
 const SCHWUND_PCT = 3.0; // Sicherheitspuffer Soll → Soll-inkl-Schwund
@@ -1834,7 +1877,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -2040,7 +2083,12 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           <p className="text-sm text-gray-600">
             <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen.
           </p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => onPreisAbgleich?.()}
+              className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0"
+              title="Zutaten ohne Preis tolerant mit der Preisliste abgleichen und Preise ziehen">
+              <RotateCcw size={14} /> Preise aus Liste ziehen
+            </button>
             <button onClick={() => { setArtikelOpen(o => !o); setArtMsg(""); }}
               className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0">
               <Plus size={14} /> Neuer Artikel
@@ -2617,6 +2665,7 @@ export default function KalkulationsApp() {
       });
       const data = await res.json();
       if (!res.ok || data.error) throw new Error(data.error || `Fehler ${res.status}`);
+      const plIndex = buildPlIndex(priceList);
       const neu = (data.produkte || []).map(p => ({
         id: `ki_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
         name: p.name || "(ohne Name)",
@@ -2625,7 +2674,7 @@ export default function KalkulationsApp() {
         kampagne: p.gruppe === "Kampagnen" ? (p.kampagne || null) : null,
         zutaten: (p.zutaten || []).map(z => {
           const ausExcel = (+z.preis_pro_kg || 0) / 1000; // €/kg → €/g
-          const proG = ausExcel > 0 ? ausExcel : (priceList[(z.name || "").toLowerCase()]?.price_per_gram_ml || 0);
+          const proG = ausExcel > 0 ? ausExcel : findPreisProG(z.name, plIndex);
           const menge = +z.menge_g || 0;
           return { name: z.name, menge_g: menge, lieferant: "Transgourmet", preis_pro_g: proG, cost: +(menge * proG).toFixed(4) };
         }),
@@ -2713,6 +2762,24 @@ export default function KalkulationsApp() {
     const key = artikel.ingredient_name.toLowerCase();
     setPriceList(prev => ({ ...prev, [key]: artikel }));
     setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), artikel]);
+  };
+
+  // Alle Zutaten ohne Preis tolerant gegen die Preisliste abgleichen und Preise ziehen.
+  const handlePreisAbgleich = () => {
+    const plIndex = buildPlIndex(priceList);
+    let count = 0;
+    setProdukte(prev => prev.map(p => ({
+      ...p,
+      zutaten: (p.zutaten || []).map(z => {
+        if ((z.preis_pro_g || 0) > 0) return z;
+        const proG = findPreisProG(z.name, plIndex);
+        if (proG > 0) { count++; return { ...z, preis_pro_g: proG, cost: +((z.menge_g || 0) * proG).toFixed(4) }; }
+        return z;
+      }),
+    })));
+    setCloudMsg(count > 0
+      ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen — prüfen & „In Cloud speichern".`
+      : "Keine weiteren Preise aus der Liste zuordenbar.");
   };
 
   const handleProduktSave = (produkt) => {
@@ -2962,7 +3029,8 @@ export default function KalkulationsApp() {
         {aktiverTab === "Naehrwerte"     && <NaehrwerteTab produkte={naehrwerteJson.produkte} />}
         {aktiverTab === "Einkaufspreise" && (
           <EinkaufspreiseTab priceList={priceList} produkte={produkte}
-            onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel} canEdit={writer} />
+            onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
+            onPreisAbgleich={handlePreisAbgleich} canEdit={writer} />
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
