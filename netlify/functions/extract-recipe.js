@@ -15,7 +15,8 @@ Regeln:
 - Bei Bowls die Untergruppe bestimmen: Salatbowls, Reisbowls oder Kartoffelbowls (Default Salatbowls).
 - Bei Iced Drinks die Untergruppe falls erkennbar: Sweet Iced Matcha, Iced Matcha, Frozen Iced Tea, Refresher, Iced Coffee Lattes (sonst leer).
 - Zutatenmengen IMMER in Gramm/Milliliter als Zahl (menge_g). Rechne Angaben wie "1 EL" grob um (EL≈15, TL≈5, Stück nach Kontext), sonst 0.
-- Wenn Einkaufspreise oder Verkaufspreise nicht im Rezept stehen: 0 setzen (werden später gepflegt).
+- Einkaufspreis je Zutat als preis_pro_kg (Euro pro kg bzw. pro Liter). Wenn die Vorlage einen Preis pro kg/l oder einen Gesamt-Zutatenkosten-Wert enthält, leite preis_pro_kg daraus ab (Kosten ÷ Menge × 1000). Wenn kein Einkaufspreis erkennbar ist: 0.
+- Wenn Verkaufspreise nicht im Rezept stehen: 0 setzen (werden später gepflegt).
 - verpackung_eur: falls unbekannt, sinnvoller Default je Gruppe (Bowls 0.30, Wraps 0.15, Getränke 0.12), sonst 0.
 - Erfinde keine Zutaten. Wenn etwas unklar ist, lass den Wert leer/0.
 - Gib ausschließlich die geforderte JSON-Struktur zurück.`;
@@ -46,8 +47,9 @@ const SCHEMA = {
               properties: {
                 name: { type: "string" },
                 menge_g: { type: "number" },
+                preis_pro_kg: { type: "number" },
               },
-              required: ["name", "menge_g"],
+              required: ["name", "menge_g", "preis_pro_kg"],
             },
           },
         },

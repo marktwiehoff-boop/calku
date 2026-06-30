@@ -719,7 +719,7 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
 // ============================================================
 //  KAMPAGNEN-TAB (mit Datumssteuerung)
 // ============================================================
-function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu }) {
+function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProdukte = [], onImport }) {
   const heute = new Date();
   const OHNE = "(Ohne Oberbegriff)";
   const obFor = (p) => p.kampagne || p.alte_kategorie || OHNE;
@@ -767,6 +767,15 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu }) {
     if (!name) return;
     onNeu && onNeu("Kampagnen", name);
   };
+
+  // Import bestehender Rezepte in eine Kampagne
+  const [importOpen, setImportOpen] = useState(false);
+  const [importSuche, setImportSuche] = useState("");
+  const [importSel, setImportSel] = useState(null);
+  const [importKampagne, setImportKampagne] = useState("");
+  const importTreffer = alleProdukte
+    .filter(p => (p.name || "").toLowerCase().includes(importSuche.trim().toLowerCase()))
+    .slice(0, 200);
 
   return (
     <div className="space-y-5">
@@ -861,12 +870,63 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu }) {
         );
       })}
 
-      <div className="flex justify-end">
+      <div className="flex flex-wrap justify-end gap-2">
+        <button onClick={() => { setImportOpen(true); setImportSel(null); setImportSuche(""); setImportKampagne(""); }}
+          className="flex items-center gap-1.5 text-sm bg-white border border-green-700 text-green-800 px-3 py-2 rounded-lg hover:bg-green-50">
+          <Plus size={14} /> Rezept übernehmen
+        </button>
         <button onClick={neueKampagne}
           className="flex items-center gap-1.5 text-sm bg-green-700 text-white px-3 py-2 rounded-lg hover:bg-green-800">
           <Plus size={14} /> Neue Kampagne anlegen
         </button>
       </div>
+
+      {importOpen && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <h3 className="font-semibold text-gray-800">Rezept in Kampagne übernehmen</h3>
+              <button onClick={() => setImportOpen(false)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
+            </div>
+            <div className="p-4 space-y-3 overflow-auto">
+              <div className="relative">
+                <Search size={14} className="absolute left-2.5 top-2.5 text-gray-400" />
+                <input value={importSuche} onChange={e => setImportSuche(e.target.value)} placeholder="Rezept suchen …"
+                  className="w-full border border-gray-200 rounded px-3 py-2 pl-8 text-sm" />
+              </div>
+              <div className="border border-gray-100 rounded-lg divide-y divide-gray-100 max-h-60 overflow-auto">
+                {importTreffer.length === 0 && (
+                  <div className="px-3 py-6 text-center text-gray-400 text-sm">Kein Rezept gefunden.</div>
+                )}
+                {importTreffer.map(p => (
+                  <button key={p.id} onClick={() => setImportSel(p.id)}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-gray-50 ${importSel === p.id ? "bg-emerald-50" : ""}`}>
+                    <span className="font-medium text-gray-800">{p.name || "(ohne Name)"}</span>
+                    <span className="text-xs text-gray-400">{p.gruppe}{p.untergruppe ? ` · ${p.untergruppe}` : ""}</span>
+                  </button>
+                ))}
+              </div>
+              <label className="block text-xs font-medium text-gray-600">
+                Ziel-Kampagne (Oberbegriff)
+                <input list="kampagnen-namen" value={importKampagne} onChange={e => setImportKampagne(e.target.value)}
+                  placeholder="z. B. Sommerkampagne" className="mt-1 w-full border border-gray-200 rounded px-3 py-2 text-sm" />
+                <datalist id="kampagnen-namen">
+                  {kampagnen.filter(k => k.name !== OHNE).map(k => <option key={k.name} value={k.name} />)}
+                </datalist>
+              </label>
+              <p className="text-[11px] text-gray-400">Es wird eine <strong>Kopie</strong> angelegt — das Original bleibt unverändert. Preise/VK werden mitkopiert.</p>
+            </div>
+            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+              <button onClick={() => setImportOpen(false)} className="px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Abbrechen</button>
+              <button disabled={!importSel || !importKampagne.trim()}
+                onClick={() => { onImport?.(importSel, importKampagne); setImportOpen(false); }}
+                className="px-4 py-2 text-sm font-medium rounded-lg bg-green-700 text-white hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                Übernehmen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -2564,7 +2624,8 @@ export default function KalkulationsApp() {
         untergruppe: p.untergruppe || null,
         kampagne: p.gruppe === "Kampagnen" ? (p.kampagne || null) : null,
         zutaten: (p.zutaten || []).map(z => {
-          const proG = priceList[(z.name || "").toLowerCase()]?.price_per_gram_ml || 0;
+          const ausExcel = (+z.preis_pro_kg || 0) / 1000; // €/kg → €/g
+          const proG = ausExcel > 0 ? ausExcel : (priceList[(z.name || "").toLowerCase()]?.price_per_gram_ml || 0);
           const menge = +z.menge_g || 0;
           return { name: z.name, menge_g: menge, lieferant: "Transgourmet", preis_pro_g: proG, cost: +(menge * proG).toFixed(4) };
         }),
@@ -2664,6 +2725,25 @@ export default function KalkulationsApp() {
 
   const handleProduktDelete = (id) => {
     setProdukte(prev => prev.filter(p => p.id !== id));
+  };
+
+  // Bestehendes Rezept als Kopie in eine Kampagne übernehmen.
+  const handleKampagneImport = (produktId, kampagneName) => {
+    setProdukte(prev => {
+      const src = prev.find(p => p.id === produktId);
+      if (!src) return prev;
+      const kopie = {
+        ...src,
+        id: `kamp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        gruppe: "Kampagnen",
+        untergruppe: null,
+        kampagne: (kampagneName || "").trim() || null,
+        zutaten: (src.zutaten || []).map(z => ({ ...z })),
+        kampagne_start: null,
+        kampagne_ende: null,
+      };
+      return [...prev, kopie];
+    });
   };
 
   // System-Soll-WE (für globalen KPI im Header)
@@ -2886,7 +2966,8 @@ export default function KalkulationsApp() {
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
-                                       onEdit={setEditProdukt} onDelete={handleProduktDelete} onNeu={handleProduktNeu} />}
+                                       onEdit={setEditProdukt} onDelete={handleProduktDelete} onNeu={handleProduktNeu}
+                                       alleProdukte={produkte} onImport={handleKampagneImport} />}
         {WARENGRUPPEN.includes(aktiverTab) && aktiverTab !== "Kampagnen" && (
           <WarengruppenTab produkte={produkteImTab} gruppe={aktiverTab}
             onUpdate={handleProduktUpdate}
