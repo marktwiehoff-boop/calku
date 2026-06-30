@@ -9,6 +9,7 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -2534,9 +2535,16 @@ export default function KalkulationsApp() {
     setRezeptLoading(true);
     setCloudMsg("Rezept wird von der KI gelesen …");
     try {
+      const istExcel = /\.(xlsx|xls)$/i.test(f.name) || (f.type || "").includes("spreadsheet") || (f.type || "").includes("ms-excel");
       const istText = (f.type || "").startsWith("text/") || /\.(txt|md|csv|json)$/i.test(f.name);
       let body;
-      if (istText) {
+      if (istExcel) {
+        const wb = XLSX.read(await f.arrayBuffer(), { type: "array" });
+        const text = wb.SheetNames
+          .map(n => `# Tabellenblatt: ${n}\n${XLSX.utils.sheet_to_csv(wb.Sheets[n])}`)
+          .join("\n\n");
+        body = { text };
+      } else if (istText) {
         body = { text: await f.text() };
       } else {
         const bytes = new Uint8Array(await f.arrayBuffer());
@@ -2773,7 +2781,7 @@ export default function KalkulationsApp() {
                   <>
                     <label className={`bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium cursor-pointer flex items-center gap-2 ${rezeptLoading ? "opacity-60 pointer-events-none" : ""}`}>
                       <Upload size={14} /> {rezeptLoading ? "KI liest …" : "Rezept hochladen"}
-                      <input ref={rezeptRef} type="file" accept="image/*,application/pdf,.txt,.md,.csv,.json"
+                      <input ref={rezeptRef} type="file" accept="image/*,application/pdf,.txt,.md,.csv,.json,.xlsx,.xls"
                         onChange={handleRezeptUpload} className="hidden" disabled={rezeptLoading} />
                     </label>
                     <button onClick={() => setImportOpen(true)}
