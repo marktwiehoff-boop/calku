@@ -1,0 +1,195 @@
+{
+  "produkte": [
+    {
+      "id": "iced_pistachio_vanilla_coffee",
+      "name": "Iced Pistachio Vanilla Coffee",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Iced Coffee Lattes",
+      "zutaten": [
+        {
+          "name": "Pistazien Sauce",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Eiswürfel",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Milch",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Vanille Sirup",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Pistazien Sirup",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Cold Brew",
+          "menge_g": 150,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "iced_caramel_vanilla_coffee",
+      "name": "Iced Caramel Vanilla Coffee",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Iced Coffee Lattes",
+      "zutaten": [
+        {
+          "name": "Karamell Sauce",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Eiswürfel",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Milch",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Vanille Sirup",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Karamell Sirup",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Cold Brew",
+          "menge_g": 150,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "frozen_iced_tea_pfirsich",
+      "name": "Pfirsich Frozen Iced Tea",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Frozen Iced Tea",
+      "zutaten": [
+        {
+          "name": "Pfirsich Eisteemischung",
+          "menge_g": 200,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Crushed Ice",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "frozen_iced_tea_maracuja",
+      "name": "Maracuja Frozen Iced Tea",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Frozen Iced Tea",
+      "zutaten": [
+        {
+          "name": "Maracuja Eisteemischung",
+          "menge_g": 200,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Crushed Ice",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "frozen_iced_tea_hibiskus_himbeere",
+      "name": "Hibiskus-Himbeere Frozen Iced Tea",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Frozen Iced Tea",
+      "zutaten": [
+        {
+          "name": "Hibiskus-Himbeere Eisteemischung",
+          "menge_g": 200,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Crushed Ice",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    }
+  ]
+}

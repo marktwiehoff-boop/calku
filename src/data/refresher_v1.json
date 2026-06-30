@@ -1,0 +1,253 @@
+{
+  "produkte": [
+    {
+      "id": "refresher_red_crush",
+      "name": "Red Crush 0,5 l",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Refresher",
+      "zutaten": [
+        {
+          "name": "Erdbeersauce (hausgemacht)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003,
+          "cost": 0.15
+        },
+        {
+          "name": "Crusheis",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0002,
+          "cost": 0.032
+        },
+        {
+          "name": "Zitronenlimonade (Monin/Wasser)",
+          "menge_g": 280,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0008,
+          "cost": 0.224
+        },
+        {
+          "name": "Himbeersirup (Monin)",
+          "menge_g": 28,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008,
+          "cost": 0.224
+        },
+        {
+          "name": "TK Himbeere",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011,
+          "cost": 0.11
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "refresher_sunny_soul",
+      "name": "Sunny Soul 0,5 l",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Refresher",
+      "zutaten": [
+        {
+          "name": "Mangosauce (hausgemacht)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004,
+          "cost": 0.2
+        },
+        {
+          "name": "Crusheis",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0002,
+          "cost": 0.032
+        },
+        {
+          "name": "Zitronenlimonade (Monin/Wasser)",
+          "menge_g": 280,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0008,
+          "cost": 0.224
+        },
+        {
+          "name": "Maracujasirup (Monin)",
+          "menge_g": 28,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008,
+          "cost": 0.224
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003,
+          "cost": 0.03
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "refresher_violet_vibes",
+      "name": "Violet Vibes 0,5 l",
+      "gruppe": "Iced Drinks",
+      "untergruppe": "Refresher",
+      "zutaten": [
+        {
+          "name": "Drachenfruchtsauce (hausgemacht)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005,
+          "cost": 0.25
+        },
+        {
+          "name": "Crusheis",
+          "menge_g": 160,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0002,
+          "cost": 0.032
+        },
+        {
+          "name": "Zitronenlimonade (Monin/Wasser)",
+          "menge_g": 280,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0008,
+          "cost": 0.224
+        },
+        {
+          "name": "Hibiskussirup (Monin)",
+          "menge_g": 14,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008,
+          "cost": 0.112
+        },
+        {
+          "name": "Mangosirup (Monin)",
+          "menge_g": 14,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008,
+          "cost": 0.112
+        },
+        {
+          "name": "TK Drachenfrucht",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005,
+          "cost": 0.05
+        }
+      ],
+      "verpackung_eur": 0.12,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    }
+  ],
+  "price_list": [
+    {
+      "ingredient_name": "Erdbeersauce (hausgemacht)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 3.0,
+      "price_per_gram_ml": 0.003
+    },
+    {
+      "ingredient_name": "Mangosauce (hausgemacht)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 4.0,
+      "price_per_gram_ml": 0.004
+    },
+    {
+      "ingredient_name": "Drachenfruchtsauce (hausgemacht)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 5.0,
+      "price_per_gram_ml": 0.005
+    },
+    {
+      "ingredient_name": "Crusheis",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 0.2,
+      "price_per_gram_ml": 0.0002
+    },
+    {
+      "ingredient_name": "Zitronenlimonade (Monin/Wasser)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 0.8,
+      "price_per_gram_ml": 0.0008
+    },
+    {
+      "ingredient_name": "Himbeersirup (Monin)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 8.0,
+      "price_per_gram_ml": 0.008
+    },
+    {
+      "ingredient_name": "Maracujasirup (Monin)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 8.0,
+      "price_per_gram_ml": 0.008
+    },
+    {
+      "ingredient_name": "Hibiskussirup (Monin)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 8.0,
+      "price_per_gram_ml": 0.008
+    },
+    {
+      "ingredient_name": "Mangosirup (Monin)",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 8.0,
+      "price_per_gram_ml": 0.008
+    },
+    {
+      "ingredient_name": "TK Himbeere",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 11.0,
+      "price_per_gram_ml": 0.011
+    },
+    {
+      "ingredient_name": "TK Mango",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 3.0,
+      "price_per_gram_ml": 0.003
+    },
+    {
+      "ingredient_name": "TK Drachenfrucht",
+      "article_number": "",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 5.0,
+      "price_per_gram_ml": 0.005
+    }
+  ]
+}

@@ -1,0 +1,6693 @@
+{
+  "metadata": {
+    "file": "Rezepte_Kalkulationstabelle_Stand_Mark.xlsx",
+    "total_sheets": 25,
+    "sheet_names": [
+      "Bowls",
+      "Verpackung",
+      "Preise & Mengen",
+      "Wraps neu",
+      "Wraps_new",
+      "Bowls_Kartoffel",
+      "Wrapvolution",
+      "Reis_Bowls",
+      "Salat Bowls",
+      "Smoothies",
+      "Säfte",
+      "Mashed Box",
+      "Frozen Iced Teas & Refresher",
+      "Iced Lattes",
+      "Wraps",
+      "FINNEN-BAGUETTES",
+      "Sides",
+      "Thai Kampagne",
+      "Grilled Focaccia",
+      "Sweets",
+      "Arbeitsanweisung Toppings",
+      "Hilfstabelle",
+      "Hot Food",
+      "Hot Food Eigenrezepte",
+      "Coocino"
+    ],
+    "extraction_date": "2026-03-20T18:30:01.388046"
+  },
+  "price_list": [
+    {
+      "ingredient_name": "Mixsalat immergrün",
+      "article_number": "26986010.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 6.3,
+      "gross_weight": 1000.0,
+      "gross_price": 4.8,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.8,
+      "price_per_gram_ml": 0.0048,
+      "date_last_checked": "2025-04-02 00:00:00"
+    },
+    {
+      "ingredient_name": "Minze",
+      "article_number": "13298331.0",
+      "unit": "Bund",
+      "package_size": 1000.0,
+      "package_price": 22.65,
+      "gross_weight": 1000.0,
+      "gross_price": 22.65,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 22.65,
+      "price_per_gram_ml": 0.02265,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Tomaten 47-57mm",
+      "article_number": "15530580.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 3.15,
+      "gross_weight": 1000.0,
+      "gross_price": 3.15,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 3.15,
+      "price_per_gram_ml": 0.00315,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Möhren(Saladette)",
+      "article_number": "14082510.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 0.85,
+      "gross_weight": 1000.0,
+      "gross_price": 0.85,
+      "net_weight": 600.0,
+      "net_price_per_unit": 1.416666667,
+      "price_per_gram_ml": 0.001416666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Rotkohl, Streifen, 2mm",
+      "article_number": "25048010.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 2.19,
+      "gross_weight": 1000.0,
+      "gross_price": 2.19,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.19,
+      "price_per_gram_ml": 0.00219,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Möhrenraspeln",
+      "article_number": "24162010.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 2.66,
+      "gross_weight": 1000.0,
+      "gross_price": 2.66,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.66,
+      "price_per_gram_ml": 0.00266,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Gurke",
+      "article_number": "13330515.0",
+      "unit": "Stück",
+      "package_size": 1.0,
+      "package_price": 1.38,
+      "gross_weight": 1000.0,
+      "gross_price": 1.971428571,
+      "net_weight": 800.0,
+      "net_price_per_unit": 2.464285714,
+      "price_per_gram_ml": 0.002464285714,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Babyspinat",
+      "article_number": "23710015.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 7.53,
+      "gross_weight": 1000.0,
+      "gross_price": 7.53,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.53,
+      "price_per_gram_ml": 0.00753,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Äpfel (gepresst)",
+      "article_number": "11534697.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 1.25,
+      "gross_weight": 1000.0,
+      "gross_price": 1.25,
+      "net_weight": 600.0,
+      "net_price_per_unit": 2.083333333,
+      "price_per_gram_ml": 0.002083333333,
+      "date_last_checked": "2005-11-12 00:00:00"
+    },
+    {
+      "ingredient_name": "Bananen",
+      "article_number": "12110510.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 1.91,
+      "gross_weight": 1000.0,
+      "gross_price": 1.91,
+      "net_weight": 700.0,
+      "net_price_per_unit": 2.728571429,
+      "price_per_gram_ml": 0.002728571429,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Orangen (gepresst)",
+      "article_number": "12350050.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 1.45,
+      "gross_weight": 1000.0,
+      "gross_price": 1.45,
+      "net_weight": 400.0,
+      "net_price_per_unit": 3.625,
+      "price_per_gram_ml": 0.003625,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Zitrone",
+      "article_number": "12502510.0",
+      "unit": "Stück",
+      "package_size": 1.0,
+      "package_price": 0.32,
+      "gross_weight": 1.0,
+      "gross_price": 0.32,
+      "net_weight": 1.0,
+      "net_price_per_unit": 0.32,
+      "price_per_gram_ml": 0.32,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Ingwer",
+      "article_number": "16060510.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 5.75,
+      "gross_weight": 1000.0,
+      "gross_price": 5.75,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.75,
+      "price_per_gram_ml": 0.00575,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Möhren (gepresst)",
+      "article_number": "14082510.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 1.19,
+      "gross_weight": 1000.0,
+      "gross_price": 1.19,
+      "net_weight": 400.0,
+      "net_price_per_unit": 2.975,
+      "price_per_gram_ml": 0.002975,
+      "date_last_checked": "2025-11-12 00:00:00"
+    },
+    {
+      "ingredient_name": "Cherrytomaten",
+      "article_number": "15653515.0",
+      "unit": "Kiste",
+      "package_size": 1000.0,
+      "package_price": 4.29,
+      "gross_weight": 1000.0,
+      "gross_price": 4.29,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.29,
+      "price_per_gram_ml": 0.00429,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Transgourmet",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preis überprüft am"
+    },
+    {
+      "ingredient_name": "Sylter Art vegan IG",
+      "article_number": "229977.0",
+      "unit": "ml",
+      "package_size": 3500.0,
+      "package_price": 18.01,
+      "gross_weight": 1000.0,
+      "gross_price": 5.145714286,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.145714286,
+      "price_per_gram_ml": 0.005145714286,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Cinnamon Plum",
+      "article_number": "345245.0",
+      "unit": "ml",
+      "package_size": 850.0,
+      "package_price": 5.66,
+      "gross_weight": 1000.0,
+      "gross_price": 6.658823529,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.658823529,
+      "price_per_gram_ml": 0.006658823529,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Caesar Dressing IG",
+      "article_number": "445497.0",
+      "unit": "ml",
+      "package_size": 3500.0,
+      "package_price": 18.24,
+      "gross_weight": 1000.0,
+      "gross_price": 6.08,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.08,
+      "price_per_gram_ml": 0.00608,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Basissauce Kartoffel vegan",
+      "article_number": "792707.0",
+      "unit": "Liter",
+      "package_size": 3.0,
+      "package_price": 12.035,
+      "gross_weight": 1000.0,
+      "gross_price": 4.011666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.011666667,
+      "price_per_gram_ml": 0.004011666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Wild Karachi Dressing",
+      "article_number": "345247.0",
+      "unit": "ml",
+      "package_size": 1.0,
+      "package_price": 5.45,
+      "gross_weight": 1000.0,
+      "gross_price": 5.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.45,
+      "price_per_gram_ml": 0.00545,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Teriyaki Sauce IG",
+      "article_number": "419515.0",
+      "unit": "ml",
+      "package_size": 3500.0,
+      "package_price": 22.8,
+      "gross_weight": 1000.0,
+      "gross_price": 6.514285714,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 9.52,
+      "price_per_gram_ml": 0.00952,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Zitronen Vinaigrette IG",
+      "article_number": "458752.0",
+      "unit": "ml",
+      "package_size": 3500.0,
+      "package_price": 22.34,
+      "gross_weight": 1000.0,
+      "gross_price": 6.382857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.382857143,
+      "price_per_gram_ml": 0.006382857143,
+      "date_last_checked": "2025-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Jalapenos",
+      "article_number": "783286.0",
+      "unit": "ml",
+      "package_size": 3000.0,
+      "package_price": 5.18,
+      "gross_weight": 1000.0,
+      "gross_price": 1.726666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.726666667,
+      "price_per_gram_ml": 0.001726666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Erdnuss Dip Sauce",
+      "article_number": "533257.0",
+      "unit": "ml",
+      "package_size": 850.0,
+      "package_price": 6.2,
+      "gross_weight": 1000.0,
+      "gross_price": 7.294117647,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.294117647,
+      "price_per_gram_ml": 0.007294117647,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Chipotle Sauce IG",
+      "article_number": "397025.0",
+      "unit": "Liter",
+      "package_size": 3500.0,
+      "package_price": 21.43,
+      "gross_weight": 1000.0,
+      "gross_price": 6.122857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.122857143,
+      "price_per_gram_ml": 0.006122857143,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Sesamdressing geröstet IG",
+      "article_number": "337575.0",
+      "unit": "ml",
+      "package_size": 3500.0,
+      "package_price": 29.18,
+      "gross_weight": 1000.0,
+      "gross_price": 8.337142857,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 8.337142857,
+      "price_per_gram_ml": 0.008337142857,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Rotkohl eingelegt",
+      "article_number": "810035.0",
+      "unit": "g",
+      "package_size": 1500.0,
+      "package_price": 6.38,
+      "gross_weight": 1000.0,
+      "gross_price": 4.253333333,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.253333333,
+      "price_per_gram_ml": 0.004253333333,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Pulled Beef TK",
+      "article_number": "546471.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 19.49,
+      "gross_weight": 1000.0,
+      "gross_price": 19.49,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 19.49,
+      "price_per_gram_ml": 0.01949,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Pulled Lachs",
+      "article_number": "748082.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 9.66,
+      "gross_weight": 1000.0,
+      "gross_price": 9.66,
+      "net_weight": 500.0,
+      "net_price_per_unit": 19.32,
+      "price_per_gram_ml": 0.01932,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Chicken Flakes",
+      "article_number": "685245.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 7.16,
+      "gross_weight": 1000.0,
+      "gross_price": 7.16,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.16,
+      "price_per_gram_ml": 0.00716,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Hähnchengeschnetzeltes",
+      "article_number": "995825.0",
+      "unit": "g",
+      "package_size": 2500.0,
+      "package_price": 17.9,
+      "gross_weight": 1000.0,
+      "gross_price": 7.16,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.16,
+      "price_per_gram_ml": 0.00716,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Falafel TK",
+      "article_number": "390781.0",
+      "unit": "g",
+      "package_size": 3000.0,
+      "package_price": 16.58,
+      "gross_weight": 1000.0,
+      "gross_price": 5.526666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.526666667,
+      "price_per_gram_ml": 0.005526666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Edamame TK",
+      "article_number": "897494.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 2.95,
+      "gross_weight": 1000.0,
+      "gross_price": 2.95,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.95,
+      "price_per_gram_ml": 0.00295,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Rote Bete Meerettich",
+      "article_number": "788207.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 8.95,
+      "gross_weight": 1000.0,
+      "gross_price": 8.95,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 8.95,
+      "price_per_gram_ml": 0.00895,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Gelbe Linse Aufstrich",
+      "article_number": "216534.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 4.75,
+      "gross_weight": 1000.0,
+      "gross_price": 9.5,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 9.5,
+      "price_per_gram_ml": 0.0095,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Jasminreis",
+      "article_number": "358785.0",
+      "unit": "g",
+      "package_size": 20000.0,
+      "package_price": 31.39,
+      "gross_weight": 20000.0,
+      "gross_price": 31.39,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.5695,
+      "price_per_gram_ml": 7.8475e-05,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Quinoa Reis gekocht",
+      "article_number": "XXX",
+      "unit": "g",
+      "package_size": 200.0,
+      "package_price": 0.29,
+      "gross_weight": 200.0,
+      "gross_price": 0.29,
+      "net_weight": 200.0,
+      "net_price_per_unit": 0.29,
+      "price_per_gram_ml": 0.00145,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Sesam Tofu",
+      "article_number": "51921.0",
+      "unit": "g",
+      "package_size": 200.0,
+      "package_price": 2.68,
+      "gross_weight": 1000.0,
+      "gross_price": 13.4,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 13.4,
+      "price_per_gram_ml": 0.0134,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Quinoa Bunt",
+      "article_number": "952717.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 6.45,
+      "gross_weight": 1000.0,
+      "gross_price": 6.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.45,
+      "price_per_gram_ml": 0.00645,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Mais, Quality",
+      "article_number": "748061.0",
+      "unit": "g",
+      "package_size": 850.0,
+      "package_price": 2.05,
+      "gross_weight": 1000.0,
+      "gross_price": 2.411764706,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.411764706,
+      "price_per_gram_ml": 0.002411764706,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Hummus Neni",
+      "article_number": "96661.0",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 6.98,
+      "gross_weight": 1000.0,
+      "gross_price": 6.98,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.98,
+      "price_per_gram_ml": 0.00698,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Kräutercroutons",
+      "article_number": "5913.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 3.59,
+      "gross_weight": 1000.0,
+      "gross_price": 7.18,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.18,
+      "price_per_gram_ml": 0.00718,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Eier",
+      "article_number": "103640.0",
+      "unit": "stück",
+      "package_size": 30.0,
+      "package_price": 8.45,
+      "gross_weight": 1000.0,
+      "gross_price": 0.2816666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.2816666667,
+      "price_per_gram_ml": 0.0002816666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Gran Moravia ital. Hartkäse",
+      "article_number": "490163.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 6.49,
+      "gross_weight": 1000.0,
+      "gross_price": 12.98,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 12.98,
+      "price_per_gram_ml": 0.01298,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Garkartoffel",
+      "article_number": "310895.0",
+      "unit": "kg",
+      "package_size": 4.0,
+      "package_price": 7.95,
+      "gross_weight": 1000.0,
+      "gross_price": 1.9875,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.9875,
+      "price_per_gram_ml": 0.0019875,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Röstzwiebeln (kg)",
+      "article_number": "63102.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 2.54,
+      "gross_weight": 1000.0,
+      "gross_price": 5.08,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.08,
+      "price_per_gram_ml": 0.00508,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Honig (500g) TGQ",
+      "article_number": "447621.0",
+      "unit": "kg",
+      "package_size": 0.5,
+      "package_price": 2.99,
+      "gross_weight": 1000.0,
+      "gross_price": 5.98,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.98,
+      "price_per_gram_ml": 0.00598,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Sesamkörner",
+      "article_number": "547178.0",
+      "unit": "g",
+      "package_size": 300.0,
+      "package_price": 5.48,
+      "gross_weight": 1000.0,
+      "gross_price": 18.26666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 18.26666667,
+      "price_per_gram_ml": 0.01826666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Agavendicksaft",
+      "article_number": "469271.0",
+      "unit": "g",
+      "package_size": 350.0,
+      "package_price": 2.92,
+      "gross_weight": 1000.0,
+      "gross_price": 9.733333333,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 9.733333333,
+      "price_per_gram_ml": 0.009733333333,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Körnermix Salatveredler",
+      "article_number": "723701.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 7.29,
+      "gross_weight": 1000.0,
+      "gross_price": 24.3,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 24.3,
+      "price_per_gram_ml": 0.0243,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Violife Creamy",
+      "article_number": "911293.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 6.49,
+      "gross_weight": 1000.0,
+      "gross_price": 12.98,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 12.98,
+      "price_per_gram_ml": 0.01298,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Frischkäse Natur 60% Arla",
+      "article_number": "459326.0",
+      "unit": "g",
+      "package_size": 1500.0,
+      "package_price": 8.98,
+      "gross_weight": 1000.0,
+      "gross_price": 5.986666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.986666667,
+      "price_per_gram_ml": 0.005986666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Tortilla Chips",
+      "article_number": "50197.0",
+      "unit": "Beutel",
+      "package_size": 800.0,
+      "package_price": 4.85,
+      "gross_weight": 1000.0,
+      "gross_price": 6.0625,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.0625,
+      "price_per_gram_ml": 0.0060625,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Crushed Ice",
+      "article_number": "878375.0",
+      "unit": "g",
+      "package_size": 5000.0,
+      "package_price": 3.98,
+      "gross_weight": 1000.0,
+      "gross_price": 0.796,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.796,
+      "price_per_gram_ml": 0.000796,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Rohrzuckersirup Teisseire",
+      "article_number": "936546.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 4.99,
+      "gross_weight": 1000.0,
+      "gross_price": 7.128571429,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.128571429,
+      "price_per_gram_ml": 0.007128571429,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Mangosauce hausg.",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 450.0,
+      "package_price": 1.933285714,
+      "gross_weight": 1000.0,
+      "gross_price": 4.296190476,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.296190476,
+      "price_per_gram_ml": 0.004296190476,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Erdbeersauce hausg.",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 450.0,
+      "package_price": 1.795285714,
+      "gross_weight": 1000.0,
+      "gross_price": 3.98952381,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 3.98952381,
+      "price_per_gram_ml": 0.00398952381,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Pistazien Topping Toschi",
+      "article_number": "434984.0",
+      "unit": "ml",
+      "package_size": 200.0,
+      "package_price": 3.49,
+      "gross_weight": 1000.0,
+      "gross_price": 17.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 17.45,
+      "price_per_gram_ml": 0.01745,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Karamell Sirup Teisseire",
+      "article_number": "162268.0",
+      "unit": "ml",
+      "package_size": 750.0,
+      "package_price": 5.2,
+      "gross_weight": 1000.0,
+      "gross_price": 7.428571429,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.428571429,
+      "price_per_gram_ml": 0.007428571429,
+      "date_last_checked": "2025-04-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Pistazien Sirup Teisseire",
+      "article_number": "996945.0",
+      "unit": "ml",
+      "package_size": 750.0,
+      "package_price": 5.49,
+      "gross_weight": 1000.0,
+      "gross_price": 7.842857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.842857143,
+      "price_per_gram_ml": 0.007842857143,
+      "date_last_checked": "2025-04-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Vanille Sirup Teisseire",
+      "article_number": "66796.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 5.49,
+      "gross_weight": 1000.0,
+      "gross_price": 7.842857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.842857143,
+      "price_per_gram_ml": 0.007842857143,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Cold Brew",
+      "article_number": "https://kaffeebraun.com/aethiopischer-waldkaffee-bio/4023.9",
+      "unit": "ml",
+      "package_size": null,
+      "package_price": 12.0,
+      "gross_weight": 1000.0,
+      "gross_price": 24.0,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 24.0,
+      "price_per_gram_ml": 0.024,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Cold Brew Mischung",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 2.6,
+      "gross_weight": 1000.0,
+      "gross_price": 2.6,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.6,
+      "price_per_gram_ml": 0.0026,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Matcha Pulver",
+      "article_number": "https://www.amazon.de/dp/B079VQ52MK/ref=twister_B0CWLRV38C?_encoding=UTF8&psc=1",
+      "unit": "g",
+      "package_size": 200.0,
+      "package_price": 19.79,
+      "gross_weight": 1000.0,
+      "gross_price": 98.95,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 98.95,
+      "price_per_gram_ml": 0.09895,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Oreo Cookies (154g)",
+      "article_number": "451991.0",
+      "unit": "Stück",
+      "package_size": 14.0,
+      "package_price": 1.39,
+      "gross_weight": 1.0,
+      "gross_price": 0.09928571429,
+      "net_weight": 1.0,
+      "net_price_per_unit": 0.09928571429,
+      "price_per_gram_ml": 0.09928571429,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Frappepulver (weiß)",
+      "article_number": "737524.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 9.88,
+      "gross_weight": 1000.0,
+      "gross_price": 9.88,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 8.825,
+      "price_per_gram_ml": 0.008825,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Karamellsauce",
+      "article_number": "379155.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 4.45,
+      "gross_weight": 1000.0,
+      "gross_price": 4.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.45,
+      "price_per_gram_ml": 0.00445,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Erdnüsse",
+      "article_number": "39765.0",
+      "unit": "g",
+      "package_size": 200.0,
+      "package_price": 1.55,
+      "gross_weight": 1000.0,
+      "gross_price": 7.75,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.75,
+      "price_per_gram_ml": 0.00775,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Waren",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "TK Erdbeeren",
+      "article_number": "491310.0",
+      "unit": "kg",
+      "package_size": 2.5,
+      "package_price": 6.05,
+      "gross_weight": 1000.0,
+      "gross_price": 2.42,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.42,
+      "price_per_gram_ml": 0.00242,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Mango",
+      "article_number": "217781.0",
+      "unit": "kg",
+      "package_size": 2.5,
+      "package_price": 7.2,
+      "gross_weight": 1000.0,
+      "gross_price": 2.88,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.88,
+      "price_per_gram_ml": 0.00288,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Himbeeren",
+      "article_number": "491303.0",
+      "unit": "kg",
+      "package_size": 2.5,
+      "package_price": 11.52,
+      "gross_weight": 1000.0,
+      "gross_price": 4.608,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.608,
+      "price_per_gram_ml": 0.004608,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Drachenfrucht",
+      "article_number": "148425.0",
+      "unit": "kg",
+      "package_size": 2.0,
+      "package_price": 11.017,
+      "gross_weight": 1000.0,
+      "gross_price": 5.5085,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.5085,
+      "price_per_gram_ml": 0.0055085,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Pfirsich",
+      "article_number": "481960.0",
+      "unit": "kg",
+      "package_size": 10.0,
+      "package_price": 26.25,
+      "gross_weight": 1000.0,
+      "gross_price": 2.625,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.625,
+      "price_per_gram_ml": 0.002625,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Ananas",
+      "article_number": "680.0",
+      "unit": "kg",
+      "package_size": 2.5,
+      "package_price": 6.32,
+      "gross_weight": 1000.0,
+      "gross_price": 2.528,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.528,
+      "price_per_gram_ml": 0.002528,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Wrap natur",
+      "article_number": "264454.0",
+      "unit": "Stück",
+      "package_size": 10.0,
+      "package_price": 3.24,
+      "gross_weight": 1.0,
+      "gross_price": 0.324,
+      "net_weight": 1.0,
+      "net_price_per_unit": 0.324,
+      "price_per_gram_ml": 0.324,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Wrap Spinat",
+      "article_number": "815926.0",
+      "unit": "Stück",
+      "package_size": 50.0,
+      "package_price": 18.95,
+      "gross_weight": 1.0,
+      "gross_price": 0.379,
+      "net_weight": 1.0,
+      "net_price_per_unit": 0.379,
+      "price_per_gram_ml": 0.379,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Wrap Tomate",
+      "article_number": "76199.0",
+      "unit": "Stück",
+      "package_size": 10.0,
+      "package_price": 3.99,
+      "gross_weight": 1.0,
+      "gross_price": 0.399,
+      "net_weight": 1.0,
+      "net_price_per_unit": 0.399,
+      "price_per_gram_ml": 0.399,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Joghurt Eis",
+      "article_number": "499111.0",
+      "unit": "kg",
+      "package_size": 3.5,
+      "package_price": 20.64,
+      "gross_weight": 1000.0,
+      "gross_price": 5.897142857,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.897142857,
+      "price_per_gram_ml": 0.005897142857,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Mangosorbet gefroren",
+      "article_number": "499108.0",
+      "unit": "kg",
+      "package_size": 3.5,
+      "package_price": 20.64,
+      "gross_weight": 1000.0,
+      "gross_price": 5.897142857,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.897142857,
+      "price_per_gram_ml": 0.005897142857,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Erdbeersorbet gefroren",
+      "article_number": "499105.0",
+      "unit": "kg",
+      "package_size": 3.5,
+      "package_price": 20.64,
+      "gross_weight": 1000.0,
+      "gross_price": 5.897142857,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.897142857,
+      "price_per_gram_ml": 0.005897142857,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Bulgur Köfte",
+      "article_number": "65601.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 6.45,
+      "gross_weight": 1000.0,
+      "gross_price": 6.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.45,
+      "price_per_gram_ml": 0.00645,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "TK Avocadowürfel",
+      "article_number": "266335.0",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 4.78,
+      "gross_weight": 1000.0,
+      "gross_price": 4.78,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.78,
+      "price_per_gram_ml": 0.00478,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Getränke",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Mango Maracujasaft (1l)",
+      "article_number": "977955.0",
+      "unit": "Liter",
+      "package_size": 1.0,
+      "package_price": 1.29,
+      "gross_weight": 1000.0,
+      "gross_price": 1.29,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.29,
+      "price_per_gram_ml": 0.00129,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "H-Milch 1,5%",
+      "article_number": "3179.0",
+      "unit": "Liter",
+      "package_size": 1.0,
+      "package_price": 0.94,
+      "gross_weight": 1000.0,
+      "gross_price": 0.94,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.94,
+      "price_per_gram_ml": 0.00094,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Apfelsaft Sunny",
+      "article_number": "331067.0",
+      "unit": "Liter",
+      "package_size": 1.0,
+      "package_price": 1.15,
+      "gross_weight": 1000.0,
+      "gross_price": 1.15,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.15,
+      "price_per_gram_ml": 0.00115,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Kokosmilch TGQ",
+      "article_number": "73432.0",
+      "unit": "Liter",
+      "package_size": 1.0,
+      "package_price": 2.95,
+      "gross_weight": 1000.0,
+      "gross_price": 2.95,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.95,
+      "price_per_gram_ml": 0.00295,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Mandeldrink",
+      "article_number": "82197.0",
+      "unit": "Liter",
+      "package_size": 1.0,
+      "package_price": 2.15,
+      "gross_weight": 1000.0,
+      "gross_price": 2.15,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.15,
+      "price_per_gram_ml": 0.00215,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Extra Kicks",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Traubenkernöl",
+      "article_number": "369596.0",
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 8.15,
+      "gross_weight": 1000.0,
+      "gross_price": 8.15,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 8.15,
+      "price_per_gram_ml": 0.00815,
+      "date_last_checked": "2024-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "blaues Spirulina",
+      "article_number": "https://www.amazon.de/Golden-Naturals-Blaues-Spirulina-Lebensmittelfarbe/dp/B0BFX78TZ5",
+      "unit": "g",
+      "package_size": 100.0,
+      "package_price": 29.99,
+      "gross_weight": 1000.0,
+      "gross_price": 299.9,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 299.9,
+      "price_per_gram_ml": 0.2999,
+      "date_last_checked": "2025-04-28 00:00:00"
+    },
+    {
+      "ingredient_name": "Kaffee Frappe",
+      "article_number": "https://www.amazon.de/one-only-Frappe-Pulver-Kaffee/dp/B00DZOD0GY/ref=sr_1_10?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2G3EPTQ6GZM19&keywords=kaffee+frappe&qid=1697452189&sprefix=kaffee+frapp%2Caps%2C121&sr=8-10",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 11.7,
+      "gross_weight": 1000.0,
+      "gross_price": 11.7,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 11.7,
+      "price_per_gram_ml": 0.0117,
+      "date_last_checked": "2024-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Protein (kg)",
+      "article_number": "X0007OPGZB",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 18.99,
+      "gross_weight": 1000.0,
+      "gross_price": 18.99,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 18.99,
+      "price_per_gram_ml": 0.01899,
+      "date_last_checked": "2024-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Vanille Eiweiß",
+      "article_number": "X000WIOIRJ",
+      "unit": "kg",
+      "package_size": 1.0,
+      "package_price": 18.99,
+      "gross_weight": 1000.0,
+      "gross_price": 18.99,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 18.99,
+      "price_per_gram_ml": 0.01899,
+      "date_last_checked": "2024-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Verpackung",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Kaltgetränkebecher 0,3l",
+      "article_number": "5447.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 84.81,
+      "gross_weight": 1.0,
+      "gross_price": 0.08481,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.08481,
+      "price_per_gram_ml": 0.08481,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Kaltgetränkebecher 0,4l",
+      "article_number": "856491.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 60.54,
+      "gross_weight": 1.0,
+      "gross_price": 0.06054,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.06054,
+      "price_per_gram_ml": 0.06054,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Kaltgetränkebecher 0,5l",
+      "article_number": "918333.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 115.22,
+      "gross_weight": 1.0,
+      "gross_price": 0.11522,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.11522,
+      "price_per_gram_ml": 0.11522,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Kaltgetränkebecher 0,6l",
+      "article_number": "Bunzl 92775",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 71.53,
+      "gross_weight": 1.0,
+      "gross_price": 0.07153,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.07153,
+      "price_per_gram_ml": 0.07153,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Flach-Deckel",
+      "article_number": "Bunzl 41929",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 13.83,
+      "gross_weight": 1.0,
+      "gross_price": 0.01383,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.01383,
+      "price_per_gram_ml": 0.01383,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Trinkhalm",
+      "article_number": "129446.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 73.45,
+      "gross_weight": 1.0,
+      "gross_price": 0.07345,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.07345,
+      "price_per_gram_ml": 0.07345,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Becherhalter 2er",
+      "article_number": "752831.0",
+      "unit": "CO",
+      "package_size": 250.0,
+      "package_price": 45.18,
+      "gross_weight": 1.0,
+      "gross_price": 0.18072,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.18072,
+      "price_per_gram_ml": 0.18072,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Gabel",
+      "article_number": "814037.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 67.8,
+      "gross_weight": 1.0,
+      "gross_price": 0.0678,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.0678,
+      "price_per_gram_ml": 0.0678,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Messer",
+      "article_number": "799967.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 67.8,
+      "gross_weight": 1.0,
+      "gross_price": 0.0678,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.0678,
+      "price_per_gram_ml": 0.0678,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Löffel",
+      "article_number": "814037.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 67.8,
+      "gross_weight": 1.0,
+      "gross_price": 0.0678,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.0678,
+      "price_per_gram_ml": 0.0678,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Aufwärmschälchen",
+      "article_number": "10449.0",
+      "unit": "CO",
+      "package_size": 500.0,
+      "package_price": 47.743,
+      "gross_weight": 1.0,
+      "gross_price": 0.095486,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.095486,
+      "price_per_gram_ml": 0.095486,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Faltenbeutel",
+      "article_number": "62029.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 25.82,
+      "gross_weight": 1.0,
+      "gross_price": 0.02582,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.02582,
+      "price_per_gram_ml": 0.02582,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Tragetasche immergrün",
+      "article_number": "776799.0",
+      "unit": "CO",
+      "package_size": 250.0,
+      "package_price": 52.46,
+      "gross_weight": 1.0,
+      "gross_price": 0.20984,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.20984,
+      "price_per_gram_ml": 0.20984,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Einwickelpapier",
+      "article_number": "920927.0",
+      "unit": "CO",
+      "package_size": 1000.0,
+      "package_price": 22.43,
+      "gross_weight": 1.0,
+      "gross_price": 0.02243,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.02243,
+      "price_per_gram_ml": 0.02243,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "PET Deckel transparent",
+      "article_number": "Bunzl 461792",
+      "unit": "CO",
+      "package_size": 300.0,
+      "package_price": 36.23,
+      "gross_weight": 1.0,
+      "gross_price": 0.1207666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.1207666667,
+      "price_per_gram_ml": 0.1207666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Salatschale Karton rund",
+      "article_number": "Bunzl 461772",
+      "unit": "CO",
+      "package_size": 300.0,
+      "package_price": 62.19,
+      "gross_weight": 1.0,
+      "gross_price": 0.2073,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.2073,
+      "price_per_gram_ml": 0.2073,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Papierservietten weiss",
+      "article_number": "Bunzl 68352",
+      "unit": "CO",
+      "package_size": 9000.0,
+      "package_price": 77.55,
+      "gross_weight": 1.0,
+      "gross_price": 0.008616666667,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.008616666667,
+      "price_per_gram_ml": 0.008616666667,
+      "date_last_checked": "2025-03-21 00:00:00"
+    },
+    {
+      "ingredient_name": "Getränke",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Coca Cola 0,5l",
+      "article_number": "965150.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.89,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Coca Cola zero 0,5l",
+      "article_number": "165554.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.89,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Vio still 0,5l",
+      "article_number": "445160.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.56,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Vio medium 0,5l",
+      "article_number": "759359.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.56,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Fuze Tea Pfirsich",
+      "article_number": "180308.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.846,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Fuze Tea Zitrone",
+      "article_number": "305584.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.846,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Coca Cola Light 0,5l",
+      "article_number": "366974.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.89,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Bio Apfelschorle 0,33l",
+      "article_number": "727843.0",
+      "unit": null,
+      "package_size": null,
+      "package_price": 0.92,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "2024-09-08 00:00:00"
+    },
+    {
+      "ingredient_name": "Frozen Iced Tea Zutaten",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Pfanner Pfirsich Eistee",
+      "article_number": "398736.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 3.6,
+      "gross_weight": 1000.0,
+      "gross_price": 5.142857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.142857143,
+      "price_per_gram_ml": 0.005142857143,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Maracuja Sirup",
+      "article_number": "194309.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 5.49,
+      "gross_weight": 1000.0,
+      "gross_price": 7.842857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.842857143,
+      "price_per_gram_ml": 0.007842857143,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Himbeer Sirup",
+      "article_number": "159711.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 5.49,
+      "gross_weight": 1000.0,
+      "gross_price": 7.842857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.842857143,
+      "price_per_gram_ml": 0.007842857143,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Hibiskus Sirup",
+      "article_number": "162700.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 5.49,
+      "gross_weight": 1000.0,
+      "gross_price": 7.842857143,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.842857143,
+      "price_per_gram_ml": 0.007842857143,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Wasser",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 0.0,
+      "gross_weight": 1000.0,
+      "gross_price": 0.0,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.0,
+      "price_per_gram_ml": 0.0,
+      "date_last_checked": "2025-04-14 00:00:00"
+    },
+    {
+      "ingredient_name": "Hibiskus Himbeere Mischung",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 1.041428571,
+      "gross_weight": 1000.0,
+      "gross_price": 1.041428571,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 1.041428571,
+      "price_per_gram_ml": 0.001041428571,
+      "date_last_checked": null
+    },
+    {
+      "ingredient_name": "Maracuja Mischung",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 0.9064285714,
+      "gross_weight": 1000.0,
+      "gross_price": 0.9064285714,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.9064285714,
+      "price_per_gram_ml": 0.0009064285714,
+      "date_last_checked": null
+    },
+    {
+      "ingredient_name": "Pfirsich Mischung",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 0.7714285714,
+      "gross_weight": 1000.0,
+      "gross_price": 0.7714285714,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.7714285714,
+      "price_per_gram_ml": 0.0007714285714,
+      "date_last_checked": null
+    },
+    {
+      "ingredient_name": "Sonstiges",
+      "article_number": null,
+      "unit": "Einheit",
+      "package_size": null,
+      "package_price": null,
+      "gross_weight": null,
+      "gross_price": null,
+      "net_weight": null,
+      "net_price_per_unit": null,
+      "price_per_gram_ml": null,
+      "date_last_checked": "Preise überprüft am"
+    },
+    {
+      "ingredient_name": "Datteln",
+      "article_number": "860659.0",
+      "unit": "g",
+      "package_size": 500.0,
+      "package_price": 3.99,
+      "gross_weight": 1000.0,
+      "gross_price": 7.98,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.98,
+      "price_per_gram_ml": 0.00798,
+      "date_last_checked": "2025-04-28 00:00:00"
+    },
+    {
+      "ingredient_name": "Joghurt Kokos Alpro",
+      "article_number": "955127.0",
+      "unit": "g",
+      "package_size": 400.0,
+      "package_price": 1.15,
+      "gross_weight": 1000.0,
+      "gross_price": 2.875,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 2.875,
+      "price_per_gram_ml": 0.002875,
+      "date_last_checked": "2025-04-28 00:00:00"
+    },
+    {
+      "ingredient_name": "Kollagen Pulver",
+      "article_number": "https://www.amazon.de/100-reines-Kollagen-Pulver-Geschmacksneutral/dp/B07Y36GFQH/ref=sr_1_6_pp?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2OUYUM85858KB&dib=eyJ2IjoiMSJ9.DTH2ygSZec5cFh0ljWAxdWopn0Xo1vLIOwHlIXe9qx11GI0hEgN3vmsHmCzcL77jV3gm9ArEXCQK1dRgH6d3S_2utvriN0oBvy-TSjfcWWoZSXr-LllB_ZnOV4uSQBnaNM3g39yKsrCWYiFsWLvX56eZBDmpjnH1t7eEpknCJgbwgnMs3WEikRGyJSenvnooJ1LQmjYbxZicoaX3doFSjh00ErplfKZRrPjUYTbfwvPQgGnKsQd-t0VOLyC6Gwo-1Jn4E0JcOfwDhAKWtTLYEBe6yQvfi4l1nfufmTgwFms.tgWD4LzZyXA1b9NTpHGdfSANy2aUWJ5ee1Di0_RLGVs&dib_tag=se&keywords=kollagen&qid=1744050395&sprefix=kollagen%2Caps%2C138&sr=8-6&th=1",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 30.89,
+      "gross_weight": 1000.0,
+      "gross_price": 30.89,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 30.89,
+      "price_per_gram_ml": 0.03089,
+      "date_last_checked": "2025-04-28 00:00:00"
+    },
+    {
+      "ingredient_name": "Monin Cloudy Lemonade trüb",
+      "article_number": "676785.0",
+      "unit": "ml",
+      "package_size": 1000.0,
+      "package_price": 5.79,
+      "gross_weight": 1000.0,
+      "gross_price": 5.79,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 5.79,
+      "price_per_gram_ml": 0.00579,
+      "date_last_checked": "2025-06-16 00:00:00"
+    },
+    {
+      "ingredient_name": "Ice Cream Vanilla Protein",
+      "article_number": "https://www.nutri-plus.de/vegan-6k-proteinpulver-vanilla-ice-cream/x0010swy9t",
+      "unit": "g",
+      "package_size": 1000.0,
+      "package_price": 29.99,
+      "gross_weight": 1000.0,
+      "gross_price": 29.99,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 29.99,
+      "price_per_gram_ml": 0.02999,
+      "date_last_checked": "2025-04-28 00:00:00"
+    },
+    {
+      "ingredient_name": "Lemonade Mix",
+      "article_number": null,
+      "unit": "ml",
+      "package_size": 2000.0,
+      "package_price": 0.579,
+      "gross_weight": 1000.0,
+      "gross_price": 0.2895,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 0.2895,
+      "price_per_gram_ml": 0.0002895,
+      "date_last_checked": "2025-06-16 00:00:00"
+    },
+    {
+      "ingredient_name": "Mango Sirup",
+      "article_number": "431232.0",
+      "unit": "ml",
+      "package_size": 700.0,
+      "package_price": 5.3,
+      "gross_weight": 1000.0,
+      "gross_price": 7.571428571,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 7.571428571,
+      "price_per_gram_ml": 0.007571428571,
+      "date_last_checked": "2025-06-16 00:00:00"
+    },
+    {
+      "ingredient_name": "Drachenfruchtsauce hausg.",
+      "article_number": null,
+      "unit": "g",
+      "package_size": 450.0,
+      "package_price": 2.721835714,
+      "gross_weight": 1000.0,
+      "gross_price": 6.04852381,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 6.04852381,
+      "price_per_gram_ml": 0.00604852381,
+      "date_last_checked": "2025-06-16 00:00:00"
+    },
+    {
+      "ingredient_name": "Kräuterquark 40% frisch 200g",
+      "article_number": "657545.0",
+      "unit": "g",
+      "package_size": 200.0,
+      "package_price": 0.89,
+      "gross_weight": 1000.0,
+      "gross_price": 4.45,
+      "net_weight": 1000.0,
+      "net_price_per_unit": 4.45,
+      "price_per_gram_ml": 0.00445,
+      "date_last_checked": "2025-09-08 00:00:00"
+    }
+  ],
+  "packaging": [
+    {
+      "packaging_name": "Kaltgetränkebecher 0,3l",
+      "article_number": "80550311.0",
+      "total_price": 80.49,
+      "unit_price": 0.08049,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Kaltgetränkebecher + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Kaltgetränkebecher 0,4l",
+      "article_number": "92739.0",
+      "total_price": 70.55,
+      "unit_price": 0.07055,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Kaltgetränkebecher + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Kaltgetränkebecher 0,5l",
+      "article_number": "920821.0",
+      "total_price": 68.0,
+      "unit_price": 0.068,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Kaltgetränkebecher 0,6l",
+      "article_number": "92775.0",
+      "total_price": 88.83,
+      "unit_price": 0.08883,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Kaltgetränkebecher + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Flach-Deckel",
+      "article_number": "413385.0",
+      "total_price": 30.34,
+      "unit_price": 0.03034,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Kaltgetränkebecher + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Clear Cup 0,5l",
+      "article_number": "80550085.0",
+      "total_price": 65.0,
+      "unit_price": 0.08125,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Kaltgetränkebecher + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Clear Cup Deckel",
+      "article_number": "80550086.0",
+      "total_price": 18.4,
+      "unit_price": 0.023,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Trinkhalm",
+      "article_number": "252451.0",
+      "total_price": 95.93,
+      "unit_price": 0.038372,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Serviette"
+    },
+    {
+      "packaging_name": "PET Deckel transparent",
+      "article_number": "463251.0",
+      "total_price": 69.96,
+      "unit_price": 0.2332,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Serviette + 0,5 Gabel + 0,25 Dessingbecher+Deckel + Schale+Deckel + 0,5 Blockbodenbeutel"
+    },
+    {
+      "packaging_name": "Salatschale Karton rund",
+      "article_number": "29967.0",
+      "total_price": 43.42,
+      "unit_price": 0.1447333333,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Papierservietten weiss",
+      "article_number": "68352.0",
+      "total_price": 82.21,
+      "unit_price": 0.009134444444,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Serviette"
+    },
+    {
+      "packaging_name": "Becherhalter Click&Carry",
+      "article_number": "752831.0",
+      "total_price": 45.18,
+      "unit_price": 0.18072,
+      "checked_date": "2025-03-21 00:00:00",
+      "description": "Serviette + 0,5 Gabel + Schale +Deckel + 0,5 Blockbodenbeutel"
+    },
+    {
+      "packaging_name": "Gabel",
+      "article_number": "814037.0",
+      "total_price": 67.8,
+      "unit_price": 0.0678,
+      "checked_date": "2025-03-21 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Messer",
+      "article_number": "799967.0",
+      "total_price": 67.8,
+      "unit_price": 0.0678,
+      "checked_date": "2025-03-21 00:00:00",
+      "description": "Serviette"
+    },
+    {
+      "packaging_name": "Löffel",
+      "article_number": "814037.0",
+      "total_price": 67.8,
+      "unit_price": 0.0678,
+      "checked_date": "2025-03-21 00:00:00",
+      "description": "Serviette+ Einwickelpapier+0,5 Faltenbeutel"
+    },
+    {
+      "packaging_name": "Deckel für Dressingbecher",
+      "article_number": "461143.0",
+      "total_price": 11.87,
+      "unit_price": 0.01187,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Dressingbecher",
+      "article_number": "460823.0",
+      "total_price": 16.42,
+      "unit_price": 0.01642,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": "Clear Cup + Deckel + Trinkhalm"
+    },
+    {
+      "packaging_name": "Faltenbeutel",
+      "article_number": "90072.0",
+      "total_price": 33.94,
+      "unit_price": 0.03394,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Blockbodenbeutel (Papiertragetasche)",
+      "article_number": "95356.0",
+      "total_price": 49.0,
+      "unit_price": 0.196,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Einwickelpapier",
+      "article_number": "89288.0",
+      "total_price": 29.99,
+      "unit_price": 0.02999,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Aufwärmschälchen",
+      "article_number": "50674.0",
+      "total_price": 41.9,
+      "unit_price": 0.0838,
+      "checked_date": "2025-04-16 00:00:00",
+      "description": null
+    },
+    {
+      "packaging_name": "Tablettaufleger",
+      "article_number": "99219.0",
+      "total_price": 40.906,
+      "unit_price": 0.040906,
+      "checked_date": "n/v",
+      "description": null
+    }
+  ],
+  "recipes": [
+    {
+      "name": "CAESAR CHICKEN",
+      "category": "Wraps neu",
+      "ingredients": [
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap natur",
+          "amount_grams": 1.0,
+          "cost": 0.324
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Frischkäse",
+          "amount_grams": 15.0,
+          "cost": 0.1947
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Mixsalat immergrün",
+          "amount_grams": 60.0,
+          "cost": 0.288,
+          "calculated_cost": 0.00028799999999999995,
+          "master_price_unit": 4.8,
+          "master_price_per_unit": 0.0048
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Halbgetrocknete Tomate",
+          "amount_grams": 25.0,
+          "cost": 0.3245
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Grana Padano",
+          "amount_grams": 20.0,
+          "cost": 0.3898
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Hähnchen",
+          "amount_grams": 50.0,
+          "cost": 0.358
+        },
+        {
+          "tool_method": "Dosierflasche",
+          "ingredient_name": "Caesar Dressing",
+          "amount_grams": 20.0,
+          "cost": 0.1216
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 305.0,
+          "cost": 2.0006
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 2.0006
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 6.680672269
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.2994608805
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 2.0006
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 7.429906542
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.2692631447
+        },
+        {
+          "tool_method": "Werkzeug",
+          "ingredient_name": "FALAFEL ORIENTAL",
+          "amount_grams": null,
+          "cost": null
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap Spinat",
+          "amount_grams": 1.0,
+          "cost": 0.29
+        }
+      ],
+      "summary": {
+        "material_total": null,
+        "material_incl_packaging_in": null,
+        "selling_price_in": null
+      }
+    },
+    {
+      "name": "CAESAR CHICKEN",
+      "category": "Wraps_new",
+      "ingredients": [
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap natur",
+          "amount_grams": 1.0,
+          "cost": 0.324
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Frischkäse",
+          "amount_grams": 15.0,
+          "cost": 0.1947
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Mixsalat immergrün",
+          "amount_grams": 50.0,
+          "cost": 0.24,
+          "calculated_cost": 0.00023999999999999998,
+          "master_price_unit": 4.8,
+          "master_price_per_unit": 0.0048
+        },
+        {
+          "tool_method": "3 Scheiben",
+          "ingredient_name": "Tomatenscheiben",
+          "amount_grams": 50.0,
+          "cost": 0.1575
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Hartkäse",
+          "amount_grams": 10.0,
+          "cost": 0.1298
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Hähnchen",
+          "amount_grams": 60.0,
+          "cost": 0.4296
+        },
+        {
+          "tool_method": "Dosierflasche",
+          "ingredient_name": "Caesar Dressing",
+          "amount_grams": 20.0,
+          "cost": 0.1216
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 320.0,
+          "cost": 1.5972
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 1.606334444
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 6.680672269
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.24044503
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 1.653294444
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 7.429906542
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.2225188749
+        },
+        {
+          "tool_method": "Werkzeug",
+          "ingredient_name": "FALAFEL HUMMUS",
+          "amount_grams": null,
+          "cost": null
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap Spinat",
+          "amount_grams": 1.0,
+          "cost": 0.29
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Hummus",
+          "amount_grams": 15.0,
+          "cost": 0.1
+        },
+        {
+          "tool_method": "3 Scheiben",
+          "ingredient_name": "Tomatenscheiben",
+          "amount_grams": 50.0,
+          "cost": 0.21
+        }
+      ],
+      "summary": {
+        "material_total": null,
+        "material_incl_packaging_in": null,
+        "selling_price_in": null
+      }
+    },
+    {
+      "name": "CAESAR CHICKEN",
+      "category": "Wrapvolution",
+      "ingredients": [
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap natur",
+          "amount_grams": 1.0,
+          "cost": 0.28
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Frischkäse",
+          "amount_grams": 15.0,
+          "cost": 0.09
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Mixsalat immergrün",
+          "amount_grams": 60.0,
+          "cost": 0.32,
+          "calculated_cost": 0.00028799999999999995,
+          "master_price_unit": 4.8,
+          "master_price_per_unit": 0.0048
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Halbgetrocknete Tomate",
+          "amount_grams": 25.0,
+          "cost": 0.38
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Grana Padano",
+          "amount_grams": 20.0,
+          "cost": 0.31
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Hähnchen",
+          "amount_grams": 50.0,
+          "cost": 0.46
+        },
+        {
+          "tool_method": "Dosierflasche",
+          "ingredient_name": "Caesar Dressing",
+          "amount_grams": 20.0,
+          "cost": 0.07
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 305.0,
+          "cost": 1.9
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 1.97
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 7.43
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.2645
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "cost": 1.97
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.95,
+          "cost": 7.43
+        },
+        {
+          "tool_method": null,
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "cost": 0.2645
+        },
+        {
+          "tool_method": "Werkzeug",
+          "ingredient_name": "FALAFEL ORIENTAL",
+          "amount_grams": null,
+          "cost": null
+        },
+        {
+          "tool_method": "Hand",
+          "ingredient_name": "Tortilla Wrap Spinat",
+          "amount_grams": 1.0,
+          "cost": 0.29
+        },
+        {
+          "tool_method": "EL",
+          "ingredient_name": "Vegane Frischcreme",
+          "amount_grams": 15.0,
+          "cost": 0.09
+        }
+      ],
+      "summary": {
+        "material_total": null,
+        "material_incl_packaging_in": null,
+        "selling_price_in": null
+      }
+    },
+    {
+      "name": "GRÜNER GORILLA",
+      "category": "Smoothies",
+      "ingredients": []
+    },
+    {
+      "name": "ACE",
+      "category": "Säfte",
+      "ingredients": []
+    },
+    {
+      "name": "Pfirsich",
+      "category": "Frozen Iced Teas & Refresher",
+      "ingredients": []
+    },
+    {
+      "name": "Kosten",
+      "category": "Frozen Iced Teas & Refresher",
+      "ingredients": [
+        {
+          "ingredient_name": "Eisteemischung",
+          "amount": 0.1157142857,
+          "size": "Kosten",
+          "cost": 200.0
+        },
+        {
+          "ingredient_name": "Eiswürfel",
+          "amount": 0.09552,
+          "size": "Kosten",
+          "cost": 160.0
+        },
+        {
+          "ingredient_name": "Pfirisch TK",
+          "amount": 0.07875,
+          "size": "Kosten",
+          "cost": 40.0
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount": 0.4391862857,
+          "size": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount": 3.319327731,
+          "size": "Kosten",
+          "cost": 4.95
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount": 0.1323118177,
+          "size": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount": 0.4391862857,
+          "size": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount": 3.691588785,
+          "size": "Kosten",
+          "cost": 4.95
+        },
+        {
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount": 0.1189694495,
+          "size": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Eisteemischung",
+          "amount": 0.1359642857,
+          "size": "Kosten",
+          "cost": 200.0
+        },
+        {
+          "ingredient_name": "Eiswürfel",
+          "amount": 0.09552,
+          "size": "Kosten",
+          "cost": 160.0
+        },
+        {
+          "ingredient_name": "Mango TK",
+          "amount": 0.0288,
+          "size": "Kosten",
+          "cost": 15.0
+        },
+        {
+          "ingredient_name": "Drachenfrucht TK",
+          "amount": 0.0576,
+          "size": "Kosten",
+          "cost": 25.0
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount": 0.4670862857,
+          "size": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount": 2.478991597,
+          "size": "Kosten",
+          "cost": 4.95
+        }
+      ]
+    },
+    {
+      "name": "Iced Pistachio Vanilla Coffee",
+      "category": "Iced Lattes",
+      "ingredients": []
+    },
+    {
+      "name": "Bangkog Tiger",
+      "category": "Thai Kampagne",
+      "ingredients": []
+    },
+    {
+      "name": "SPICY INDIA",
+      "category": "Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "Gemüsebanane mit traumhafter Sauce",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Jeera Reis",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Pink Onions",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Blumenkohl Curry",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Koriander",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Green Lemon Chutney",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "TOKIO FEELING",
+      "category": "Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "Pulled Salmon",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Zuckerschoten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Avocado",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Edamame-Erbsen",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kimchi",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Brokkoli",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Seam schwarz",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Terriyaki & Sriacha Sauce",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "TUK TUK THAI",
+      "category": "Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "Chicken",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Erdnüsse",
+          "amount_grams": null,
+          "description": null,
+          "cost": null,
+          "master_price_unit": 7.75,
+          "master_price_per_unit": 0.00775
+        },
+        {
+          "ingredient_name": "Naturreis mit Mango Chutney",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Zuckerschoten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Chilischoten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Korriander",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Ananas",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Pink Onions",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Paprika rot",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "Bowls_Kartoffel",
+      "ingredients": [
+        {
+          "ingredient_name": "BEEF BANDITOS",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kartoffel gegart",
+          "amount_grams": 230.0,
+          "description": "0.457125",
+          "cost": 0.0019875
+        },
+        {
+          "ingredient_name": "Basissauce Kartoffel vegan",
+          "amount_grams": 40.0,
+          "description": "0.1604666667",
+          "cost": 0.004011666667,
+          "calculated_cost": 0.00016046666668,
+          "master_price_unit": 4.011666667,
+          "master_price_per_unit": 0.004011666667
+        },
+        {
+          "ingredient_name": "Röstzwiebeln",
+          "amount_grams": 10.0,
+          "description": "0.0508",
+          "cost": 0.00508
+        },
+        {
+          "ingredient_name": "Mixsalat",
+          "amount_grams": 50.0,
+          "description": "0.24",
+          "cost": 0.0048
+        },
+        {
+          "ingredient_name": "Cinnamon Plum Sauce",
+          "amount_grams": 20.0,
+          "description": "0.1331764706",
+          "cost": 0.006658823529
+        },
+        {
+          "ingredient_name": "Rotkohl",
+          "amount_grams": 50.0,
+          "description": "0.2126666667",
+          "cost": 0.004253333333
+        },
+        {
+          "ingredient_name": "Mais",
+          "amount_grams": 30.0,
+          "description": "0.07235294118",
+          "cost": 0.002411764706
+        },
+        {
+          "ingredient_name": "Kirschtomaten",
+          "amount_grams": 50.0,
+          "description": "0.2145",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Pulled Beef",
+          "amount_grams": 80.0,
+          "description": "1.5592",
+          "cost": 0.01949
+        },
+        {
+          "ingredient_name": "Chipotle",
+          "amount_grams": 10.0,
+          "description": "0.06122857143",
+          "cost": 0.006122857143
+        },
+        {
+          "ingredient_name": "Tortilla Chips",
+          "amount_grams": 5.0,
+          "description": "0.0303125",
+          "cost": 0.0060625,
+          "calculated_cost": 3.0312499999999998e-05,
+          "master_price_unit": 6.0625,
+          "master_price_per_unit": 0.0060625
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 575.0,
+          "description": "3.191828817",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "3.200963261",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 13.95,
+          "description": "11.72268908",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "Bowls_Kartoffel",
+      "ingredients": [
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.457125",
+          "amount_grams": 0.0019875,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1604666667",
+          "amount_grams": 0.004011666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0508",
+          "amount_grams": 0.00508,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.24",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1331764706",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2126666667",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.07235294118",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2145",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.5592",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.06122857143",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0303125",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.191828817",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.200963261",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "11.72268908",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "category": "Bowls_Kartoffel",
+      "ingredients": [
+        {
+          "ingredient_name": "OUT",
+          "amount_grams": 0.2557626241,
+          "description": "0.2189279211",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2385",
+          "amount_grams": 0.0019875,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.08023333333",
+          "amount_grams": 0.004011666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0254",
+          "amount_grams": 0.00508,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.144",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.06658823529",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1063333333",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03617647059",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.10725",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.9745",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03061428571",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0181875",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.827783158",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.836917603",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "9.201680672",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "Reis_Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "BEEF BANDITOS",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Reis",
+          "amount_grams": 200.0,
+          "description": "0.42",
+          "cost": 0.0021
+        },
+        {
+          "ingredient_name": "Mixsalat",
+          "amount_grams": 50.0,
+          "description": "0.24",
+          "cost": 0.0048
+        },
+        {
+          "ingredient_name": "Cinnamon Plum Sauce",
+          "amount_grams": 20.0,
+          "description": "0.1331764706",
+          "cost": 0.006658823529
+        },
+        {
+          "ingredient_name": "Rotkohl",
+          "amount_grams": 50.0,
+          "description": "0.2126666667",
+          "cost": 0.004253333333
+        },
+        {
+          "ingredient_name": "Mais",
+          "amount_grams": 30.0,
+          "description": "0.07235294118",
+          "cost": 0.002411764706
+        },
+        {
+          "ingredient_name": "Kirschtomaten",
+          "amount_grams": 50.0,
+          "description": "0.2145",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Pulled Beef",
+          "amount_grams": 80.0,
+          "description": "1.5592",
+          "cost": 0.01949
+        },
+        {
+          "ingredient_name": "Chipotle",
+          "amount_grams": 10.0,
+          "description": "0.06122857143",
+          "cost": 0.006122857143
+        },
+        {
+          "ingredient_name": "Tortilla Chips",
+          "amount_grams": 5.0,
+          "description": "0.0303125",
+          "cost": 0.0060625,
+          "calculated_cost": 3.0312499999999998e-05,
+          "master_price_unit": 6.0625,
+          "master_price_per_unit": 0.0060625
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 495.0,
+          "description": "2.94343715",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "2.952571594",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 13.95,
+          "description": "11.72268908",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "0.2518681145",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "3.462404928",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "Reis_Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.42",
+          "amount_grams": 0.0021,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.24",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1331764706",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2126666667",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.07235294118",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2145",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.5592",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.06122857143",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0303125",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.94343715",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.952571594",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "11.72268908",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2518681145",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.462404928",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Wareneinsatz Durschnitt ungewichtet IN und OUT",
+      "category": "Reis_Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "BEEF BANDITOS (klein)",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Reis",
+          "amount_grams": 100.0,
+          "description": "0.21",
+          "cost": 0.0021
+        },
+        {
+          "ingredient_name": "Mixsalat",
+          "amount_grams": 30.0,
+          "description": "0.144",
+          "cost": 0.0048
+        },
+        {
+          "ingredient_name": "Cinnamon Plum Sauce (Acapulco)",
+          "amount_grams": 10.0,
+          "description": "0.06658823529",
+          "cost": 0.006658823529
+        },
+        {
+          "ingredient_name": "Rotkohl",
+          "amount_grams": 25.0,
+          "description": "0.1063333333",
+          "cost": 0.004253333333
+        },
+        {
+          "ingredient_name": "Mais",
+          "amount_grams": 15.0,
+          "description": "0.03617647059",
+          "cost": 0.002411764706
+        },
+        {
+          "ingredient_name": "Kirschtomaten",
+          "amount_grams": 25.0,
+          "description": "0.10725",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Pulled Beef",
+          "amount_grams": 50.0,
+          "description": "0.9745",
+          "cost": 0.01949
+        },
+        {
+          "ingredient_name": "Chipotle",
+          "amount_grams": 5.0,
+          "description": "0.03061428571",
+          "cost": 0.006122857143
+        },
+        {
+          "ingredient_name": "Tortilla Chips",
+          "amount_grams": 3.0,
+          "description": "0.0181875",
+          "cost": 0.0060625,
+          "calculated_cost": 1.81875e-05,
+          "master_price_unit": 6.0625,
+          "master_price_per_unit": 0.0060625
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 263.0,
+          "description": "1.693649825",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "1.702784269",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 10.95,
+          "description": "9.201680672",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "0.1850514411",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "2.212617603",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "category": "Reis_Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "OUT",
+          "amount_grams": 0.2322417749,
+          "description": "0.2029694281",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.21",
+          "amount_grams": 0.0021,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.144",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.06658823529",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1063333333",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03617647059",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.10725",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.9745",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03061428571",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0181875",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.693649825",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.702784269",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "9.201680672",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1850514411",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.212617603",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "Salat Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "BEEF BANDITOS",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Mixsalat",
+          "amount_grams": 100.0,
+          "description": "0.48",
+          "cost": 0.0048
+        },
+        {
+          "ingredient_name": "Cinnamon Plum Sauce",
+          "amount_grams": 60.0,
+          "description": "0.3995294118",
+          "cost": 0.006658823529
+        },
+        {
+          "ingredient_name": "Rotkohl",
+          "amount_grams": 50.0,
+          "description": "0.2126666667",
+          "cost": 0.004253333333
+        },
+        {
+          "ingredient_name": "Mais",
+          "amount_grams": 30.0,
+          "description": "0.07235294118",
+          "cost": 0.002411764706
+        },
+        {
+          "ingredient_name": "Kirschtomaten",
+          "amount_grams": 50.0,
+          "description": "0.2145",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Pulled Beef",
+          "amount_grams": 80.0,
+          "description": "1.5592",
+          "cost": 0.01949
+        },
+        {
+          "ingredient_name": "Chipotle",
+          "amount_grams": 10.0,
+          "description": "0.06122857143",
+          "cost": 0.006122857143
+        },
+        {
+          "ingredient_name": "Tortilla Chips",
+          "amount_grams": 5.0,
+          "description": "0.0303125",
+          "cost": 0.0060625,
+          "calculated_cost": 3.0312499999999998e-05,
+          "master_price_unit": 6.0625,
+          "master_price_per_unit": 0.0060625
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 385.0,
+          "description": "3.029790091",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "3.038924535",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 13.95,
+          "description": "11.72268908",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "0.2592344227",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "3.555830369",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 13.95,
+          "description": "13.03738318",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "Salat Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.48",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.3995294118",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2126666667",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.07235294118",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2145",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.5592",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.06122857143",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0303125",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.029790091",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.038924535",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "11.72268908",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2592344227",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "3.555830369",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "13.03738318",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "category": "Salat Bowls",
+      "ingredients": [
+        {
+          "ingredient_name": "OUT",
+          "amount_grams": 0.2413448466,
+          "description": "0.2139913472",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.288",
+          "amount_grams": 0.0048,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1997647059",
+          "amount_grams": 0.006658823529,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1063333333",
+          "amount_grams": 0.004253333333,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03617647059",
+          "amount_grams": 0.002411764706,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.10725",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.9745",
+          "amount_grams": 0.01949,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.03061428571",
+          "amount_grams": 0.006122857143,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0181875",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.760826296",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.76996074",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "9.201680672",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1923518978",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.286866573",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "10.23364486",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "Mashed Box",
+      "ingredients": [
+        {
+          "ingredient_name": "Pink Falafel",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kartoffel gegart",
+          "amount_grams": 350.0,
+          "description": "0.695625",
+          "cost": 0.0019875
+        },
+        {
+          "ingredient_name": "Butter",
+          "amount_grams": 10.0,
+          "description": "0.015",
+          "cost": 0.0015
+        },
+        {
+          "ingredient_name": "Cheddar/Mozza Mix",
+          "amount_grams": 60.0,
+          "description": "0.375",
+          "cost": 0.00625
+        },
+        {
+          "ingredient_name": "Salz & Pfeffer",
+          "amount_grams": 5.0,
+          "description": "0.015",
+          "cost": 0.003
+        },
+        {
+          "ingredient_name": "Falafelbällchen",
+          "amount_grams": 60.0,
+          "description": "0.3316",
+          "cost": 0.005526666667
+        },
+        {
+          "ingredient_name": "Hummus Pink",
+          "amount_grams": 30.0,
+          "description": "0.2094",
+          "cost": 0.00698
+        },
+        {
+          "ingredient_name": "Nordic Vegan Sauce",
+          "amount_grams": 10.0,
+          "description": "0.05145714286",
+          "cost": 0.005145714286
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 525.0,
+          "description": "1.693082143",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "1.693082143",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.7,
+          "description": "7.196261682",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "0.2352724536",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "1.693082143",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 7.7,
+          "description": "7.196261682",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "0.2352724536",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "Mashed Box",
+      "ingredients": [
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.695625",
+          "amount_grams": 0.0019875,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.015",
+          "amount_grams": 0.0015,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.375",
+          "amount_grams": 0.00625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.015",
+          "amount_grams": 0.003,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.3316",
+          "amount_grams": 0.005526666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2094",
+          "amount_grams": 0.00698,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.05145714286",
+          "amount_grams": 0.005145714286,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.693082143",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.693082143",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "7.196261682",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2352724536",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.693082143",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "7.196261682",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2352724536",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "category": "Mashed Box",
+      "ingredients": [
+        {
+          "ingredient_name": "OUT",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.695625",
+          "amount_grams": 0.0019875,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.015",
+          "amount_grams": 0.0015,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.375",
+          "amount_grams": 0.00625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.015",
+          "amount_grams": 0.003,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.786",
+          "amount_grams": 7.86,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1298",
+          "amount_grams": 0.01298,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.016425",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.016425",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "9.252336449",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2179368434",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "2.016425",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "9.252336449",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2179368434",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "#REF!",
+      "category": "Mashed Box",
+      "ingredients": [
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Einkaufspreis €/KG/L",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0019875",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0015",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.00625",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.003",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "7.86",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.01298",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "FINNEN-BAGUETTES",
+      "ingredients": [
+        {
+          "ingredient_name": "LUSTIGER FINNE",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Finnen Baguette",
+          "amount_grams": 130.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Frischkäse",
+          "amount_grams": 15.0,
+          "description": "0.0898",
+          "cost": 0.005986666667
+        },
+        {
+          "ingredient_name": "Rucola",
+          "amount_grams": 10.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Gurke",
+          "amount_grams": 20.0,
+          "description": "0.04928571429",
+          "cost": 0.002464285714,
+          "calculated_cost": 4.9285714279999995e-05,
+          "master_price_unit": 2.464285714,
+          "master_price_per_unit": 0.002464285714
+        },
+        {
+          "ingredient_name": "Lachs",
+          "amount_grams": 40.0,
+          "description": "0.7728",
+          "cost": 0.01932
+        },
+        {
+          "ingredient_name": "Ei",
+          "amount_grams": 1.0,
+          "description": "0.0002816666667",
+          "cost": 0.0002816666667
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 216.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 6.45,
+          "description": "5.420168067",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 6.45,
+          "description": "6.028037383",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "RÖMER KNIFTE",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "FINNEN-BAGUETTES",
+      "ingredients": [
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0898",
+          "amount_grams": 0.005986666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.04928571429",
+          "amount_grams": 0.002464285714,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.7728",
+          "amount_grams": 0.01932,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0002816666667",
+          "amount_grams": 0.0002816666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "5.420168067",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "6.028037383",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Wareneinsatz Durschnitt ungewichtet IN und OUT",
+      "category": "FINNEN-BAGUETTES",
+      "ingredients": [
+        {
+          "ingredient_name": "KLEINER ITALIENER",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Finnen Baguette",
+          "amount_grams": 130.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Frischkäse",
+          "amount_grams": 15.0,
+          "description": "0.0898",
+          "cost": 0.005986666667
+        },
+        {
+          "ingredient_name": "Rucola",
+          "amount_grams": 10.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Tomate",
+          "amount_grams": 40.0,
+          "description": "0.1716",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Pesto",
+          "amount_grams": 10.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Mozzarella",
+          "amount_grams": 50.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 255.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 5.95,
+          "description": "5",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 5.95,
+          "description": "5.560747664",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "category": "FINNEN-BAGUETTES",
+      "ingredients": [
+        {
+          "ingredient_name": "OUT",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.0898",
+          "amount_grams": 0.005986666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1716",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "5",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "5.560747664",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "#REF!",
+      "category": "FINNEN-BAGUETTES",
+      "ingredients": [
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Einkaufspreis €/KG/L",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.005986666667",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.00429",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Pasta Mama",
+      "category": "Sweets",
+      "ingredients": [
+        {
+          "ingredient_name": "Fussili",
+          "amount": 120.0,
+          "cost": 0.1
+        },
+        {
+          "ingredient_name": "Cocktailtomaten",
+          "amount": 6.0,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Frühlingszwiebeln",
+          "amount": 2.0,
+          "cost": 0.05
+        },
+        {
+          "ingredient_name": "Feta",
+          "amount": 100.0,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Feldsalat",
+          "amount": 50.0,
+          "cost": 0.25
+        },
+        {
+          "ingredient_name": "Mama Dressing",
+          "amount": 40.0,
+          "cost": 0.15
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Erdbeer Cheesecake Bowl",
+      "category": "Sweets",
+      "ingredients": [
+        {
+          "ingredient_name": "Vanillequark",
+          "amount": 50.0,
+          "cost": 0.1
+        },
+        {
+          "ingredient_name": "Mandelstifte",
+          "amount": 40.0,
+          "cost": 0.05
+        },
+        {
+          "ingredient_name": "Erdbeerpürree",
+          "amount": null,
+          "cost": 0.05
+        },
+        {
+          "ingredient_name": "Vollkorn Bio Keckse",
+          "amount": 12.0,
+          "cost": 0.15
+        }
+      ]
+    },
+    {
+      "name": "CARROT-CAKE CLAS. TK B&B.1250G",
+      "category": "Sweets",
+      "ingredients": [
+        {
+          "ingredient_name": "LOAF CAKE CHE.HAZ.TK B&B.1875G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "LOAF CAKE NUT KIS.TK B&B.1875G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "DOUBLE CHOC CAKE  TK B&B.1875G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "ZITRONENKU. CLAS.TK  B&B.1875G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "MARMORKU. CLASSI.TK. B&B.1875G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "BROWNIE STAR MINI TK B&B.2500G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "BROWNIE MOEL.CHOC.TK B&B.2500G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "BROWNIE STAR NUSS TK B&B.2500G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "PFLAUM.-WAL.-KU. TK  B&B.2650G",
+          "amount": null,
+          "cost": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Ø22CM,GESCHN.10 PORT., VEGET.",
+      "category": "Sweets",
+      "ingredients": [
+        {
+          "ingredient_name": "GESCHN.CA.25 ST,CHERRY HAZELN.",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "GESCHN.CA.25 ST",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "VORGESCH. 25PORT. Á75G TK",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "VORGESCHN.25PORT.À 75G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "VORGESCHN.25PORT.À 75G",
+          "amount": null,
+          "cost": 1.0
+        },
+        {
+          "ingredient_name": "VORGESCHNITTEN 120 PORTIONEN",
+          "amount": null,
+          "cost": 4.0
+        },
+        {
+          "ingredient_name": "VORGESCHNITTEN 30 PORTIONEN",
+          "amount": null,
+          "cost": 4.0
+        },
+        {
+          "ingredient_name": "VORGESCHNITTEN 30 PORTIONEN",
+          "amount": null,
+          "cost": 4.0
+        },
+        {
+          "ingredient_name": "GESCHN.,20 PORT.,40X25CM",
+          "amount": null,
+          "cost": 2.0
+        }
+      ]
+    },
+    {
+      "name": "KU",
+      "category": "Sweets",
+      "ingredients": [
+        {
+          "ingredient_name": "KA",
+          "amount": 1.0,
+          "cost": 17.69
+        },
+        {
+          "ingredient_name": "KA",
+          "amount": 1.0,
+          "cost": 17.69
+        },
+        {
+          "ingredient_name": "KU",
+          "amount": 1.0,
+          "cost": 14.58
+        },
+        {
+          "ingredient_name": "KU",
+          "amount": 1.0,
+          "cost": 13.59
+        },
+        {
+          "ingredient_name": "KU",
+          "amount": 1.0,
+          "cost": 13.59
+        },
+        {
+          "ingredient_name": "TR",
+          "amount": 1.0,
+          "cost": 20.45
+        },
+        {
+          "ingredient_name": "TR",
+          "amount": 1.0,
+          "cost": 17.25
+        },
+        {
+          "ingredient_name": "TR",
+          "amount": 1.0,
+          "cost": 20.25
+        },
+        {
+          "ingredient_name": "KU",
+          "amount": 1.0,
+          "cost": 14.69
+        }
+      ]
+    },
+    {
+      "name": "Falafel Mix",
+      "category": "Sides",
+      "ingredients": [
+        {
+          "ingredient_name": "Falafel Bällchen",
+          "amount": 60.0,
+          "cost": 0.3316
+        },
+        {
+          "ingredient_name": "Hummus (g)",
+          "amount": 30.0,
+          "cost": 0.2094
+        },
+        {
+          "ingredient_name": "Salat (g)",
+          "amount": 20.0,
+          "cost": 0.096
+        },
+        {
+          "ingredient_name": "Karotten",
+          "amount": 10.0,
+          "cost": 0.0266
+        },
+        {
+          "ingredient_name": "2 halbe Kirschtomaten",
+          "amount": 20.0,
+          "cost": 0.0858
+        }
+      ]
+    },
+    {
+      "name": "Mashed Potatoe Snack",
+      "category": "Sides",
+      "ingredients": [
+        {
+          "ingredient_name": "Kartoffelstampf",
+          "amount": 115.0,
+          "cost": 0.2285625
+        },
+        {
+          "ingredient_name": "Sauce",
+          "amount": 40.0,
+          "cost": 0.2432
+        },
+        {
+          "ingredient_name": "Röstzwiebeln",
+          "amount": 5.0,
+          "cost": 0.0254
+        }
+      ]
+    },
+    {
+      "name": "Salatzwerg",
+      "category": "Sides",
+      "ingredients": [
+        {
+          "ingredient_name": "Salatmix",
+          "amount": 50.0,
+          "cost": 0.24
+        },
+        {
+          "ingredient_name": "Zitronen Vinaigrette",
+          "amount": 30.0,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Karotten",
+          "amount": 10.0,
+          "cost": 0.0266
+        },
+        {
+          "ingredient_name": "2 halbe Kirschtomaten",
+          "amount": 20.0,
+          "cost": 0.0858
+        }
+      ]
+    },
+    {
+      "name": "In",
+      "category": "Wraps",
+      "ingredients": [
+        {
+          "ingredient_name": "19.0",
+          "amount_grams": 7.0,
+          "description": "Preismodell",
+          "cost": 6.95
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Ganz",
+          "amount_grams": null,
+          "description": "Einkaufpreis €/KG/L",
+          "cost": null
+        },
+        {
+          "ingredient_name": "1.0",
+          "amount_grams": 0.324,
+          "description": "0.324",
+          "cost": null
+        },
+        {
+          "ingredient_name": "20.0",
+          "amount_grams": 0.1197333333,
+          "description": "0.005986666667",
+          "cost": null
+        },
+        {
+          "ingredient_name": "60.0",
+          "amount_grams": 0.2574,
+          "description": "0.00429",
+          "cost": null
+        },
+        {
+          "ingredient_name": "60.0",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "20.0",
+          "amount_grams": 0.2596,
+          "description": "0.01298",
+          "cost": null
+        },
+        {
+          "ingredient_name": "20.0",
+          "amount_grams": 0.1216,
+          "description": "0.00608",
+          "cost": null
+        },
+        {
+          "ingredient_name": "60.0",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "6.45",
+          "amount_grams": 5.420168067,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "6.45",
+          "amount_grams": 6.028037383,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Out",
+      "category": "Wraps",
+      "ingredients": [
+        {
+          "ingredient_name": "7.0",
+          "amount_grams": null,
+          "description": "6.95",
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "in Euro",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.324",
+          "amount_grams": 0.324,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1197333333",
+          "amount_grams": 0.005986666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2574",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2596",
+          "amount_grams": 0.01298,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1216",
+          "amount_grams": 0.00608,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "5.420168067",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "6.028037383",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Ganz",
+      "category": "Wraps",
+      "ingredients": [
+        {
+          "ingredient_name": "6.95",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz in Haus %",
+      "category": "Grilled Focaccia",
+      "ingredients": [
+        {
+          "ingredient_name": "Preismodell",
+          "amount_grams": null,
+          "description": "4.95",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Caprese Vegan",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Caree Sandwich",
+          "amount_grams": 140.0,
+          "description": "0.69",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Pestocreme (vegan)",
+          "amount_grams": 20.0,
+          "description": "0.12125",
+          "cost": 0.0060625
+        },
+        {
+          "ingredient_name": "Tomatenspalten mariniert",
+          "amount_grams": 40.0,
+          "description": "0.1716",
+          "cost": 0.00429
+        },
+        {
+          "ingredient_name": "Rucola",
+          "amount_grams": 10.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Mozzarella",
+          "amount_grams": 50.0,
+          "description": "0.2993333333",
+          "cost": 0.005986666667
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 260.0,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 4.95,
+          "description": "4.159663866",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 4.95,
+          "description": "4.626168224",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Steuersatz Außer Haus %",
+      "category": "Grilled Focaccia",
+      "ingredients": [
+        {
+          "ingredient_name": "4.95",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Kosten",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.69",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.12125",
+          "amount_grams": 0.0060625,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.1716",
+          "amount_grams": 0.00429,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "0.2993333333",
+          "amount_grams": 0.005986666667,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "4.159663866",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "4.626168224",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Wareneinsatz Durschnitt ungewichtet IN und OUT",
+      "category": "Grilled Focaccia",
+      "ingredients": [
+        {
+          "ingredient_name": "Tandori Chicken",
+          "amount_grams": null,
+          "description": "Kosten",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Caree Sandwich",
+          "amount_grams": 0.0,
+          "description": "0.69",
+          "cost": null
+        },
+        {
+          "ingredient_name": "Wareneinsatz",
+          "amount_grams": 0.0,
+          "description": "0.69",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Verkaufspreis (Brutto/Netto)",
+          "amount_grams": 4.95,
+          "description": "4.159663866",
+          "cost": null
+        },
+        {
+          "ingredient_name": "IN: Wareneinsatz inkl. Verp.",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        },
+        {
+          "ingredient_name": "OUT: Material inkl. Verpackung",
+          "amount_grams": null,
+          "description": "#REF!",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "#REF!",
+      "category": "Grilled Focaccia",
+      "ingredients": [
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "Einkaufspreis €/KG/L",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        },
+        {
+          "ingredient_name": "#REF!",
+          "amount_grams": null,
+          "description": null,
+          "cost": null
+        }
+      ]
+    },
+    {
+      "name": "Currywurst mit Brartoffel",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 1.0,
+        "Produkt": "Currywurst mit Brartoffel",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 5.0
+      }
+    },
+    {
+      "name": "Omas Rinderrouladen in Sauce mit Kartoffeln",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 2.0,
+        "Produkt": "Omas Rinderrouladen in Sauce mit Kartoffeln",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 6.0
+      }
+    },
+    {
+      "name": "Rinder Kesselgulasch in Sauce mit Nudeln",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 3.0,
+        "Produkt": "Rinder Kesselgulasch in Sauce mit Nudeln",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 5.5,
+        "Beschreibung": "geschmorte Würfel von der Rinderkeule mit reichlich Zwiebeln und den klassischen ungarischen Gulaschgewürzen"
+      }
+    },
+    {
+      "name": "Sweet-Chili Chicken mit Vollkorn Pasta",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 4.0,
+        "Produkt": "Sweet-Chili Chicken mit Vollkorn Pasta",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 5.5
+      }
+    },
+    {
+      "name": "Carbonara",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 5.0,
+        "Produkt": "Carbonara",
+        "Verpackung": "Einfachbagasse",
+        "Bezug": "Esskult",
+        "VK": 5.0
+      }
+    },
+    {
+      "name": "Spaghetti Bolognese",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 6.0,
+        "Produkt": "Spaghetti Bolognese",
+        "Verpackung": "Einfachbagasse",
+        "Bezug": "Esskult",
+        "VK": 5.0
+      }
+    },
+    {
+      "name": "Geschnetzeltes von der Truthahnbrust nach Gärtnerinnen Art",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 7.0,
+        "Produkt": "Geschnetzeltes von der Truthahnbrust nach Gärtnerinnen Art",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 5.0
+      }
+    },
+    {
+      "name": "Ochsenbäckchen﻿ mit Kartoffeln",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 8.0,
+        "Produkt": "Ochsenbäckchen﻿ mit Kartoffeln",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 6.0
+      }
+    },
+    {
+      "name": "Frikadellen Hausmannsart mit Bratkartoffel",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 9.0,
+        "Produkt": "Frikadellen Hausmannsart mit Bratkartoffel",
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 4.5
+      }
+    },
+    {
+      "name": "Königsberger Klopse mit Kartoffeln",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 10.0,
+        "Produkt": "Königsberger Klopse mit Kartoffeln",
+        "Artikel": 1503.0,
+        "Verpackung": "Trennwand Bagasse",
+        "Bezug": "Esskult",
+        "VK": 4.5,
+        "Beschreibung": "traditionelle Schweinefleischklopse in Kapernsauce"
+      }
+    },
+    {
+      "name": "Chili Tex Max",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 11.0,
+        "Produkt": "Chili Tex Max",
+        "Verpackung": "Food Container",
+        "Bezug": "Esskult",
+        "VK": 4.5
+      }
+    },
+    {
+      "name": "Chana Masala Kichererbsencurry",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 12.0,
+        "Produkt": "Chana Masala Kichererbsencurry",
+        "Kennzeichnung": "vegan",
+        "Verpackung": "Food Container",
+        "Bezug": "Verpura",
+        "Gewicht": 550.0,
+        "VK": 5.5,
+        "Beschreibung": "Kichererbsen in scharf, würziger Tomaten-Zwiebel-Sauce nach traditioneller nordindischer Art, serviert mit Basmati-Zwiebel-Reis. Chana Masala ist ein besonders proteinreiches vegetarisches Gericht.",
+        "null": "Basmati-Zwiebel-Reis "
+      }
+    },
+    {
+      "name": "Sabji Kofta Curry",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 13.0,
+        "Produkt": "Sabji Kofta Curry",
+        "Kennzeichnung": "vegan",
+        "Bezug": "Verpura",
+        "Gewicht": 550.0,
+        "VK": 5.5,
+        "Beschreibung": "Delikate Gemüse-Bananen in einer mild gewürtzen Rajasthani-Sauce, serviert mit Jeera-Reis.",
+        "null": "ohne Konservierungsstoffe"
+      }
+    },
+    {
+      "name": "Paneer Tikka Masala",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 14.0,
+        "Produkt": "Paneer Tikka Masala",
+        "Kennzeichnung": "vegetarisch",
+        "Bezug": "Verpura",
+        "Gewicht": 550.0,
+        "VK": 5.5,
+        "Beschreibung": "Herzhaft gegrillter Frischkäse mit Gemüse in original Punjabi-Sauce, serviert mit Basmati-Reis. Ein Feinschmecker Gericht, welches in Indien sehr beliebt ist. Paneer Tikka Masala gehört zu den weltweit beliebtesten Curry-Gerichten. ",
+        "null": "Karottenspaghetti"
+      }
+    },
+    {
+      "name": "Thai Red Chicken Curry",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 15.0,
+        "Produkt": "Thai Red Chicken Curry",
+        "Verpackung": 4690.0,
+        "Bezug": "Pier 7",
+        "Gewicht": 550.0,
+        "VK": 5.5,
+        "Beschreibung": "Reis, Asiagemüse, Erdnüsse"
+      }
+    },
+    {
+      "name": "Thai King Gamba Curry",
+      "category": "Hot Food Eigenrezepte",
+      "raw_data": {
+        "Lf. Nr.": 16.0,
+        "Produkt": "Thai King Gamba Curry",
+        "Verpackung": 4869.0,
+        "Bezug": "Pier 7",
+        "Gewicht": 550.0,
+        "VK": 6.0,
+        "Beschreibung": "Reis, Asiagemüse, Cashews & Korriander",
+        "null": "Sauce"
+      }
+    },
+    {
+      "name": "Obstkörbe für Büros",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Obstkörbe für Büros"
+      }
+    },
+    {
+      "name": "Typ A (nach Kundenabsprache und saisonaler Zusammenstellung)",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Typ A (nach Kundenabsprache und saisonaler Zusammenstellung)"
+      }
+    },
+    {
+      "name": "Typ B (nach Kundenabsprache und saisonaler Zusammenstellung)",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Typ B (nach Kundenabsprache und saisonaler Zusammenstellung)"
+      }
+    },
+    {
+      "name": "Säfte | Smoothies (kaltgepresst)",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Säfte | Smoothies (kaltgepresst)"
+      }
+    },
+    {
+      "name": "Säfte",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Säfte "
+      }
+    },
+    {
+      "name": "I'm Fruity Orange-Erdbeere Saft 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301477.0,
+        "Artikelbezeichnung": "I'm Fruity Orange-Erdbeere Saft 250ml",
+        "Kurzbeschreibung": "Orange-Erdbeere Saft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096110627.0,
+        "EAN- Code\nKarton": 8718096120626.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "I'm Veggie Orangen-Karotten Ingwer Saft 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301478.0,
+        "Artikelbezeichnung": "I'm Veggie Orangen-Karotten Ingwer Saft 250ml",
+        "Kurzbeschreibung": "Orangen-Karotten-Ingwer Saft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096131943.0,
+        "EAN- Code\nKarton": 8718096131950.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "I'm Bio Apfelsaft -trüb 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 302044.0,
+        "Artikelbezeichnung": "I'm Bio Apfelsaft -trüb 250ml",
+        "Kurzbeschreibung": "Bio Apfelsaft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096113321.0,
+        "EAN- Code\nKarton": 8718096119620.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "I'm Veggie Rote Bete Karotten - Saft rot 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301480.0,
+        "Artikelbezeichnung": "I'm Veggie Rote Bete Karotten - Saft rot 250ml",
+        "Kurzbeschreibung": "Karotte-Rote Bete-Bananen Saft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096139246.0,
+        "EAN- Code\nKarton": 8718096131677.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.96
+      }
+    },
+    {
+      "name": "I'm Veggie Karotte-Mango-Pastinake -Saft orange 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301976.0,
+        "Artikelbezeichnung": "I'm Veggie Karotte-Mango-Pastinake -Saft orange 250ml",
+        "Kurzbeschreibung": "Karotte-Mango-Pastinaken Saft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096139260.0,
+        "EAN- Code\nKarton": 8718096131691.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.96
+      }
+    },
+    {
+      "name": "I'm Veggie Gurke-Apfel - Saft grün 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301481.0,
+        "Artikelbezeichnung": "I'm Veggie Gurke-Apfel - Saft grün 250ml",
+        "Kurzbeschreibung": "Gurken-Apfel-Spinat Saft",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096139253.0,
+        "EAN- Code\nKarton": 8718096131684.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.96
+      }
+    },
+    {
+      "name": "Smoothies",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Smoothies "
+      }
+    },
+    {
+      "name": "Erdbeer-Apfel Smoothie 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301977.0,
+        "Artikelbezeichnung": "Erdbeer-Apfel Smoothie 250ml",
+        "Kurzbeschreibung": "Smoothie mit Erdbeere und Apfel",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096110610.0,
+        "EAN- Code\nKarton": 8718096120725.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "Mango-Maracuja Smoothie 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301479.0,
+        "Artikelbezeichnung": "Mango-Maracuja Smoothie 250ml",
+        "Kurzbeschreibung": "Smoothie mit Mango und Maracuja",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096110634.0,
+        "EAN- Code\nKarton": 8718096120756.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "Superfruit Smoothie Goji Power 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301978.0,
+        "Artikelbezeichnung": "Superfruit Smoothie Goji Power 250ml",
+        "Kurzbeschreibung": "Smoothie mit Goji Beeren und\nBanane",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096130359.0,
+        "EAN- Code\nKarton": 8718096130366.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "Superfruit Smoothie Tropical Spark",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301979.0,
+        "Artikelbezeichnung": "Superfruit Smoothie Tropical Spark",
+        "Kurzbeschreibung": "Smoothie mit Ananas und Mango",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096130311.0,
+        "EAN- Code\nKarton": 8718096130328.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "Superfruit Smoothie Acerola Good 250ml",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301980.0,
+        "Artikelbezeichnung": "Superfruit Smoothie Acerola Good 250ml",
+        "Kurzbeschreibung": "Smoothie mit Acerolakirsche und Himbeere ",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "FL",
+        "Allergene": "keine",
+        "Bemerkung": "Fruityline",
+        "EAN- Code\nArtikel": 8718096130335.0,
+        "EAN- Code\nKarton": 8718096130342.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.89
+      }
+    },
+    {
+      "name": "Smoothies (\"zum selber Mixen\") Nur in bedienten Cafeterien|Shops einsetzbar",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Smoothies (\"zum selber Mixen\") Nur in bedienten Cafeterien|Shops einsetzbar"
+      }
+    },
+    {
+      "name": "Smoothie Mix Melone-Minispinat (Shaker)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301971.0,
+        "Artikelbezeichnung": "Smoothie Mix Melone-Minispinat (Shaker)",
+        "Kurzbeschreibung": "Cantaloupemelone, Honigmelone,\nOrange und Minispinat",
+        "Gewicht pro Stück\n L bzw. kg": 0.27,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "SH",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235359.0,
+        "EAN- Code\nKarton": 4001590235250.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.36
+      }
+    },
+    {
+      "name": "Smoothie Mix Rote Bete-Traube (Shaker)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301972.0,
+        "Artikelbezeichnung": "Smoothie Mix Rote Bete-Traube (Shaker)",
+        "Kurzbeschreibung": "Rote Bete, Trauben, Möhren, Apfel, Cranberries",
+        "Gewicht pro Stück\n L bzw. kg": 0.24,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "SH",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235274.0,
+        "EAN- Code\nKarton": 4001590235267.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.55
+      }
+    },
+    {
+      "name": "Smoothie Mix Berry Blitz (Shaker)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301973.0,
+        "Artikelbezeichnung": "Smoothie Mix Berry Blitz (Shaker)",
+        "Kurzbeschreibung": "Honigmelone, Erdbeeren, Blaubeeren und Minze-Joghurt",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "SH",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235397.0,
+        "EAN- Code\nKarton": 4001590235281.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.67
+      }
+    },
+    {
+      "name": "Smoothie Mix Grüner Blitz (Shaker)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301974.0,
+        "Artikelbezeichnung": "Smoothie Mix Grüner Blitz (Shaker)",
+        "Kurzbeschreibung": "Mango, Gurken, Brokkoli, Minispinat, Lauchzwiebel und Ingwer",
+        "Gewicht pro Stück\n L bzw. kg": 0.13,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "veggie": "X",
+        "Verp": "SH",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235588.0,
+        "EAN- Code\nKarton": 4001590235496.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.49
+      }
+    },
+    {
+      "name": "Smoothie Mix Mango Blitz (Shaker)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301975.0,
+        "Artikelbezeichnung": "Smoothie Mix Mango Blitz (Shaker)",
+        "Kurzbeschreibung": "Orange, Mango, Minispinat, Minze, Chiasamen und Minze-Joghurt",
+        "Gewicht pro Stück\n L bzw. kg": 0.25,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "SH",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235793.0,
+        "EAN- Code\nKarton": 4001590235694.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.3
+      }
+    },
+    {
+      "name": "Quarkspeisen, Obstsalate, Desserts",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Quarkspeisen, Obstsalate, Desserts"
+      }
+    },
+    {
+      "name": "Quarkspeisen",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Quarkspeisen"
+      }
+    },
+    {
+      "name": "Beerenquark",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301900.0,
+        "Artikelbezeichnung": "Beerenquark",
+        "Kurzbeschreibung": "Dessert mit Vanillequark und Beerenmix",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235199.0,
+        "EAN- Code\nKarton": 4001590235182.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.71
+      }
+    },
+    {
+      "name": "Mandarinenquark",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301901.0,
+        "Artikelbezeichnung": "Mandarinenquark",
+        "Kurzbeschreibung": "Dessert mit Vanillequark und Mandarinen",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235991.0,
+        "EAN- Code\nKarton": 4001590235892.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.71
+      }
+    },
+    {
+      "name": "Früchtequark mit Müsli",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301996.0,
+        "Artikelbezeichnung": "Früchtequark mit Müsli",
+        "Kurzbeschreibung": "Joghurt-Quark mit Früchten und Müsli",
+        "Gewicht pro Stück\n L bzw. kg": 0.31,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "SH",
+        "Allergene": "Milch, Weizen, Hafer, Haselnüsse",
+        "EAN- Code\nArtikel": 4001590235311.0,
+        "EAN- Code\nKarton": 4001590235212.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.24
+      }
+    },
+    {
+      "name": "Vanillequark auf Kirschen",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301902.0,
+        "Artikelbezeichnung": "Vanillequark auf Kirschen",
+        "Kurzbeschreibung": "Dessert mit Vanillequark und Sauerkirschen",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235236.0,
+        "EAN- Code\nKarton": 4001590235229.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.71
+      }
+    },
+    {
+      "name": "Vanillequark auf Beerenmix",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301903.0,
+        "Artikelbezeichnung": "Vanillequark auf Beerenmix",
+        "Kurzbeschreibung": "Dessert mit Vanillequark auf Beerenmix",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235205.0,
+        "EAN- Code\nKarton": 4001590235243.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.71
+      }
+    },
+    {
+      "name": "Vanillequark mit Blaubeeren",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301904.0,
+        "Artikelbezeichnung": "Vanillequark mit Blaubeeren",
+        "Kurzbeschreibung": "Vanillequark mit Blaubeeren",
+        "Gewicht pro Stück\n L bzw. kg": 0.22,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235540.0,
+        "EAN- Code\nKarton": 4001590235410.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.1
+      }
+    },
+    {
+      "name": "Obstsalate",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Obstsalate"
+      }
+    },
+    {
+      "name": "Obstsalat Venezia",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301905.0,
+        "Artikelbezeichnung": "Obstsalat Venezia",
+        "Kurzbeschreibung": "Obstsalat mit Passionsfruchtpüree",
+        "Gewicht pro Stück\n L bzw. kg": 0.2,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "RD12",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235168.0,
+        "EAN- Code\nKarton": 4001590235151.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.56
+      }
+    },
+    {
+      "name": "Obstsalat Hawaii",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301906.0,
+        "Artikelbezeichnung": "Obstsalat Hawaii",
+        "Kurzbeschreibung": "Obstsalat mit Ananas und blauen Trauben",
+        "Gewicht pro Stück\n L bzw. kg": 0.2,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "RD12",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235175.0,
+        "EAN- Code\nKarton": 4001590235144.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.44
+      }
+    },
+    {
+      "name": "CV Obstsalat Florida",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301907.0,
+        "Artikelbezeichnung": "CV Obstsalat Florida",
+        "Kurzbeschreibung": "Obstmischung mit Cantaloupemelone und Blaubeeren",
+        "Gewicht pro Stück\n L bzw. kg": 0.2,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "RD12",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235106.0,
+        "EAN- Code\nKarton": 4001590235120.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.44
+      }
+    },
+    {
+      "name": "CV Melonenmix",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301908.0,
+        "Artikelbezeichnung": "CV Melonenmix",
+        "Kurzbeschreibung": "Melonenstücke",
+        "Gewicht pro Stück\n L bzw. kg": 0.3,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "RD16",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235137.0,
+        "EAN- Code\nKarton": 4001590035133.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.9
+      }
+    },
+    {
+      "name": "CV Ananas Becher",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301909.0,
+        "Artikelbezeichnung": "CV Ananas Becher",
+        "Kurzbeschreibung": "Ananas",
+        "Gewicht pro Stück\n L bzw. kg": 0.2,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "RD12",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235519.0,
+        "EAN- Code\nKarton": 4001590235113.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.97
+      }
+    },
+    {
+      "name": "Wassermelone Mono",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301910.0,
+        "Artikelbezeichnung": "Wassermelone Mono",
+        "Kurzbeschreibung": "Wassermelonenstücke",
+        "Gewicht pro Stück\n L bzw. kg": 0.3,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "RD16",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235465.0,
+        "EAN- Code\nKarton": 4001590235366.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.9
+      }
+    },
+    {
+      "name": "Desserts",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Desserts"
+      }
+    },
+    {
+      "name": "Kokosmilchreis mit Kirschen (vegan)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301911.0,
+        "Artikelbezeichnung": "Kokosmilchreis mit Kirschen (vegan)",
+        "Kurzbeschreibung": "Kokosnuss-Milchreis mit gebundenen Kirschen",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "RD8",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590235335.0,
+        "EAN- Code\nKarton": 4001590235304.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.24
+      }
+    },
+    {
+      "name": "Himbeer-Amaranth Creme (vegan)",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301912.0,
+        "Artikelbezeichnung": "Himbeer-Amaranth Creme (vegan)",
+        "Kurzbeschreibung": "Dessertcreme mit Himbeeren und Amaranth",
+        "Gewicht pro Stück\n L bzw. kg": 0.16,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "RD8",
+        "Allergene": "Soja",
+        "EAN- Code\nArtikel": 4001590235342.0,
+        "EAN- Code\nKarton": 4001590235328.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.24
+      }
+    },
+    {
+      "name": "Milchreis mit roter Grütze",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301913.0,
+        "Artikelbezeichnung": "Milchreis mit roter Grütze",
+        "Kurzbeschreibung": "Milchreis mit gebundenen Kirschen",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 6.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RD8",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235533.0,
+        "EAN- Code\nKarton": 4001590235458.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Porridge Chia-Nuss-Blaubeere",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301914.0,
+        "Artikelbezeichnung": "Porridge Chia-Nuss-Blaubeere",
+        "Kurzbeschreibung": "Porridge mit Chia, Nuss-Cranberry-Mischung Und Blaubeeren",
+        "Gewicht pro Stück\n L bzw. kg": 0.21,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "RD8",
+        "Allergene": "Mandeln, Hafer, Haselnüsse, Cashewnüsse, Walnüsse",
+        "EAN- Code\nArtikel": 4001590235403.0,
+        "EAN- Code\nKarton": 4001590235427.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.7
+      }
+    },
+    {
+      "name": "Blattsalate",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Blattsalate"
+      }
+    },
+    {
+      "name": "große Portionssalat mit Toppings in Bowlschale",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "große Portionssalat mit Toppings in Bowlschale"
+      }
+    },
+    {
+      "name": "King Size Salat Kentucky",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301915.0,
+        "Artikelbezeichnung": "King Size Salat Kentucky",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Hähnchenbrust, Paprika, Cherrytomaten, Gurken, Peperoni, Oliven",
+        "Gewicht pro Stück\n L bzw. kg": 0.34,
+        "BE/LE": 3.0,
+        "RLZ": 4.0,
+        "Verp": "RSS",
+        "Allergene": "Weizen, Milch, Sulfit",
+        "EAN- Code\nArtikel": 4001590235755.0,
+        "EAN- Code\nKarton": 4001590235557.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.15
+      }
+    },
+    {
+      "name": "King Size Salat Griechisch",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301916.0,
+        "Artikelbezeichnung": "King Size Salat Griechisch",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Weichkäse Paprika, Cherrytomaten, Gurken, Peperoni, Oliven",
+        "Gewicht pro Stück\n L bzw. kg": 0.3,
+        "BE/LE": 3.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RSS",
+        "Allergene": "Milch, Sulfit",
+        "EAN- Code\nArtikel": 4001590238367.0,
+        "EAN- Code\nKarton": 4001590237698.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.15
+      }
+    },
+    {
+      "name": "King Size Salat Italia",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301917.0,
+        "Artikelbezeichnung": "King Size Salat Italia",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Mozzarella, Paprika, Cherrytomaten, Gurken, Peperoni, Oliven",
+        "Gewicht pro Stück\n L bzw. kg": 0.3,
+        "BE/LE": 3.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "RSS",
+        "Allergene": "Milch, Sulfit",
+        "EAN- Code\nArtikel": 4001590235380.0,
+        "EAN- Code\nKarton": 4001590235373.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.15
+      }
+    },
+    {
+      "name": "King-Size Salat Tonno",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301918.0,
+        "Artikelbezeichnung": "King-Size Salat Tonno",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Thunfisch Paprika, Cherrytomaten, Gurken, Peperoni, Oliven",
+        "Gewicht pro Stück\n L bzw. kg": 0.34,
+        "BE/LE": 3.0,
+        "RLZ": 4.0,
+        "Verp": "RSS",
+        "Allergene": "Thunfisch, Ei, Sulfit",
+        "EAN- Code\nArtikel": 4001590235687.0,
+        "EAN- Code\nKarton": 4001590235595.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.15
+      }
+    },
+    {
+      "name": "King Size Salat Prosciutto",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301919.0,
+        "Artikelbezeichnung": "King Size Salat Prosciutto",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Kochschinken und Gouda Paprika, Cherrytomaten, Gurken, Peperoni, Oliven",
+        "Gewicht pro Stück\n L bzw. kg": 0.34,
+        "BE/LE": 3.0,
+        "RLZ": 4.0,
+        "Verp": "RSS",
+        "Allergene": "Milch, Sulfit",
+        "EAN- Code\nArtikel": 4001590237391.0,
+        "EAN- Code\nKarton": 4001590236998.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 3.15
+      }
+    },
+    {
+      "name": "Gourmetsalate",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Gourmetsalate"
+      }
+    },
+    {
+      "name": "Gourmetbox CousCous-Edamame",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301920.0,
+        "Artikelbezeichnung": "Gourmetbox CousCous-Edamame",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Couscoussalat orientalischer Art und Sojabohnen",
+        "Gewicht pro Stück\n L bzw. kg": 0.138,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "SBH",
+        "Allergene": "Weizen, Soja",
+        "EAN- Code\nArtikel": 4001590235052.0,
+        "EAN- Code\nKarton": 4001590235014.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.03
+      }
+    },
+    {
+      "name": "Gourmetbox Walnuss-Birne",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301921.0,
+        "Artikelbezeichnung": "Gourmetbox Walnuss-Birne",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Walnuss und Birne",
+        "Gewicht pro Stück\n L bzw. kg": 0.138,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "SBH",
+        "Allergene": "Walnüsse",
+        "EAN- Code\nArtikel": 4001590235021.0,
+        "EAN- Code\nKarton": 4001590723023.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.03
+      }
+    },
+    {
+      "name": "Gourmetbox Hähnchen-Hartkäse",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301922.0,
+        "Artikelbezeichnung": "Gourmetbox Hähnchen-Hartkäse",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Hähnchebruststreifen und Hartkäse",
+        "Gewicht pro Stück\n L bzw. kg": 0.138,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "Verp": "SBH",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235045.0,
+        "EAN- Code\nKarton": 4001590235038.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 2.03
+      }
+    },
+    {
+      "name": "Portionssalate",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Portionssalate "
+      }
+    },
+    {
+      "name": "Saladbowl Mozzarella",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301923.0,
+        "Artikelbezeichnung": "Saladbowl Mozzarella",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Mozzarella",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "SBH",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590235083.0,
+        "EAN- Code\nKarton": 4001590235076.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Saladbowl Athen",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301924.0,
+        "Artikelbezeichnung": "Saladbowl Athen",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Weichkäse",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "SBH",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590237056.0,
+        "EAN- Code\nKarton": 4001590236271.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Saladbowl Nizza",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301925.0,
+        "Artikelbezeichnung": "Saladbowl Nizza",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Kochschinken und Gouda",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "Verp": "SBH",
+        "Allergene": "Milch",
+        "EAN- Code\nArtikel": 4001590245068.0,
+        "EAN- Code\nKarton": 4001590000063.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Saladbowl Milano",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301926.0,
+        "Artikelbezeichnung": "Saladbowl Milano",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Gouda und Ei",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "veggie": "X",
+        "Verp": "SBH",
+        "Allergene": "Milch, Ei",
+        "EAN- Code\nArtikel": 4001590255074.0,
+        "EAN- Code\nKarton": 4001590245075.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Saladbowl Kentucky",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301927.0,
+        "Artikelbezeichnung": "Saladbowl Kentucky",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Hähnchenbrust",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "Verp": "SBH",
+        "Allergene": "Weizen",
+        "EAN- Code\nArtikel": 4001590265080.0,
+        "EAN- Code\nKarton": 4001590255081.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Saladbowl Alicante",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301928.0,
+        "Artikelbezeichnung": "Saladbowl Alicante",
+        "Kurzbeschreibung": "Salat- und Gemüsemischung mit Thunfisch",
+        "Gewicht pro Stück\n L bzw. kg": 0.18,
+        "BE/LE": 4.0,
+        "RLZ": 4.0,
+        "Verp": "SBH",
+        "Allergene": "Thunfisch, Ei",
+        "EAN- Code\nArtikel": 4001590235007.0,
+        "EAN- Code\nKarton": 4001590235090.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.91
+      }
+    },
+    {
+      "name": "Portionssalate Patientenverpflegung",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Portionssalate Patientenverpflegung"
+      }
+    },
+    {
+      "name": "Portionssalate ohne Dressing | ab 50 Stück",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Portionssalate ohne Dressing | ab 50 Stück"
+      }
+    },
+    {
+      "name": "Abendbeilagensalat ohne Schutzatmosphäre",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301993.0,
+        "Artikelbezeichnung": "Abendbeilagensalat ohne Schutzatmosphäre",
+        "Kurzbeschreibung": "Endivie, Radicchio, Möhren",
+        "Gewicht pro Stück\n L bzw. kg": 0.035,
+        "BE/LE": 1.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "ESS",
+        "Allergene": "keine",
+        "Bemerkung": "eckige Schale",
+        "EAN- Code\nArtikel": 4001590001084.0,
+        "EAN- Code\nKarton": "noch offen",
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.78
+      }
+    },
+    {
+      "name": "Abendbeilagensalat mit Schutzatmosphäre",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301994.0,
+        "Artikelbezeichnung": "Abendbeilagensalat mit Schutzatmosphäre",
+        "Kurzbeschreibung": "Endivie, Radicchio, Möhren",
+        "Gewicht pro Stück\n L bzw. kg": 0.035,
+        "BE/LE": 1.0,
+        "RLZ": 5.0,
+        "vegan": "X",
+        "Verp": "RSS",
+        "Allergene": "keine",
+        "Bemerkung": "runde Schale",
+        "EAN- Code\nArtikel": 4001590002081.0,
+        "EAN- Code\nKarton": "noch offen",
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.81
+      }
+    },
+    {
+      "name": "Saladcup Vegetarisch",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301995.0,
+        "Artikelbezeichnung": "Saladcup Vegetarisch",
+        "Kurzbeschreibung": "Lollo Bionda, Tomate, Möhre",
+        "Gewicht pro Stück\n L bzw. kg": 0.17,
+        "BE/LE": 1.0,
+        "RLZ": 4.0,
+        "vegan": "X",
+        "Verp": "ESS",
+        "Allergene": "keine",
+        "Bemerkung": "eckige Schale",
+        "EAN- Code\nArtikel": 4001590001466.0,
+        "EAN- Code\nKarton": "noch offen",
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.9
+      }
+    },
+    {
+      "name": "Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Dressing "
+      }
+    },
+    {
+      "name": "Beutel (Mindestbestellmenge 10 Stk)",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Beutel (Mindestbestellmenge 10 Stk)"
+      }
+    },
+    {
+      "name": "Joghurt Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301363.0,
+        "Artikelbezeichnung": "Joghurt Dressing",
+        "Kurzbeschreibung": "Salatdressing mit Joghurt",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "veggie": "X",
+        "Verp": "BTL",
+        "Allergene": "Ei, Senf, Milch",
+        "EAN- Code\nArtikel": 4001590901612.0,
+        "EAN- Code\nKarton": 4001590901667.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Ceasar Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301929.0,
+        "Artikelbezeichnung": "Ceasar Dressing",
+        "Kurzbeschreibung": "Salatdressing mit Grana Padano",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "veggie": "X",
+        "Verp": "BTL",
+        "Allergene": "Ei, Senf, Milch",
+        "EAN- Code\nArtikel": 4001590928664.0,
+        "EAN- Code\nKarton": 4001590028661.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Honig-Balsamico Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301366.0,
+        "Artikelbezeichnung": "Honig-Balsamico Dressing",
+        "Kurzbeschreibung": "Salatdressing mit Balsamicoessig und Honig",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "veggie": "X",
+        "Verp": "BTL",
+        "Allergene": "Sulfit",
+        "EAN- Code\nArtikel": 4001590908666.0,
+        "EAN- Code\nKarton": 4001590908666.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Grünes Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301930.0,
+        "Artikelbezeichnung": "Grünes Dressing ",
+        "Kurzbeschreibung": "Salatdressing mit Kräuteressig und Petersilie",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "vegan": "X",
+        "Verp": "BTL",
+        "Allergene": "keine",
+        "EAN- Code\nArtikel": 4001590922662.0,
+        "EAN- Code\nKarton": 4001590922662.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Cocktail Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301365.0,
+        "Artikelbezeichnung": "Cocktail Dressing",
+        "Kurzbeschreibung": "Salatdressing mit Joghurt und Ketchup",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "veggie": "X",
+        "Verp": "BTL",
+        "Allergene": "Milch, Ei Senf, Sulfit",
+        "EAN- Code\nArtikel": 4001590907669.0,
+        "EAN- Code\nKarton": 4001590907669.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Senf-Honig Dressing",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301401.0,
+        "Artikelbezeichnung": "Senf-Honig Dressing",
+        "Kurzbeschreibung": "Salatdressing mit Senf und Honig",
+        "Gewicht pro Stück\n L bzw. kg": 0.075,
+        "BE/LE": 10.0,
+        "RLZ": 14.0,
+        "veggie": "X",
+        "Verp": "BTL",
+        "Allergene": "Ei, Senf, Milch",
+        "EAN- Code\nArtikel": 4001590925663.0,
+        "EAN- Code\nKarton": 4001590925663.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.52
+      }
+    },
+    {
+      "name": "Becher (Mindestbestellmenge 10 Stk)",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Becher (Mindestbestellmenge 10 Stk)"
+      }
+    },
+    {
+      "name": "OPTIMAHL American Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301873.0,
+        "Artikelbezeichnung": "OPTIMAHL American Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing mit Tomaten und Kräutern",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "veggie": "X",
+        "Verp": "BE",
+        "Allergene": "Ei, Senf, ",
+        "EAN- Code\nArtikel": 4029384301400.0,
+        "EAN- Code\nKarton": 4029384301288.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "OPTIMAHL Caesar Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301877.0,
+        "Artikelbezeichnung": "OPTIMAHL Caesar Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing mit italienischem Hartkäse",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "veggie": "X",
+        "Verp": "BE",
+        "Allergene": "Ei, Milch, Senf",
+        "EAN- Code\nArtikel": 4029384307778.0,
+        "EAN- Code\nKarton": 4029384307525.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "OPTIMAHL French Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301875.0,
+        "Artikelbezeichnung": "OPTIMAHL French Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing ",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "veggie": "X",
+        "Verp": "BE",
+        "Allergene": "Ei, Senf",
+        "EAN- Code\nArtikel": 4029384301394.0,
+        "EAN- Code\nKarton": 4029384301271.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "OPTIMAHL Honig-Senf Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301878.0,
+        "Artikelbezeichnung": "OPTIMAHL Honig-Senf Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing mit Senf und Honig",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "veggie": "X",
+        "Verp": "BE",
+        "Allergene": "Ei, Senf",
+        "EAN- Code\nArtikel": 4029384307761.0,
+        "EAN- Code\nKarton": 4029384307518.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "OPTIMAHL Italian Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301876.0,
+        "Artikelbezeichnung": "OPTIMAHL Italian Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing mit Essig & Öl & Kräutern",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "vegan": "X",
+        "Verp": "BE",
+        "Allergene": "-",
+        "EAN- Code\nArtikel": 4029384301424.0,
+        "EAN- Code\nKarton": 4029384301301.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "OPTIMAHL Joghurt Dressing 10x80g",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301874.0,
+        "Artikelbezeichnung": "OPTIMAHL Joghurt Dressing 10x80g",
+        "Kurzbeschreibung": "Salatdressing mit Joghurt und Kräutern",
+        "Gewicht pro Stück\n L bzw. kg": 0.08,
+        "BE/LE": 10.0,
+        "RLZ": 10.0,
+        "veggie": "X",
+        "Verp": "BE",
+        "Allergene": "Ei, Milch",
+        "EAN- Code\nArtikel": 4029384301417.0,
+        "EAN- Code\nKarton": 4029384301295.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 0.42
+      }
+    },
+    {
+      "name": "Feinkostsalate",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "Feinkostsalate"
+      }
+    },
+    {
+      "name": "im \"Weckglas\"-Becher mit Frischesiegel",
+      "category": "Coocino",
+      "properties": {
+        "Artikelbezeichnung": "im \"Weckglas\"-Becher mit Frischesiegel"
+      }
+    },
+    {
+      "name": "Couscous Pikant",
+      "category": "Coocino",
+      "properties": {
+        "Artikel-nummer": 301931.0,
+        "Artikelbezeichnung": "Couscous Pikant",
+        "Kurzbeschreibung": "Couscous Salat mit Kichererbsen und Zucchini",
+        "Gewicht pro Stück\n L bzw. kg": 0.2,
+        "BE/LE": 6.0,
+        "RLZ": 3.0,
+        "vegan": "X",
+        "Verp": "RD 12",
+        "Allergene": "Weizen",
+        "EAN- Code\nArtikel": 4001590335400.0,
+        "EAN- Code\nKarton": 4001590335516.0,
+        "VK Preis\nnetto/netto \n[frei Kunde]": 1.86
+      }
+    }
+  ],
+  "summary": {
+    "total_price_list_items": 142,
+    "total_packaging_items": 22,
+    "total_recipes": 146,
+    "total_ingredients_in_recipes": 477,
+    "sheets_processed": [
+      "Bowls",
+      "Verpackung",
+      "Preise & Mengen",
+      "Wraps neu",
+      "Wraps_new",
+      "Bowls_Kartoffel",
+      "Wrapvolution",
+      "Reis_Bowls",
+      "Salat Bowls",
+      "Smoothies",
+      "Säfte",
+      "Mashed Box",
+      "Frozen Iced Teas & Refresher",
+      "Iced Lattes",
+      "Wraps",
+      "FINNEN-BAGUETTES",
+      "Sides",
+      "Thai Kampagne",
+      "Grilled Focaccia",
+      "Sweets",
+      "Arbeitsanweisung Toppings",
+      "Hilfstabelle",
+      "Hot Food",
+      "Hot Food Eigenrezepte",
+      "Coocino"
+    ]
+  }
+}

@@ -1,0 +1,2379 @@
+{
+  "stand": "05.2026",
+  "quelle": "Inventurliste - 05.2026.xlsx",
+  "lieferanten": [
+    {
+      "name": "BUNZL",
+      "untergruppen": [
+        {
+          "name": "Becher & Deckel",
+          "artikel": [
+            {
+              "artikelnr": "920821",
+              "bezeichnung": "immergrün Trinkbecher 500 ml",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 68.0,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.068
+            },
+            {
+              "artikelnr": "41992",
+              "bezeichnung": "Flach-Deckel Papierfaser Ø 90 mm mit Kreuzschlitz weiß",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 40.2,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.0402
+            },
+            {
+              "artikelnr": "92112",
+              "bezeichnung": "Immergrün Clear Cup PET 24 oz 600 ml transparent Ø 101 mm 2-farbig",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 54.34,
+              "stk_pro_ve": 700.0,
+              "preis_stk": 0.07762857142857144
+            },
+            {
+              "artikelnr": "41998",
+              "bezeichnung": "Flach-Deckel PET Ø 101 mm mit Kreuzschlitz transparent zu 92109-92112",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 12.98,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.01298
+            },
+            {
+              "artikelnr": "80550083",
+              "bezeichnung": "Clear Cup rPET 300ml transparent Ø 95 mm VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 52.5,
+              "stk_pro_ve": 800.0,
+              "preis_stk": 0.065625
+            },
+            {
+              "artikelnr": "80550084",
+              "bezeichnung": "Clear Cup rPET 400ml transparent Ø 95 mm VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 55.97,
+              "stk_pro_ve": 800.0,
+              "preis_stk": 0.0699625
+            },
+            {
+              "artikelnr": "80550085",
+              "bezeichnung": "Clear Cup rpet 500ml transparent Ø 95 mm VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 65.0,
+              "stk_pro_ve": 800.0,
+              "preis_stk": 0.08125
+            },
+            {
+              "artikelnr": "80550086",
+              "bezeichnung": "Flach-Deckel rPET Ø 95 mm mit Kreuzschlitz transparent VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 18.4,
+              "stk_pro_ve": 800.0,
+              "preis_stk": 0.023
+            }
+          ]
+        },
+        {
+          "name": "Salatschalen",
+          "artikel": [
+            {
+              "artikelnr": "461786",
+              "bezeichnung": "Salatschale Kraft-PE Ø 150 mm x 60 mm 750 ml braun PS BeGreen FSC Mix Credit",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 47.53,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.15843333333333334
+            },
+            {
+              "artikelnr": "80550196",
+              "bezeichnung": "rPET-Deckel Ø 150 mm transparent zu Salatschale VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 27.26,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.09086666666666667
+            },
+            {
+              "artikelnr": "29968",
+              "bezeichnung": "Immergrün Salatschale Kraft-PE Ø 184 mm x 65 mm 1300 ml braun 6f FSC Mix Credit",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 47.25,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.1575
+            },
+            {
+              "artikelnr": "80550197",
+              "bezeichnung": "rPET-Deckel Ø 185 mm transparent zu Salatschale VERIVE",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 31.08,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.1036
+            }
+          ]
+        },
+        {
+          "name": "Tragetaschen & Einwickelpapier",
+          "artikel": [
+            {
+              "artikelnr": "89174",
+              "bezeichnung": "Immergrün Faltenbeutel 12cm x 6 cm x 32 cm, 4-farbig",
+              "einheit": "Stk",
+              "ve": "KA",
+              "preis_ve": 22.75,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.02275
+            },
+            {
+              "artikelnr": "95356",
+              "bezeichnung": "immergrün Papier-Tragetasche",
+              "einheit": "Stk",
+              "ve": "KA",
+              "preis_ve": 50.7,
+              "stk_pro_ve": 250.0,
+              "preis_stk": 0.2028
+            },
+            {
+              "artikelnr": "89288",
+              "bezeichnung": "immergrün Einwickelpapier 31x40 cm",
+              "einheit": "Stk",
+              "ve": "KA",
+              "preis_ve": 31.47,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.03147
+            },
+            {
+              "artikelnr": "27039",
+              "bezeichnung": "Tablett-Zuschnitte 40x30 cm",
+              "einheit": "KA",
+              "ve": "KA",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 13.9
+            }
+          ]
+        },
+        {
+          "name": "Dressingbehälter",
+          "artikel": [
+            {
+              "artikelnr": "460823",
+              "bezeichnung": "Dressingbehälter 80ml",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 16.42,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.01642
+            },
+            {
+              "artikelnr": "461143",
+              "bezeichnung": "Deckel für Dressingbehälter",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 11.87,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.011869999999999999
+            }
+          ]
+        },
+        {
+          "name": "Zubehör",
+          "artikel": [
+            {
+              "artikelnr": "42155",
+              "bezeichnung": "Schnapsglas PS Ø 37 mm x 42 mm 20 ml transparent mit Eichstrich",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 56.49,
+              "stk_pro_ve": 2700.0,
+              "preis_stk": 0.020922222222222224
+            },
+            {
+              "artikelnr": "68352",
+              "bezeichnung": "Spenderservietten natur Trk",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 82.21,
+              "stk_pro_ve": 9000.0,
+              "preis_stk": 0.009134444444444443
+            },
+            {
+              "artikelnr": "252451",
+              "bezeichnung": "Mehrweg-Trinkhalm Ø 8 mm 21 cm starr braun",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 95.93,
+              "stk_pro_ve": 2500.0,
+              "preis_stk": 0.038372
+            },
+            {
+              "artikelnr": "80550108",
+              "bezeichnung": "Holz-Messer 16cm gewachst",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 2.17,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.0217
+            },
+            {
+              "artikelnr": "80550107",
+              "bezeichnung": "Holz-Gabel 16cm gewachst",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 2.8,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.027999999999999997
+            },
+            {
+              "artikelnr": "80550148",
+              "bezeichnung": "Holz-Besteckset (Gabel, Messer, Serviette)",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 47.18,
+              "stk_pro_ve": 500.0,
+              "preis_stk": 0.09436
+            },
+            {
+              "artikelnr": "80550110",
+              "bezeichnung": "Holz-Kaffeelöffel 11cm gewachst",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 1.65,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.0165
+            },
+            {
+              "artikelnr": "80550103",
+              "bezeichnung": "Holz-Rührstäbchen 175x5,5x1,3 mm",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 2.03,
+              "stk_pro_ve": 500.0,
+              "preis_stk": 0.004059999999999999
+            }
+          ]
+        },
+        {
+          "name": "Kaffeebecher",
+          "artikel": [
+            {
+              "artikelnr": "418014",
+              "bezeichnung": "Kaffeebecher Pappe-PE Ø 80 mm x 92 mm 200ml PrimeSource FSC Mix Credit",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 61.68,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.06168
+            },
+            {
+              "artikelnr": "417104",
+              "bezeichnung": "Flach-Deckel PS Ø 80,0 mm mit Trinkloch weiss",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 23.54,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.02354
+            },
+            {
+              "artikelnr": "418033",
+              "bezeichnung": "Kaffeebecher Pappe-PE Ø 90 mm x 110 mm 300ml PrimeSource FSC Mix Credit",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 56.3,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.056299999999999996
+            },
+            {
+              "artikelnr": "417124",
+              "bezeichnung": "Flach-Deckel PS Ø 90,0 mm mit Trinkloch weiss",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 28.4,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.028399999999999998
+            },
+            {
+              "artikelnr": "498041",
+              "bezeichnung": "Holzschliff Trinkbecherhalter für 2 Becher",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 26.77,
+              "stk_pro_ve": 480.0,
+              "preis_stk": 0.05577083333333333
+            },
+            {
+              "artikelnr": "49809",
+              "bezeichnung": "Holzschliff Trinkbecherhalter für 4 Becher",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 20.89,
+              "stk_pro_ve": 220.0,
+              "preis_stk": 0.09495454545454546
+            }
+          ]
+        },
+        {
+          "name": "Sonstiges",
+          "artikel": [
+            {
+              "artikelnr": "29542",
+              "bezeichnung": "Suppenbecher Pappe-PP Ø 98 mm",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 103.68,
+              "stk_pro_ve": 500.0,
+              "preis_stk": 0.20736000000000002
+            },
+            {
+              "artikelnr": "29543",
+              "bezeichnung": "Suppenbecher Deckel PP Ø 97 mm braun",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 75.78,
+              "stk_pro_ve": 500.0,
+              "preis_stk": 0.15156
+            },
+            {
+              "artikelnr": "591271",
+              "bezeichnung": "PET Flasche 500ml mit Deckel orange",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 27.98,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.2798
+            },
+            {
+              "artikelnr": "48980",
+              "bezeichnung": "Falthandtücher 25x23 cm 1-lagig V-Falz natur",
+              "einheit": "Blätter",
+              "ve": "KA",
+              "preis_ve": 17.22,
+              "stk_pro_ve": 5000.0,
+              "preis_stk": 0.0034439999999999996
+            },
+            {
+              "artikelnr": "49286",
+              "bezeichnung": "Küchenrolle comfort 2-lagig 26x22 cm 64 Blatt weiß",
+              "einheit": "Rolle",
+              "ve": "KA",
+              "preis_ve": 15.83,
+              "stk_pro_ve": 32.0,
+              "preis_stk": 0.4946875
+            },
+            {
+              "artikelnr": "49087",
+              "bezeichnung": "Toilettenpapier 9,4x11 cm 2-lagig 250 Blatt",
+              "einheit": "Rolle",
+              "ve": "KA",
+              "preis_ve": 16.95,
+              "stk_pro_ve": 64.0,
+              "preis_stk": 0.26484375
+            },
+            {
+              "artikelnr": "22456",
+              "bezeichnung": "LDPE-Müllsäcke 700x1100 mm blau 120l, T70",
+              "einheit": "Sack",
+              "ve": "KA",
+              "preis_ve": 31.15,
+              "stk_pro_ve": 250.0,
+              "preis_stk": 0.12459999999999999
+            },
+            {
+              "artikelnr": "223601",
+              "bezeichnung": "LDPE-Müllsäcke 700x1100 mm blau 120l, T50",
+              "einheit": "Sack",
+              "ve": "KA",
+              "preis_ve": 17.55,
+              "stk_pro_ve": 250.0,
+              "preis_stk": 0.0702
+            },
+            {
+              "artikelnr": "22360",
+              "bezeichnung": "LDPE-Müllsäcke 700x1100 mm blau 120l, T60",
+              "einheit": "Sack",
+              "ve": "KA",
+              "preis_ve": 20.57,
+              "stk_pro_ve": 250.0,
+              "preis_stk": 0.08228
+            },
+            {
+              "artikelnr": "288021",
+              "bezeichnung": "Thermo-Kassenrollen B80xØ75xK12mm, 73m",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 56.41,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 1.1281999999999999
+            },
+            {
+              "artikelnr": "288121",
+              "bezeichnung": "Thermo-Kassenrollen B57xØ57xK12,5mm, 40m",
+              "einheit": "Stk.",
+              "ve": "KA",
+              "preis_ve": 25.91,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 0.5182
+            },
+            {
+              "artikelnr": "28981",
+              "bezeichnung": "IMG Creamy Ø 50 mm rund weiss 2-farbig 1.000 STK/Rolle",
+              "einheit": "Rolle",
+              "ve": "RO",
+              "preis_ve": 6.75,
+              "stk_pro_ve": null,
+              "preis_stk": 6.75
+            },
+            {
+              "artikelnr": "28984",
+              "bezeichnung": "immergrün Frischesiegel 30x110mm 1000Stk/Rolle",
+              "einheit": "Rolle",
+              "ve": "RO",
+              "preis_ve": 9.42,
+              "stk_pro_ve": null,
+              "preis_stk": 9.42
+            }
+          ]
+        },
+        {
+          "name": "Reinigung",
+          "artikel": [
+            {
+              "artikelnr": "78000",
+              "bezeichnung": "Techline K1 UnivSpülreiniger",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": 27.32,
+              "stk_pro_ve": null,
+              "preis_stk": 27.32
+            },
+            {
+              "artikelnr": "780031",
+              "bezeichnung": "Techline ECO K2 Klarspüler sauer*",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": 25.08,
+              "stk_pro_ve": null,
+              "preis_stk": 25.08
+            },
+            {
+              "artikelnr": "78133",
+              "bezeichnung": "Leracid KL 205 12kg",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": 39.22,
+              "stk_pro_ve": null,
+              "preis_stk": 39.22
+            },
+            {
+              "artikelnr": "780181",
+              "bezeichnung": "Techline ECO H1 Handwaschlotion (500ml)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 2.33,
+              "stk_pro_ve": null,
+              "preis_stk": 2.33
+            },
+            {
+              "artikelnr": "780171",
+              "bezeichnung": "Techline ECO H1 Handwaschlotion (1l)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 3.67,
+              "stk_pro_ve": null,
+              "preis_stk": 3.67
+            },
+            {
+              "artikelnr": "78020",
+              "bezeichnung": "H2 Handdesinfektion (500ml)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 3.33,
+              "stk_pro_ve": null,
+              "preis_stk": 3.33
+            },
+            {
+              "artikelnr": "78019",
+              "bezeichnung": "H2 Handdesinfektion (1l)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 5.44,
+              "stk_pro_ve": null,
+              "preis_stk": 5.44
+            },
+            {
+              "artikelnr": "78028",
+              "bezeichnung": "Techline H3 Hautschutzcreme",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 7.96,
+              "stk_pro_ve": null,
+              "preis_stk": 7.96
+            },
+            {
+              "artikelnr": "78361",
+              "bezeichnung": "Dosierpumpe 2ml SC-Falcon DIN25",
+              "einheit": "Stück",
+              "ve": "ST",
+              "preis_ve": 6.86,
+              "stk_pro_ve": null,
+              "preis_stk": 6.86
+            },
+            {
+              "artikelnr": "780041",
+              "bezeichnung": "Techline ECO K6 Fettlöser Konzentrat*",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": 26.16,
+              "stk_pro_ve": null,
+              "preis_stk": 26.16
+            },
+            {
+              "artikelnr": "780291",
+              "bezeichnung": "Techline ECO K7 Schaum-Kalkreiniger sauer*",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": 43.95,
+              "stk_pro_ve": null,
+              "preis_stk": 43.95
+            },
+            {
+              "artikelnr": "78540",
+              "bezeichnung": "Dosierpumpe 51mm 20ml - Hub für Kanister",
+              "einheit": "Stück",
+              "ve": "ST",
+              "preis_ve": 17.98,
+              "stk_pro_ve": null,
+              "preis_stk": 17.98
+            },
+            {
+              "artikelnr": "780072",
+              "bezeichnung": "Techline K10 Handspülmittel",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 1.67,
+              "stk_pro_ve": null,
+              "preis_stk": 1.67
+            },
+            {
+              "artikelnr": "78012",
+              "bezeichnung": "Techline K14 Alkohol-Schnelldesinfektion",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 4.39,
+              "stk_pro_ve": null,
+              "preis_stk": 4.39
+            },
+            {
+              "artikelnr": "780162",
+              "bezeichnung": "Techline ECO O2 Glasreiniger*",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 1.87,
+              "stk_pro_ve": null,
+              "preis_stk": 1.87
+            },
+            {
+              "artikelnr": "780091",
+              "bezeichnung": "Techline ECO K11 Küchenreiniger*",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 2.9,
+              "stk_pro_ve": null,
+              "preis_stk": 2.9
+            },
+            {
+              "artikelnr": "78010",
+              "bezeichnung": "Techline K12 Entkalker Konzentrat",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 3.29,
+              "stk_pro_ve": null,
+              "preis_stk": 3.29
+            },
+            {
+              "artikelnr": "78011",
+              "bezeichnung": "Techline K13 Grillreiniger pur",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 4.26,
+              "stk_pro_ve": null,
+              "preis_stk": 4.26
+            },
+            {
+              "artikelnr": "706202",
+              "bezeichnung": "Microfasertuch gestrickt 40x40 cm blau",
+              "einheit": "Stk.",
+              "ve": "PG",
+              "preis_ve": 4.51,
+              "stk_pro_ve": 10.0,
+              "preis_stk": 0.45099999999999996
+            },
+            {
+              "artikelnr": "706302",
+              "bezeichnung": "Microfasertuch gestrickt 40x40 cm gelb",
+              "einheit": "Stk.",
+              "ve": "PG",
+              "preis_ve": 4.61,
+              "stk_pro_ve": 10.0,
+              "preis_stk": 0.461
+            },
+            {
+              "artikelnr": "70334",
+              "bezeichnung": "Schwammtuch 18x20 cm gelb",
+              "einheit": "Stk.",
+              "ve": "PG",
+              "preis_ve": 2.88,
+              "stk_pro_ve": 10.0,
+              "preis_stk": 0.288
+            },
+            {
+              "artikelnr": "700151",
+              "bezeichnung": "Spülbürste",
+              "einheit": "Stk.",
+              "ve": "STK",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.61
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TRANSGOURMET",
+      "untergruppen": [
+        {
+          "name": "Säfte & Flüssigkeiten",
+          "artikel": [
+            {
+              "artikelnr": "331067",
+              "bezeichnung": "Sonny Apfel 1L",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 13.8,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 1.1500000000000001
+            },
+            {
+              "artikelnr": "398736",
+              "bezeichnung": "Eistee Sirup Pfirsich 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.6
+            },
+            {
+              "artikelnr": "84948",
+              "bezeichnung": "H-fettarme Milch 1,5% 1l",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 11.16,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.93
+            },
+            {
+              "artikelnr": "73432",
+              "bezeichnung": "Kokosmilch 1L",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.15
+            },
+            {
+              "artikelnr": "363296",
+              "bezeichnung": "Kokosdrink Barista 1l",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 11.2,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 1.4
+            },
+            {
+              "artikelnr": "82197",
+              "bezeichnung": "Mandel-Drink 'Original' vegan 1L",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 12.64,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 1.58
+            },
+            {
+              "artikelnr": "386578",
+              "bezeichnung": "Mandeldrink ungesüßt 1l",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 9.2,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 1.15
+            },
+            {
+              "artikelnr": "464785",
+              "bezeichnung": "Haferdrink Barista 1l",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 10.0,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 1.25
+            },
+            {
+              "artikelnr": "977955",
+              "bezeichnung": "Mango-Maracuja-Nektar 25% 1L",
+              "einheit": "Liter",
+              "ve": "PG",
+              "preis_ve": 11.6,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 1.45
+            },
+            {
+              "artikelnr": "437432",
+              "bezeichnung": "Monin Cold Brew Konzentrat 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 11.89
+            },
+            {
+              "artikelnr": "162268",
+              "bezeichnung": "Teisseire Caramel 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.98
+            },
+            {
+              "artikelnr": "996945",
+              "bezeichnung": "Teisseire Pistazie 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.49
+            },
+            {
+              "artikelnr": "66796",
+              "bezeichnung": "Teisseire Vanille 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.49
+            },
+            {
+              "artikelnr": "936546",
+              "bezeichnung": "Teisseire Rohrzucker 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.85
+            },
+            {
+              "artikelnr": "194309",
+              "bezeichnung": "Teisseire Maracuja 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.3
+            },
+            {
+              "artikelnr": "159711",
+              "bezeichnung": "Teisseire Himbeere 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.3
+            },
+            {
+              "artikelnr": "162700",
+              "bezeichnung": "Teisseire Hibiskus 0,7l",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.49
+            }
+          ]
+        },
+        {
+          "name": "Dip & Saucen",
+          "artikel": [
+            {
+              "artikelnr": "80466",
+              "bezeichnung": "Balsamico Bianco Vinaigrette Starline frisch 3L",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 19.25
+            },
+            {
+              "artikelnr": "792707",
+              "bezeichnung": "Basissauce Kartoffel 3kg frisch 3kg",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 13.167
+            },
+            {
+              "artikelnr": "397025",
+              "bezeichnung": "B153_Chipottle Sauce frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 21.43,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 5.3575
+            },
+            {
+              "artikelnr": "669287",
+              "bezeichnung": "Crema mit ´Aceto Balsamico di Modena IGP´ 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.49
+            },
+            {
+              "artikelnr": "216534",
+              "bezeichnung": "Gelbe Linsen Brotaufstrich vegan frisch 500g",
+              "einheit": "Becher",
+              "ve": "BE",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.75
+            },
+            {
+              "artikelnr": "445497",
+              "bezeichnung": "B153 Caesar Dressing frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 18.24,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 4.56
+            },
+            {
+              "artikelnr": "345245",
+              "bezeichnung": "Frische Cinnamon Plum Sauce vegan 850g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.664
+            },
+            {
+              "artikelnr": "533257",
+              "bezeichnung": "Frischer Erdnuss-Dip 'Starline' 850g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.42
+            },
+            {
+              "artikelnr": "458752",
+              "bezeichnung": "B153 Zitronen Vinigrette vegan frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 22.34,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 5.585
+            },
+            {
+              "artikelnr": "788207",
+              "bezeichnung": "Hummus Rote Rüben-Meerrettich frisch 1kg",
+              "einheit": "Becher",
+              "ve": "BE",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 8.48
+            },
+            {
+              "artikelnr": "229977",
+              "bezeichnung": "B153_Dressing Sylter Art vegan frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 18.01,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 4.5025
+            },
+            {
+              "artikelnr": "337578",
+              "bezeichnung": "B153_Sesamdressing geröstet vegan frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 29.18,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 7.295
+            },
+            {
+              "artikelnr": "434567",
+              "bezeichnung": "Spicy Manila - Mango-Chili-Kokos Vinaigrette 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 8.337
+            },
+            {
+              "artikelnr": "419515",
+              "bezeichnung": "B153 Teriyaki Sauce vegan frisch 4x875g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 22.8,
+              "stk_pro_ve": 4.0,
+              "preis_stk": 5.7
+            },
+            {
+              "artikelnr": "345247",
+              "bezeichnung": "Wild Karachi - Rote-Bete-Sesam Vinaigrette 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.72
+            }
+          ]
+        },
+        {
+          "name": "Konserven & Haltbares",
+          "artikel": [
+            {
+              "artikelnr": "737524",
+              "bezeichnung": "B153_Frappé Weiß 1kg",
+              "einheit": "Dose",
+              "ve": "DS",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 9.876
+            },
+            {
+              "artikelnr": "469271",
+              "bezeichnung": "Bio Agavendicksaft 340g (0,25l)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.99
+            },
+            {
+              "artikelnr": "952717",
+              "bezeichnung": "Bio Quinoa-Mischung 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.45
+            },
+            {
+              "artikelnr": "447621",
+              "bezeichnung": "Blütenhonig goldklar 500g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.89
+            },
+            {
+              "artikelnr": "5913",
+              "bezeichnung": "Croutons Kräuter 500g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.39
+            },
+            {
+              "artikelnr": "39765",
+              "bezeichnung": "Erdnüsse ohne Salz ültje 200g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.78
+            },
+            {
+              "artikelnr": "748061",
+              "bezeichnung": "Gemüsemais 850ml",
+              "einheit": "Dose",
+              "ve": "DS",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.39
+            },
+            {
+              "artikelnr": "783286",
+              "bezeichnung": "Grüne Jalapenos scharf in Scheiben 3100ml",
+              "einheit": "Dose",
+              "ve": "DS",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.98
+            },
+            {
+              "artikelnr": "379155",
+              "bezeichnung": "Karamellsauce 1kg",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.45
+            },
+            {
+              "artikelnr": "370484",
+              "bezeichnung": "Kichererbsen 425ml",
+              "einheit": "Dose",
+              "ve": "DS",
+              "preis_ve": 7.08,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.59
+            },
+            {
+              "artikelnr": "628521",
+              "bezeichnung": "Kokos-Chips 600g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.85
+            },
+            {
+              "artikelnr": "257967",
+              "bezeichnung": "One&Only Coffee Flavoured Frappé Powder 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 66.0,
+              "stk_pro_ve": 6.0,
+              "preis_stk": 11.0
+            },
+            {
+              "artikelnr": "451991",
+              "bezeichnung": "Oreo Original 154g",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": 23.84,
+              "stk_pro_ve": 16.0,
+              "preis_stk": 1.49
+            },
+            {
+              "artikelnr": "50197",
+              "bezeichnung": "Palapa Tortilla Chips Natur 800g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.85
+            },
+            {
+              "artikelnr": "434984",
+              "bezeichnung": "Pistazien Topping 200g",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.49
+            },
+            {
+              "artikelnr": "874661",
+              "bezeichnung": "Bio Langkorn Jasminreis 5kg",
+              "einheit": "Sack",
+              "ve": "SK",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 14.65
+            },
+            {
+              "artikelnr": "63102",
+              "bezeichnung": "Röstzwiebeln 500g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.54
+            },
+            {
+              "artikelnr": "723701",
+              "bezeichnung": "Salatveredler mit Pinienkernen Kluth 500g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 7.29
+            },
+            {
+              "artikelnr": "707186",
+              "bezeichnung": "Salzbeutel Transgourmet Quality 2000x1g",
+              "einheit": "Beutel",
+              "ve": "KT",
+              "preis_ve": 8.54,
+              "stk_pro_ve": 2000.0,
+              "preis_stk": 0.0042699999999999995
+            },
+            {
+              "artikelnr": "662040",
+              "bezeichnung": "Sesam schwarz 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.32
+            },
+            {
+              "artikelnr": "6477",
+              "bezeichnung": "Speisesalz 500g",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": 5.28,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.22
+            },
+            {
+              "artikelnr": "829463",
+              "bezeichnung": "Walnusskerne Bruch1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 12.264
+            },
+            {
+              "artikelnr": "737452",
+              "bezeichnung": "Zuckersticks Fairtrade 1000x4g",
+              "einheit": "Beutel",
+              "ve": "KT",
+              "preis_ve": 17.98,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.01798
+            }
+          ]
+        },
+        {
+          "name": "Öl",
+          "artikel": [
+            {
+              "artikelnr": "880091",
+              "bezeichnung": "Olivenöl Luglio 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.27
+            },
+            {
+              "artikelnr": "369596",
+              "bezeichnung": "Traubenkernöl 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 9.85
+            }
+          ]
+        },
+        {
+          "name": "Kühlwaren",
+          "artikel": [
+            {
+              "artikelnr": "51921",
+              "bezeichnung": "Bio Räuchertofu ´Mandel-Sesam´ vegan frisch 200g",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.68
+            },
+            {
+              "artikelnr": "380706",
+              "bezeichnung": "Eier S gekocht&geschält frisch 60 St",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 17.84
+            },
+            {
+              "artikelnr": "103640",
+              "bezeichnung": "Eier S gekocht&geschält, Bodenhaltung frisch 30St",
+              "einheit": "Karton",
+              "ve": "KT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 11.64
+            },
+            {
+              "artikelnr": "459326",
+              "bezeichnung": "Frischkäse Natur 60% frisch 1,5kg",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 8.98
+            },
+            {
+              "artikelnr": "464024",
+              "bezeichnung": "Frische Kartoffeln Midis ´Freshline´ 2kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.58
+            },
+            {
+              "artikelnr": "76199",
+              "bezeichnung": "Grilled Tomaten-Tortillas ´Funtastic´ frisch 10St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 3.89,
+              "stk_pro_ve": 10.0,
+              "preis_stk": 0.389
+            },
+            {
+              "artikelnr": "96661",
+              "bezeichnung": "Hummus Classic frisch Neni 1 kg",
+              "einheit": "Becher",
+              "ve": "BE",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.75
+            },
+            {
+              "artikelnr": "490163",
+              "bezeichnung": "Italienischer Hartkäse gehobelt 32% frisch 500g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 7.15
+            },
+            {
+              "artikelnr": "955127",
+              "bezeichnung": "Joghurtalternative Natur mit Kokosnuss frisch 400g",
+              "einheit": "Becher",
+              "ve": "BE",
+              "preis_ve": 6.9,
+              "stk_pro_ve": 6.0,
+              "preis_stk": 1.1500000000000001
+            },
+            {
+              "artikelnr": "296953",
+              "bezeichnung": "Kräuterquark 40% frisch Gastro 5kg",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 17.25
+            },
+            {
+              "artikelnr": "647649",
+              "bezeichnung": "Mozzarella Brot 45% frisch 1kg",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 7.74
+            },
+            {
+              "artikelnr": "817649",
+              "bezeichnung": "Mozzarella Scheiben 45% TK 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 9.98
+            },
+            {
+              "artikelnr": "52061",
+              "bezeichnung": "Rahmfrischkäse natur 60% frisch 3,5kg",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 22.04
+            },
+            {
+              "artikelnr": "495783",
+              "bezeichnung": "Sahnejoghurt 10% frisch Gazi 1kg",
+              "einheit": "Eimer",
+              "ve": "EI",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.14
+            },
+            {
+              "artikelnr": "790201",
+              "bezeichnung": "Frischcreme Natur vegan frisch 400g",
+              "einheit": "Schale",
+              "ve": "SC",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.89
+            },
+            {
+              "artikelnr": "45651",
+              "bezeichnung": "Violife Greek White Block vegan frisch 172g",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.08
+            },
+            {
+              "artikelnr": "788842",
+              "bezeichnung": "Violife Greek White Block 29% frisch 1,2kg",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 22.197
+            }
+          ]
+        },
+        {
+          "name": "Diverses",
+          "artikel": [
+            {
+              "artikelnr": "318419",
+              "bezeichnung": "Einmalhandschuhe Strong Damen 100St",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.344
+            },
+            {
+              "artikelnr": "318426",
+              "bezeichnung": "Einmalhandschuhe Strong Herren 100St",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.344
+            },
+            {
+              "artikelnr": "749338",
+              "bezeichnung": "Latex Handschuhe puderfrei schwarz L 100St",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.85
+            },
+            {
+              "artikelnr": "749337",
+              "bezeichnung": "Latex Handschuhe puderfrei schwarz M 100St",
+              "einheit": "Karton",
+              "ve": "KT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.85
+            },
+            {
+              "artikelnr": "805896",
+              "bezeichnung": "Müllsäcke Gigant blau 120L, 58my, 20St",
+              "einheit": "Karton",
+              "ve": "RL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.9
+            },
+            {
+              "artikelnr": "765362",
+              "bezeichnung": "Thermorollen Blue4est 80mmx80m",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.72
+            },
+            {
+              "artikelnr": "980036",
+              "bezeichnung": "Vinyl-Handschuhe puderfrei weiss L 100St",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.99
+            },
+            {
+              "artikelnr": "979832",
+              "bezeichnung": "Vinyl-Handschuhe puderfrei weiss M 100St",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.99
+            },
+            {
+              "artikelnr": "979641",
+              "bezeichnung": "Vinyl-Handschuhe puderfrei weiss S 100St",
+              "einheit": "Karton",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.762
+            },
+            {
+              "artikelnr": "980180",
+              "bezeichnung": "Vinyl-Handschuhe puderfrei weiss XL 100St",
+              "einheit": "Karton",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.99
+            }
+          ]
+        },
+        {
+          "name": "Besteck und Verpackung",
+          "artikel": [
+            {
+              "artikelnr": "705595",
+              "bezeichnung": "B153_BOWLSCHALE MAISSTÄRKE ST",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 31.6,
+              "stk_pro_ve": 200.0,
+              "preis_stk": 0.158
+            },
+            {
+              "artikelnr": "775554",
+              "bezeichnung": "B153_DECKEL FÜR BOWL 300ST",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 39.459,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.13153
+            },
+            {
+              "artikelnr": "918333",
+              "bezeichnung": "B153_PAPIERBECHER 0,5L 1000ST",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 115.241,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.115241
+            },
+            {
+              "artikelnr": "473171",
+              "bezeichnung": "B153_Flachdeckel 90mm weiss 1000St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 46.7,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.046700000000000005
+            },
+            {
+              "artikelnr": "804159",
+              "bezeichnung": "B153_Einwickelpap. 31x40cm 1000St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 34.962,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.034962
+            },
+            {
+              "artikelnr": "158803",
+              "bezeichnung": "B153_Faltenbeutel 4-f. 1000St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 25.967,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.025966999999999997
+            },
+            {
+              "artikelnr": "776799",
+              "bezeichnung": "B153_Papiertragetasche 250St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 54.985,
+              "stk_pro_ve": 250.0,
+              "preis_stk": 0.21994
+            },
+            {
+              "artikelnr": "42005",
+              "bezeichnung": "B153_Deckel f.Salatschale 300St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 42.567,
+              "stk_pro_ve": 300.0,
+              "preis_stk": 0.14189
+            },
+            {
+              "artikelnr": "159852",
+              "bezeichnung": "Clear Cups 300ml 50St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 5.76,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 0.1152
+            },
+            {
+              "artikelnr": "160094",
+              "bezeichnung": "Clear Cups 500ml 50St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 7.85,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 0.157
+            },
+            {
+              "artikelnr": "160278",
+              "bezeichnung": "Deckel mit Kreuzschlitz für Clear Cups 100St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 4.62,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.0462
+            },
+            {
+              "artikelnr": "378542",
+              "bezeichnung": "Pappteller eckig 11x17cm weiß aus Frischfaser 100St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 1.99,
+              "stk_pro_ve": 100.0,
+              "preis_stk": 0.0199
+            },
+            {
+              "artikelnr": "814037",
+              "bezeichnung": "B153_Löffel Immergrün  40x25St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 67.8,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.0678
+            },
+            {
+              "artikelnr": "886548",
+              "bezeichnung": "B153_Messer Immergrün  40x25St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 67.8,
+              "stk_pro_ve": 1000.0,
+              "preis_stk": 0.0678
+            }
+          ]
+        },
+        {
+          "name": "Getränke",
+          "artikel": [
+            {
+              "artikelnr": "366874",
+              "bezeichnung": "Coca-Cola Light PET Mw 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.68,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "922136",
+              "bezeichnung": "Coca-Cola Light 0,33l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 16.8,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.7000000000000001
+            },
+            {
+              "artikelnr": "965150",
+              "bezeichnung": "Coca-Cola PET Mw 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.68,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "297094",
+              "bezeichnung": "Coca-Cola 0,33l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 16.8,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.7000000000000001
+            },
+            {
+              "artikelnr": "165554",
+              "bezeichnung": "Coca-Cola Zero PET Mw 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.68,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "359184",
+              "bezeichnung": "Coca-Cola Zero 0,33l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 16.344,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.681
+            },
+            {
+              "artikelnr": "959924",
+              "bezeichnung": "Lift Apfelschorle 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.66,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 0.8883333333333333
+            },
+            {
+              "artikelnr": "728311",
+              "bezeichnung": "Proviant Bio Apfelschorle 0,33 L MW",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 20.16,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.84
+            },
+            {
+              "artikelnr": "477678",
+              "bezeichnung": "Proviant Bio Rhabarberlimo 0,33L MW",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 20.64,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.86
+            },
+            {
+              "artikelnr": "374077",
+              "bezeichnung": "Eistee Granatapfel Rauch MW 0,33L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 21.36,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "269609",
+              "bezeichnung": "Eistee Zitrone Rauch 0,33L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 21.36,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "698423",
+              "bezeichnung": "Eistee Pfirsich Rauch 0,33 Liter",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 21.36,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 0.89
+            },
+            {
+              "artikelnr": "916104",
+              "bezeichnung": "Red Bull 0,25L",
+              "einheit": "Dose",
+              "ve": "DS",
+              "preis_ve": 15.84,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 1.32
+            },
+            {
+              "artikelnr": "989654",
+              "bezeichnung": "Vio Bio Dark Berry 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 17.64,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.98
+            },
+            {
+              "artikelnr": "26603",
+              "bezeichnung": "Vio Bio Limo Zitrone-Limette PET 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 17.64,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.98
+            },
+            {
+              "artikelnr": "938216",
+              "bezeichnung": "Vio Bio Limo Zitrone-Limette 0,3l (Glasfalsche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 33.12,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 1.38
+            },
+            {
+              "artikelnr": "26698",
+              "bezeichnung": "Vio Bio Limo Orange PET 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 17.64,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.98
+            },
+            {
+              "artikelnr": "835706",
+              "bezeichnung": "Vio Bio Limo Orange 0,3l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 33.12,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 1.38
+            },
+            {
+              "artikelnr": "824048",
+              "bezeichnung": "Vio Schorle Johannisbeere 0,3l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 33.12,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 1.38
+            },
+            {
+              "artikelnr": "808338",
+              "bezeichnung": "Vio Schorle Rhabarber 0,3l (Glasflasche)",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 33.12,
+              "stk_pro_ve": 24.0,
+              "preis_stk": 1.38
+            },
+            {
+              "artikelnr": "759359",
+              "bezeichnung": "Vio Mineralwasser medium PET 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.08,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.56
+            },
+            {
+              "artikelnr": "445160",
+              "bezeichnung": "Vio Mineralwasser still PET 0,5L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": 10.08,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.56
+            }
+          ]
+        },
+        {
+          "name": "Tiefkühlwaren",
+          "artikel": [
+            {
+              "artikelnr": "680",
+              "bezeichnung": "Ananas-Stücke TK 2,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 7.75
+            },
+            {
+              "artikelnr": "574541",
+              "bezeichnung": "B153_Avocadowürfel TK 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.762
+            },
+            {
+              "artikelnr": "762797",
+              "bezeichnung": "B153_GEMÜSE WÜRF.MARIN.TK 1KG",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 10.333
+            },
+            {
+              "artikelnr": "199713",
+              "bezeichnung": "B153_PULL.RÄUCH.LACHS TK Schale 500g",
+              "einheit": "Schale",
+              "ve": "SL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 9.66
+            },
+            {
+              "artikelnr": "775865",
+              "bezeichnung": "B153_ROTE BETE EINGELEGT TK 1,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 8.337
+            },
+            {
+              "artikelnr": "892847",
+              "bezeichnung": "B153_ROTE ZWIEBEL EING. TK 1,5KG",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.842
+            },
+            {
+              "artikelnr": "810035",
+              "bezeichnung": "B153_ROTKOHL EINGELEGT TK 1,5KG",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.382
+            },
+            {
+              "artikelnr": "390781",
+              "bezeichnung": "B153_SINUS authentic Falafel TK 150x20g",
+              "einheit": "Karton",
+              "ve": "KT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 17.492
+            },
+            {
+              "artikelnr": "65601",
+              "bezeichnung": "Bulgur-Köfte vegan TK",
+              "einheit": "Schale",
+              "ve": "SL",
+              "preis_ve": 28.952,
+              "stk_pro_ve": 8.0,
+              "preis_stk": 3.619
+            },
+            {
+              "artikelnr": "878375",
+              "bezeichnung": "Crushed Ice TK 5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 3.98
+            },
+            {
+              "artikelnr": "148425",
+              "bezeichnung": "Drachenfruchtwürfel TK 2kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 50.65,
+              "stk_pro_ve": 6.0,
+              "preis_stk": 8.441666666666666
+            },
+            {
+              "artikelnr": "897494",
+              "bezeichnung": "Edamame TK  TGQ 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 2.89
+            },
+            {
+              "artikelnr": "491310",
+              "bezeichnung": "Erdbeeren TK 2,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 6.34
+            },
+            {
+              "artikelnr": "499105",
+              "bezeichnung": "Erdbeersorbet TK 3,5kg",
+              "einheit": "Wanne",
+              "ve": "WA",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 20.642
+            },
+            {
+              "artikelnr": "438263",
+              "bezeichnung": "Granatapfel-Kerne TK 1000g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 4.45
+            },
+            {
+              "artikelnr": "568593",
+              "bezeichnung": "Himbeeren TK 2,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 23.64
+            },
+            {
+              "artikelnr": "499111",
+              "bezeichnung": "Joghurteis TK 3,5kg",
+              "einheit": "Wanne",
+              "ve": "WA",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 20.642
+            },
+            {
+              "artikelnr": "499108",
+              "bezeichnung": "Mangosorbet TK 3,5kg",
+              "einheit": "Wanne",
+              "ve": "WA",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 20.642
+            },
+            {
+              "artikelnr": "217781",
+              "bezeichnung": "Mangostücke TK 2,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 7.85
+            },
+            {
+              "artikelnr": "542005",
+              "bezeichnung": "Mega-Cookie Choc Chip TK 103g",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 30.58,
+              "stk_pro_ve": 30.0,
+              "preis_stk": 1.0193333333333332
+            },
+            {
+              "artikelnr": "542043",
+              "bezeichnung": "Mega-Cookie Double Chocolate TK 103g",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 33.14,
+              "stk_pro_ve": 30.0,
+              "preis_stk": 1.1046666666666667
+            },
+            {
+              "artikelnr": "264454",
+              "bezeichnung": "Palapa Weizentortilla 30cm TK 5x10St",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 14.9,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 0.298
+            },
+            {
+              "artikelnr": "481960",
+              "bezeichnung": "Pfirsich-Segmente TK 10kg",
+              "einheit": "Karton",
+              "ve": "KT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 23.48
+            },
+            {
+              "artikelnr": "687735",
+              "bezeichnung": "Pulled Beef Barbacoa Halal TK 12x500g",
+              "einheit": "Karton",
+              "ve": "KA",
+              "preis_ve": 115.0,
+              "stk_pro_ve": 12.0,
+              "preis_stk": 9.583333333333334
+            },
+            {
+              "artikelnr": "669852",
+              "bezeichnung": "Tomaten-Tortilla 30cm TK 18St (1650g)",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 8.904,
+              "stk_pro_ve": 18.0,
+              "preis_stk": 0.49466666666666664
+            },
+            {
+              "artikelnr": "995825",
+              "bezeichnung": "Hähnchengeschnetzeltes TK 2,5kg",
+              "einheit": "Karton",
+              "ve": "KA",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 71.6
+            },
+            {
+              "artikelnr": "815926",
+              "bezeichnung": "Weizentortilla Spinat ´Palapa´ 30cm TK 5x10ST",
+              "einheit": "Stück",
+              "ve": "STK",
+              "preis_ve": 15.98,
+              "stk_pro_ve": 50.0,
+              "preis_stk": 0.3196
+            },
+            {
+              "artikelnr": "30083",
+              "bezeichnung": "Wildheidelbeeren TK 2,5kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 18.24
+            }
+          ]
+        },
+        {
+          "name": "Reinigungsmittel",
+          "artikel": [
+            {
+              "artikelnr": "164269",
+              "bezeichnung": "Assert Lemon 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 8.337
+            },
+            {
+              "artikelnr": "567916",
+              "bezeichnung": "Claramat 2kg",
+              "einheit": "Packung",
+              "ve": "PG",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 1.512
+            },
+            {
+              "artikelnr": "500548",
+              "bezeichnung": "Desguard 20 Konzentrat 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 32.448
+            },
+            {
+              "artikelnr": "72335",
+              "bezeichnung": "Epicare 2 500ML",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 9.814
+            },
+            {
+              "artikelnr": "332866",
+              "bezeichnung": "Epicare Des 500ML",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 13.973
+            },
+            {
+              "artikelnr": "500746",
+              "bezeichnung": "Glasscare 40 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 37.3
+            },
+            {
+              "artikelnr": "734752",
+              "bezeichnung": "KitchenPro Duo 2L",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 37.095
+            },
+            {
+              "artikelnr": "150087",
+              "bezeichnung": "Maschinen-Geschirr-Reiniger für Weichwasser 12kg",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 22.45
+            },
+            {
+              "artikelnr": "491082",
+              "bezeichnung": "Sahne-und Eismaschinen-Reiniger 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 11.15
+            },
+            {
+              "artikelnr": "215770",
+              "bezeichnung": "Sirafan Speed 750ML",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 16.02
+            },
+            {
+              "artikelnr": "265758",
+              "bezeichnung": "Spülmittel 1L",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 0.9
+            },
+            {
+              "artikelnr": "993487",
+              "bezeichnung": "Toprinse uni 10L",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 85.62
+            },
+            {
+              "artikelnr": "935777",
+              "bezeichnung": "Trump Supra Plus 12kg",
+              "einheit": "Kanister",
+              "ve": "KN",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 79.97
+            }
+          ]
+        },
+        {
+          "name": "Frische (CF Gastro)",
+          "artikel": [
+            {
+              "artikelnr": "11032510",
+              "bezeichnung": "Ananas",
+              "einheit": "Stk",
+              "ve": "ST",
+              "preis_ve": 3.25,
+              "stk_pro_ve": null,
+              "preis_stk": 3.25
+            },
+            {
+              "artikelnr": "11534697",
+              "bezeichnung": "Äpfel für Saft",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 1.17,
+              "stk_pro_ve": null,
+              "preis_stk": 1.17
+            },
+            {
+              "artikelnr": "23710015",
+              "bezeichnung": "Babyspinat 300g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 2.196,
+              "stk_pro_ve": null,
+              "preis_stk": 2.196
+            },
+            {
+              "artikelnr": "12110510",
+              "bezeichnung": "Bananen kg",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 1.96,
+              "stk_pro_ve": null,
+              "preis_stk": 1.96
+            },
+            {
+              "artikelnr": "26986010",
+              "bezeichnung": "Blattsalatmischung immergrün",
+              "einheit": "Beutel",
+              "ve": "KG",
+              "preis_ve": 6.57,
+              "stk_pro_ve": null,
+              "preis_stk": 6.57
+            },
+            {
+              "artikelnr": "15630510",
+              "bezeichnung": "Cocktailtomate",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 5.46,
+              "stk_pro_ve": null,
+              "preis_stk": 5.46
+            },
+            {
+              "artikelnr": "13330515",
+              "bezeichnung": "Gurken",
+              "einheit": "Stk",
+              "ve": "ST",
+              "preis_ve": 0.95,
+              "stk_pro_ve": null,
+              "preis_stk": 0.95
+            },
+            {
+              "artikelnr": "16060510",
+              "bezeichnung": "Ingwer",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 4.95,
+              "stk_pro_ve": null,
+              "preis_stk": 4.95
+            },
+            {
+              "artikelnr": "16300515",
+              "bezeichnung": "Mango",
+              "einheit": "Stk",
+              "ve": "ST",
+              "preis_ve": 2.05,
+              "stk_pro_ve": null,
+              "preis_stk": 2.05
+            },
+            {
+              "artikelnr": "13298331",
+              "bezeichnung": "Minze 100g",
+              "einheit": "Schale",
+              "ve": "SL",
+              "preis_ve": 2.65,
+              "stk_pro_ve": null,
+              "preis_stk": 2.65
+            },
+            {
+              "artikelnr": "24162010",
+              "bezeichnung": "Möhrenstifte 1kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 3.1,
+              "stk_pro_ve": null,
+              "preis_stk": 3.1
+            },
+            {
+              "artikelnr": "14900510",
+              "bezeichnung": "Rote Bete",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 1.05,
+              "stk_pro_ve": null,
+              "preis_stk": 1.05
+            },
+            {
+              "artikelnr": "25048010",
+              "bezeichnung": "Rotkohl (in Streifen)",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 2.6,
+              "stk_pro_ve": null,
+              "preis_stk": 2.6
+            },
+            {
+              "artikelnr": "25112038",
+              "bezeichnung": "Rucola 250g",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 2.51,
+              "stk_pro_ve": null,
+              "preis_stk": 2.51
+            },
+            {
+              "artikelnr": "12350050",
+              "bezeichnung": "Saftorangen",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 1.59,
+              "stk_pro_ve": null,
+              "preis_stk": 1.59
+            },
+            {
+              "artikelnr": "15210510",
+              "bezeichnung": "Staudensellerie",
+              "einheit": "Stk",
+              "ve": "ST",
+              "preis_ve": 1.39,
+              "stk_pro_ve": null,
+              "preis_stk": 1.39
+            },
+            {
+              "artikelnr": "25685020",
+              "bezeichnung": "Tomatenwürfel 2kg",
+              "einheit": "Beutel",
+              "ve": "BT",
+              "preis_ve": 13.88,
+              "stk_pro_ve": null,
+              "preis_stk": 13.88
+            },
+            {
+              "artikelnr": "14120510",
+              "bezeichnung": "Waschmöhren",
+              "einheit": "KG",
+              "ve": "KG",
+              "preis_ve": 1.25,
+              "stk_pro_ve": null,
+              "preis_stk": 1.25
+            },
+            {
+              "artikelnr": "12500510",
+              "bezeichnung": "Zitrone",
+              "einheit": "Stk",
+              "ve": "ST",
+              "preis_ve": 0.38,
+              "stk_pro_ve": null,
+              "preis_stk": 0.38
+            }
+          ]
+        },
+        {
+          "name": "Kampagnenprodukte",
+          "artikel": [
+            {
+              "artikelnr": "676785",
+              "bezeichnung": "Monin Cloudy Lemonade trüb",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.58
+            },
+            {
+              "artikelnr": "431232",
+              "bezeichnung": "Teisseire Mango",
+              "einheit": "Flasche",
+              "ve": "FL",
+              "preis_ve": null,
+              "stk_pro_ve": null,
+              "preis_stk": 5.3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "legende_ve": {
+    "TF": "Tafel",
+    "RG": "Riegel",
+    "ST": "Stange",
+    "KN": "Kanister",
+    "SK": "Sack",
+    "PG": "Packung",
+    "GL": "Glas",
+    "FL": "Flasche",
+    "SL": "Schale",
+    "KT": "Karton",
+    "BT": "Beutel",
+    "DS": "Dose",
+    "EI": "Eimer",
+    "VE": "VE",
+    "KA": "Karton",
+    "RO": "Rolle",
+    "BE": "Becher",
+    "WA": "Wanne",
+    "STK": "Stück",
+    "STK ": "Stück"
+  }
+}

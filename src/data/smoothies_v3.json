@@ -1,0 +1,3228 @@
+{
+  "meta": {
+    "quelle": "Smoothies_Wareneinsatz_2026_v3_2.xlsx",
+    "stand": "2026",
+    "anzahl_produkte": 51,
+    "anzahl_zutaten": 37
+  },
+  "produkte": [
+    {
+      "id": "smoothie_r001",
+      "name": "Erdbeerliebe 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 120.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.1128
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.22859999999999997
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r002",
+      "name": "Erdbeerliebe 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 130.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.1222
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.16
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 95.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.2413
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r003",
+      "name": "Erdbeerliebe 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.141
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.18666666666666665
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.25399999999999995
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r004",
+      "name": "Mangorausch 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 260.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.377
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.24256
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r005",
+      "name": "Mangorausch 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 280.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.40599999999999997
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 85.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.25772
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r006",
+      "name": "Mangorausch 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.43499999999999994
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.27288
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r007",
+      "name": "Coco Mango 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Mangonektar",
+          "menge_g": 170.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.2465
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.27288
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r008",
+      "name": "Coco Mango 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Mangonektar",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.31899999999999995
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 95.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.28804
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r009",
+      "name": "Coco Mango 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Mangonektar",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.3625
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.3032
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r010",
+      "name": "Happy Flamingo 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Orangensaft",
+          "menge_g": 260.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0021000000000000003,
+          "cost": 0.546
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.18192
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.22884000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r011",
+      "name": "Happy Flamingo 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Orangensaft",
+          "menge_g": 280.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0021000000000000003,
+          "cost": 0.5880000000000001
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.21223999999999998
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.22884000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r012",
+      "name": "Happy Flamingo 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Orangensaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0021000000000000003,
+          "cost": 0.6300000000000001
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.24256
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.211
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.22884000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r013",
+      "name": "Tropic Sprinter 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.31899999999999995
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.12128
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.22884000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.062
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r014",
+      "name": "Tropic Sprinter 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.3625
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.1516
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.22884000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.0775
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r015",
+      "name": "Tropic Sprinter 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 270.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.39149999999999996
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Mangosorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 55.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.16676
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.30512
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.0775
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r016",
+      "name": "Pink Paradise 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 260.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.377
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.1016
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r017",
+      "name": "Pink Paradise 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 280.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.40599999999999997
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.11429999999999998
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r018",
+      "name": "Pink Paradise 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.43499999999999994
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.12699999999999997
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.211
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r019",
+      "name": "Grüner Gorilla 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.506
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frischer Spinat",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.009000000000000001,
+          "cost": 0.18000000000000002
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.3032
+        },
+        {
+          "name": "Spirulina (grün)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02,
+          "cost": 0.06
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r020",
+      "name": "Grüner Gorilla 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.575
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frischer Spinat",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.009000000000000001,
+          "cost": 0.18000000000000002
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 110.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.33352
+        },
+        {
+          "name": "Spirulina (grün)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02,
+          "cost": 0.06
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r021",
+      "name": "Grüner Gorilla 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 280.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.644
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frischer Spinat",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.009000000000000001,
+          "cost": 0.18000000000000002
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 120.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.36384
+        },
+        {
+          "name": "Spirulina (grün)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02,
+          "cost": 0.06
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r022",
+      "name": "Banana Power 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.10799999999999998
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.17779999999999999
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r023",
+      "name": "Banana Power 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 180.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.1296
+        },
+        {
+          "name": "Banane",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0888
+        },
+        {
+          "name": "Honig",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.14450000000000002
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 75.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.19049999999999997
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r024",
+      "name": "Banana Power 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.144
+        },
+        {
+          "name": "Banane",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.1184
+        },
+        {
+          "name": "Honig",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.14450000000000002
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.2032
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Erdbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r025",
+      "name": "Oat Berry Beauty 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.17
+        },
+        {
+          "name": "Hafermilch",
+          "menge_g": 160.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.16
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.657
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.21999999999999997
+        },
+        {
+          "name": "Haferflocken",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004,
+          "cost": 0.12
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r026",
+      "name": "Oat Berry Beauty 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Hafermilch",
+          "menge_g": 180.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.18
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.73
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.21999999999999997
+        },
+        {
+          "name": "Haferflocken",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004,
+          "cost": 0.12
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.95,
+      "vk_out_brutto": 8.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r027",
+      "name": "Oat Berry Beauty 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Kokosmilch",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.255
+        },
+        {
+          "name": "Hafermilch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.2
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 110.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.803
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.21999999999999997
+        },
+        {
+          "name": "Haferflocken",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004,
+          "cost": 0.12
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 9.95,
+      "vk_out_brutto": 9.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r028",
+      "name": "Mangoberry 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.31899999999999995
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.2032
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r029",
+      "name": "Mangoberry 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.3625
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 85.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.21589999999999998
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r030",
+      "name": "Mangoberry 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Mangonektar",
+          "menge_g": 270.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00145,
+          "cost": 0.39149999999999996
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.22859999999999997
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r031",
+      "name": "Superfood Berry 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.506
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.657
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r032",
+      "name": "Superfood Berry 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.575
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.73
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r033",
+      "name": "Superfood Berry 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 280.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.644
+        },
+        {
+          "name": "Heidelbeeren TK",
+          "menge_g": 110.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0073,
+          "cost": 0.803
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r034",
+      "name": "Exotic Dragon 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.1016
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r035",
+      "name": "Exotic Dragon 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 230.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.529
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.12699999999999997
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r036",
+      "name": "Exotic Dragon 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Frischer Apfelsaft",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.575
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.15239999999999998
+        },
+        {
+          "name": "Drachenfrucht TK",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.1688
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r037",
+      "name": "Himbeer Himmel 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.094
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.10666666666666666
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.11429999999999998
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.34326
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r038",
+      "name": "Himbeer Himmel 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 130.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.1222
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.12
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.12699999999999997
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.3814
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r039",
+      "name": "Himbeer Himmel 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00094,
+          "cost": 0.141
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Erdbeersorbet",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0026666666666666666,
+          "cost": 0.13333333333333333
+        },
+        {
+          "name": "Erdbeeren TK",
+          "menge_g": 55.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025399999999999997,
+          "cost": 0.1397
+        },
+        {
+          "name": "Himbeeren TK",
+          "menge_g": 55.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007628,
+          "cost": 0.41954
+        },
+        {
+          "name": "Himbeerpüree (Deko)",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014,
+          "cost": 0.28
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r040",
+      "name": "Cookie Monster 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 180.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.1296
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.017759999999999998
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.1307017543859649
+        },
+        {
+          "name": "Schokoladensoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.2215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r041",
+      "name": "Cookie Monster 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.144
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.02368
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.1568421052631579
+        },
+        {
+          "name": "Schokoladensoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.2215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r042",
+      "name": "Cookie Monster 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.15839999999999999
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 5.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.0296
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.18298245614035089
+        },
+        {
+          "name": "Schokoladensoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.2215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r043",
+      "name": "Peanut Boost 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 160.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.1152
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 2.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.01184
+        },
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008571428571428572,
+          "cost": 0.17142857142857143
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.10456140350877192
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r044",
+      "name": "Peanut Boost 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 180.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.1296
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.017759999999999998
+        },
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008571428571428572,
+          "cost": 0.2142857142857143
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.11763157894736842
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r045",
+      "name": "Peanut Boost 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.144
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.017759999999999998
+        },
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008571428571428572,
+          "cost": 0.2571428571428572
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.1307017543859649
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r046",
+      "name": "Coffee Caramel Kiss 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 180.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.1296
+        },
+        {
+          "name": "Kaffee Frappe",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005,
+          "cost": 0.015
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 1.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.00592
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.10456140350877192
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.45,
+      "vk_out_brutto": 6.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r047",
+      "name": "Coffee Caramel Kiss 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.144
+        },
+        {
+          "name": "Kaffee Frappe",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005,
+          "cost": 0.02
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 1.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.00592
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.11763157894736842
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.45,
+      "vk_out_brutto": 7.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r048",
+      "name": "Coffee Caramel Kiss 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Milch",
+          "menge_g": 220.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0007199999999999999,
+          "cost": 0.15839999999999999
+        },
+        {
+          "name": "Kaffee Frappe",
+          "menge_g": 5.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005,
+          "cost": 0.025
+        },
+        {
+          "name": "Frappe weiß",
+          "menge_g": 2.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00592,
+          "cost": 0.01184
+        },
+        {
+          "name": "Joghurteis (Naturjoghurt)",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002614035087719298,
+          "cost": 0.1307017543859649
+        },
+        {
+          "name": "Karamellsoße",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00478,
+          "cost": 0.0956
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.45,
+      "vk_out_brutto": 8.45,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    },
+    {
+      "id": "smoothie_r049",
+      "name": "Blue Bloom 400ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Hafermilch",
+          "menge_g": 160.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.16
+        },
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.13949999999999999
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 45.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.13644
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 1.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.022
+        },
+        {
+          "name": "Spirulina (blau)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.1,
+          "cost": 0.30000000000000004
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 7.95,
+      "vk_out_brutto": 7.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 400
+      }
+    },
+    {
+      "id": "smoothie_r050",
+      "name": "Blue Bloom 500ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Hafermilch",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.2
+        },
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Honig",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.11560000000000001
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.155
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.1516
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 1.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.022
+        },
+        {
+          "name": "Spirulina (blau)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.1,
+          "cost": 0.30000000000000004
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 8.95,
+      "vk_out_brutto": 8.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 500
+      }
+    },
+    {
+      "id": "smoothie_r051",
+      "name": "Blue Bloom 600ml",
+      "gruppe": "Smoothies",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Hafermilch",
+          "menge_g": 230.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.001,
+          "cost": 0.23
+        },
+        {
+          "name": "Kokosmilch",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00425,
+          "cost": 0.21250000000000002
+        },
+        {
+          "name": "Honig",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00578,
+          "cost": 0.14450000000000002
+        },
+        {
+          "name": "Ananas TK",
+          "menge_g": 55.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.17049999999999998
+        },
+        {
+          "name": "Mango TK",
+          "menge_g": 55.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003032,
+          "cost": 0.16676
+        },
+        {
+          "name": "Vanille Protein",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.02149,
+          "cost": 0.21489999999999998
+        },
+        {
+          "name": "Kollagen Pulver",
+          "menge_g": 1.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.022,
+          "cost": 0.022
+        },
+        {
+          "name": "Spirulina (blau)",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.1,
+          "cost": 0.30000000000000004
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 9.95,
+      "vk_out_brutto": 9.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "alte_kategorie": null,
+      "meta": {
+        "portion_ml": 600
+      }
+    }
+  ],
+  "price_list": [
+    {
+      "ingredient_name": "Milch",
+      "article_number": "Z001",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 0.72,
+      "price_per_gram_ml": 0.0007199999999999999,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Kokosmilch",
+      "article_number": "Z002",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 4.25,
+      "price_per_gram_ml": 0.00425,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Apfelsaft",
+      "article_number": "Z003",
+      "unit": "ml",
+      "package_size": 1.5,
+      "package_price": 1.41,
+      "price_per_gram_ml": 0.00094,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Mangonektar",
+      "article_number": "Z004",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 1.45,
+      "price_per_gram_ml": 0.00145,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Frischer Orangensaft",
+      "article_number": "Z005",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 2.1,
+      "price_per_gram_ml": 0.0021000000000000003,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Frischer Apfelsaft",
+      "article_number": "Z006",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 2.3,
+      "price_per_gram_ml": 0.0023,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Hafermilch",
+      "article_number": "Z007",
+      "unit": "ml",
+      "package_size": 1,
+      "package_price": 1,
+      "price_per_gram_ml": 0.001,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Banane",
+      "article_number": "Z008",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 1.48,
+      "price_per_gram_ml": 0.00148,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Erdbeeren TK",
+      "article_number": "Z009",
+      "unit": "g",
+      "package_size": 2.5,
+      "package_price": 6.35,
+      "price_per_gram_ml": 0.0025399999999999997,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Mango TK",
+      "article_number": "Z010",
+      "unit": "g",
+      "package_size": 2.5,
+      "package_price": 7.58,
+      "price_per_gram_ml": 0.003032,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Himbeeren TK",
+      "article_number": "Z011",
+      "unit": "g",
+      "package_size": 2.5,
+      "package_price": 19.07,
+      "price_per_gram_ml": 0.007628,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Drachenfrucht TK",
+      "article_number": "Z012",
+      "unit": "g",
+      "package_size": 2,
+      "package_price": 8.44,
+      "price_per_gram_ml": 0.00422,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Heidelbeeren TK",
+      "article_number": "Z013",
+      "unit": "g",
+      "package_size": 2.5,
+      "package_price": 18.25,
+      "price_per_gram_ml": 0.0073,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Ananas TK",
+      "article_number": "Z014",
+      "unit": "g",
+      "package_size": 2.5,
+      "package_price": 7.75,
+      "price_per_gram_ml": 0.0031,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Frischer Spinat",
+      "article_number": "Z015",
+      "unit": "g",
+      "package_size": 0.2,
+      "package_price": 1.8,
+      "price_per_gram_ml": 0.009000000000000001,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Erdbeersorbet",
+      "article_number": "Z016",
+      "unit": "ml",
+      "package_size": 5.7,
+      "package_price": 15.2,
+      "price_per_gram_ml": 0.0026666666666666666,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Mangosorbet",
+      "article_number": "Z017",
+      "unit": "ml",
+      "package_size": 5.7,
+      "package_price": 15.2,
+      "price_per_gram_ml": 0.0026666666666666666,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Joghurteis (Naturjoghurt)",
+      "article_number": "Z018",
+      "unit": "ml",
+      "package_size": 5.7,
+      "package_price": 14.9,
+      "price_per_gram_ml": 0.002614035087719298,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Frappe weiß",
+      "article_number": "Z019",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 5.92,
+      "price_per_gram_ml": 0.00592,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Kaffee Frappe",
+      "article_number": "Z020",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 5,
+      "price_per_gram_ml": 0.005,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Honig",
+      "article_number": "Z021",
+      "unit": "g",
+      "package_size": 0.5,
+      "package_price": 2.89,
+      "price_per_gram_ml": 0.00578,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Erdnussbutter",
+      "article_number": "Z022",
+      "unit": "g",
+      "package_size": 0.35,
+      "package_price": 3,
+      "price_per_gram_ml": 0.008571428571428572,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Vanille Protein",
+      "article_number": "Z023",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 21.49,
+      "price_per_gram_ml": 0.02149,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Kollagen Pulver",
+      "article_number": "Z024",
+      "unit": "g",
+      "package_size": 1.5,
+      "package_price": 33,
+      "price_per_gram_ml": 0.022,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Spirulina (grün)",
+      "article_number": "Z025",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 20,
+      "price_per_gram_ml": 0.02,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Spirulina (blau)",
+      "article_number": "Z026",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 100,
+      "price_per_gram_ml": 0.1,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Haferflocken",
+      "article_number": "Z027",
+      "unit": "g",
+      "package_size": 0.5,
+      "package_price": 2,
+      "price_per_gram_ml": 0.004,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Oreo Cookies",
+      "article_number": "Z028",
+      "unit": "Stück",
+      "package_size": 10,
+      "package_price": 1,
+      "price_per_gram_ml": 0.1,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Erdbeerpüree (Deko)",
+      "article_number": "Z029",
+      "unit": "g",
+      "package_size": 0.5,
+      "package_price": 7,
+      "price_per_gram_ml": 0.014,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Himbeerpüree (Deko)",
+      "article_number": "Z030",
+      "unit": "g",
+      "package_size": 0.5,
+      "package_price": 7,
+      "price_per_gram_ml": 0.014,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Schokoladensoße",
+      "article_number": "Z031",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 4.78,
+      "price_per_gram_ml": 0.00478,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Karamellsoße",
+      "article_number": "Z032",
+      "unit": "g",
+      "package_size": 1,
+      "package_price": 4.78,
+      "price_per_gram_ml": 0.00478,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Becher 0,4l",
+      "article_number": "Z033",
+      "unit": "Stück",
+      "package_size": 1,
+      "package_price": 0.06,
+      "price_per_gram_ml": 0.06,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Becher 0,5l",
+      "article_number": "Z034",
+      "unit": "Stück",
+      "package_size": 1,
+      "package_price": 0.06,
+      "price_per_gram_ml": 0.06,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Becher 0,6l",
+      "article_number": "Z035",
+      "unit": "Stück",
+      "package_size": 1,
+      "package_price": 0.06,
+      "price_per_gram_ml": 0.06,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Strohhalm",
+      "article_number": "Z036",
+      "unit": "Stück",
+      "package_size": 1,
+      "package_price": 0.0385,
+      "price_per_gram_ml": 0.0385,
+      "lieferant": "Transgourmet"
+    },
+    {
+      "ingredient_name": "Deckel",
+      "article_number": "Z037",
+      "unit": "Stück",
+      "package_size": 1,
+      "package_price": 0.023,
+      "price_per_gram_ml": 0.023,
+      "lieferant": "Transgourmet"
+    }
+  ]
+}

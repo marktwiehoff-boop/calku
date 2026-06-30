@@ -1,0 +1,1380 @@
+{
+  "produkte": [
+    {
+      "id": "juice_s01_03",
+      "name": "Raw Boost 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 15.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.220005
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.12768
+        },
+        {
+          "name": "TK Avocado",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00472,
+          "cost": 0.1416
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s01_04",
+      "name": "Raw Boost 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.29334
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.1596
+        },
+        {
+          "name": "TK Avocado",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00472,
+          "cost": 0.18880000000000002
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s01_05",
+      "name": "Raw Boost 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.366675
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.19152
+        },
+        {
+          "name": "TK Avocado",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00472,
+          "cost": 0.23600000000000002
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s02_03",
+      "name": "Ginger Orange 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Ingwer",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.10999999999999999
+        },
+        {
+          "name": "Karottensaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003,
+          "cost": 0.45
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.375
+        },
+        {
+          "name": "Traubenkernöl",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00985,
+          "cost": 0.0394
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s02_04",
+      "name": "Ginger Orange 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Ingwer",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.13749999999999998
+        },
+        {
+          "name": "Karottensaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003,
+          "cost": 0.6
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.5
+        },
+        {
+          "name": "Traubenkernöl",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00985,
+          "cost": 0.0394
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s02_05",
+      "name": "Ginger Orange 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Ingwer",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.16499999999999998
+        },
+        {
+          "name": "Karottensaft",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003,
+          "cost": 0.75
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 250.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.625
+        },
+        {
+          "name": "Traubenkernöl",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00985,
+          "cost": 0.0394
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s03_03",
+      "name": "Sunny Mint 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.06398999999999999
+        },
+        {
+          "name": "Minze",
+          "menge_g": 3.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.066,
+          "cost": 0.198
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.25
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s03_04",
+      "name": "Sunny Mint 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.08532
+        },
+        {
+          "name": "Minze",
+          "menge_g": 4.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.066,
+          "cost": 0.264
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.25
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s03_05",
+      "name": "Sunny Mint 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.10665
+        },
+        {
+          "name": "Minze",
+          "menge_g": 5.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.066,
+          "cost": 0.33
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.375
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s04_03",
+      "name": "Erdbeerwunder 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.17752
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s04_04",
+      "name": "Erdbeerwunder 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 90.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.22824
+        },
+        {
+          "name": "Banane",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0592
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s04_05",
+      "name": "Erdbeerwunder 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 110.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.27896
+        },
+        {
+          "name": "Banane",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00148,
+          "cost": 0.0888
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s05_03",
+      "name": "Exotic Pitaya 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.06398999999999999
+        },
+        {
+          "name": "TK Drachenfrucht",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.2532
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.22999999999999998
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.25
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s05_04",
+      "name": "Exotic Pitaya 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.08532
+        },
+        {
+          "name": "TK Drachenfrucht",
+          "menge_g": 70.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.2954
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.345
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 150.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.375
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s05_05",
+      "name": "Exotic Pitaya 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.10665
+        },
+        {
+          "name": "TK Drachenfrucht",
+          "menge_g": 80.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00422,
+          "cost": 0.3376
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.5
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s06_03",
+      "name": "Himbeertraum 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Himbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.33456
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.09576
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.062
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s06_04",
+      "name": "Himbeertraum 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Himbeere",
+          "menge_g": 35.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.39032
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 35.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.11172
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.062
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s06_05",
+      "name": "Himbeertraum 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Himbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.44608000000000003
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.12768
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s07_03",
+      "name": "Tropico 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.07608000000000001
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.09576
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.062
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.5
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s07_04",
+      "name": "Tropico 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.10144
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.09576
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 0.75
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s07_05",
+      "name": "Tropico 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.1268
+        },
+        {
+          "name": "TK Mango",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003192,
+          "cost": 0.09576
+        },
+        {
+          "name": "TK Ananas",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0031,
+          "cost": 0.093
+        },
+        {
+          "name": "Orangensaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0025,
+          "cost": 1.0
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s08_03",
+      "name": "Green Guru 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 15.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.220005
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Ingwer",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.10999999999999999
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s08_04",
+      "name": "Green Guru 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.29334
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Ingwer",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.13749999999999998
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s08_05",
+      "name": "Green Guru 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Spinat",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014667,
+          "cost": 0.366675
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Ingwer",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0055,
+          "cost": 0.16499999999999998
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s09_03",
+      "name": "Beauty Berry 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.14592
+        },
+        {
+          "name": "TK Himbeere",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.22304000000000002
+        },
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.05072
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s09_04",
+      "name": "Beauty Berry 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.21888000000000002
+        },
+        {
+          "name": "TK Himbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.33456
+        },
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.07608000000000001
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s09_05",
+      "name": "Beauty Berry 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.29184
+        },
+        {
+          "name": "TK Himbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.011152,
+          "cost": 0.44608000000000003
+        },
+        {
+          "name": "TK Erdbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002536,
+          "cost": 0.10144
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s10_03",
+      "name": "Deep Glow 0,3 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.02133
+        },
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.21888000000000002
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Rote Bete",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0032,
+          "cost": 0.096
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 200.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.45999999999999996
+        }
+      ],
+      "verpackung_eur": 0.1165,
+      "vk_in_brutto": 4.95,
+      "vk_out_brutto": 4.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s10_04",
+      "name": "Deep Glow 0,4 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.04266
+        },
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.29184
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Rote Bete",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0032,
+          "cost": 0.128
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 300.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.69
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 5.95,
+      "vk_out_brutto": 5.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "juice_s10_05",
+      "name": "Deep Glow 0,5 l",
+      "gruppe": "Juices",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Zitronensaft",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002133,
+          "cost": 0.06398999999999999
+        },
+        {
+          "name": "TK Heidelbeere",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.007296,
+          "cost": 0.3648
+        },
+        {
+          "name": "Gurke",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.002222,
+          "cost": 0.1111
+        },
+        {
+          "name": "Rote Bete",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0032,
+          "cost": 0.16
+        },
+        {
+          "name": "Apfelsaft",
+          "menge_g": 400.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0023,
+          "cost": 0.9199999999999999
+        }
+      ],
+      "verpackung_eur": 0.1215,
+      "vk_in_brutto": 6.95,
+      "vk_out_brutto": 6.95,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    }
+  ],
+  "price_list": [
+    {
+      "ingredient_name": "Orangensaft",
+      "article_number": "Z001",
+      "package_size": 1.0,
+      "package_unit": "l",
+      "package_price": 2.5,
+      "price_per_gram_ml": 0.0025
+    },
+    {
+      "ingredient_name": "Apfelsaft",
+      "article_number": "Z002",
+      "package_size": 1.0,
+      "package_unit": "l",
+      "package_price": 2.3,
+      "price_per_gram_ml": 0.0023
+    },
+    {
+      "ingredient_name": "Zitronensaft",
+      "article_number": "Z003",
+      "package_size": 0.75,
+      "package_unit": "l",
+      "package_price": 1.6,
+      "price_per_gram_ml": 0.002133
+    },
+    {
+      "ingredient_name": "Karottensaft",
+      "article_number": "Z004",
+      "package_size": 1.0,
+      "package_unit": "l",
+      "package_price": 3.0,
+      "price_per_gram_ml": 0.003
+    },
+    {
+      "ingredient_name": "Spinat",
+      "article_number": "Z005",
+      "package_size": 0.3,
+      "package_unit": "kg",
+      "package_price": 4.4,
+      "price_per_gram_ml": 0.014667
+    },
+    {
+      "ingredient_name": "TK Mango",
+      "article_number": "Z006",
+      "package_size": 2.5,
+      "package_unit": "kg",
+      "package_price": 7.98,
+      "price_per_gram_ml": 0.003192
+    },
+    {
+      "ingredient_name": "TK Avocado",
+      "article_number": "Z007",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 4.72,
+      "price_per_gram_ml": 0.00472
+    },
+    {
+      "ingredient_name": "Ingwer",
+      "article_number": "Z008",
+      "package_size": 1.5,
+      "package_unit": "kg",
+      "package_price": 8.25,
+      "price_per_gram_ml": 0.0055
+    },
+    {
+      "ingredient_name": "Minze",
+      "article_number": "Z009",
+      "package_size": 0.1,
+      "package_unit": "kg",
+      "package_price": 3.3,
+      "price_per_gram_ml": 0.066
+    },
+    {
+      "ingredient_name": "TK Erdbeere",
+      "article_number": "Z010",
+      "package_size": 2.5,
+      "package_unit": "kg",
+      "package_price": 6.34,
+      "price_per_gram_ml": 0.002536
+    },
+    {
+      "ingredient_name": "Banane",
+      "article_number": "Z011",
+      "package_size": 1.0,
+      "package_unit": "kg",
+      "package_price": 1.48,
+      "price_per_gram_ml": 0.00148
+    },
+    {
+      "ingredient_name": "TK Drachenfrucht",
+      "article_number": "Z012",
+      "package_size": 2.0,
+      "package_unit": "kg",
+      "package_price": 8.44,
+      "price_per_gram_ml": 0.00422
+    },
+    {
+      "ingredient_name": "TK Himbeere",
+      "article_number": "Z013",
+      "package_size": 2.5,
+      "package_unit": "kg",
+      "package_price": 27.88,
+      "price_per_gram_ml": 0.011152
+    },
+    {
+      "ingredient_name": "TK Ananas",
+      "article_number": "Z014",
+      "package_size": 2.5,
+      "package_unit": "kg",
+      "package_price": 7.75,
+      "price_per_gram_ml": 0.0031
+    },
+    {
+      "ingredient_name": "Gurke",
+      "article_number": "Z015",
+      "package_size": 0.45,
+      "package_unit": "kg",
+      "package_price": 1.0,
+      "price_per_gram_ml": 0.002222
+    },
+    {
+      "ingredient_name": "TK Heidelbeere",
+      "article_number": "Z016",
+      "package_size": 2.5,
+      "package_unit": "kg",
+      "package_price": 18.24,
+      "price_per_gram_ml": 0.007296
+    },
+    {
+      "ingredient_name": "Rote Bete",
+      "article_number": "Z017",
+      "package_size": 5.0,
+      "package_unit": "kg",
+      "package_price": 16.0,
+      "price_per_gram_ml": 0.0032
+    },
+    {
+      "ingredient_name": "Traubenkernöl",
+      "article_number": "Z018",
+      "package_size": 1.0,
+      "package_unit": "l",
+      "package_price": 9.85,
+      "price_per_gram_ml": 0.00985
+    }
+  ]
+}

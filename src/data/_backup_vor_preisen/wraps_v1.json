@@ -1,0 +1,514 @@
+{
+  "produkte": [
+    {
+      "id": "wrap_caesar_chicken",
+      "name": "Caesar Chicken Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Frischkäse",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Tomate",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "ital. Hartkäse",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Caesar Dressing",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_tokio_teriyaki_chicken",
+      "name": "Tokio Teriyaki Chicken Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Frischkäse",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Möhrenstifte",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Teriyaki-Sesam Mischung",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_avocado_chicken",
+      "name": "Avocado Chicken Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Frischkäse",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Tomate",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Avocado",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Chipotle Sauce",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_falafel_hummus",
+      "name": "Falafel Hummus Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hummus",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Tomate",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Avocado",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Falafel zerteilt",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "veg. Sylter Dressing",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_cigkoefte",
+      "name": "Cigköfte Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Vegane Frischcreme",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Minze",
+          "menge_g": 2,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Cigköfte",
+          "menge_g": 75,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "veg. Sylter Dressing",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_plant_power",
+      "name": "Plant Power Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Vegane Frischcreme",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gelbe Linse Aufstrich",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Rotkohl",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Möhrenstifte",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Tofu Mandel-Sesam",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Erdnuss Sauce",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_lecker_lachs",
+      "name": "Lecker Lachs Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Frischkäse",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Meeresalgen Rote Bete Aufstrich",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Pulled Lachs",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Kartoffel Basissauce",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "wrap_mexican_beef",
+      "name": "Mexican Beef Wrap",
+      "gruppe": "Wraps",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Weizen Tortilla",
+          "menge_g": 72,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Frischkäse",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mixsalat",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mais",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Jalapeños",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Tomate",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Pulled Beef",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Chipotle Sauce",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.15,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    }
+  ]
+}

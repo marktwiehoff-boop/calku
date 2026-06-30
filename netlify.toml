@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# SPA-Fallback — Functions (/.netlify/functions/*) werden von Netlify
+# vorrangig behandelt und sind davon nicht betroffen.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

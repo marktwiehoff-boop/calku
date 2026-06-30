@@ -1,0 +1,487 @@
+{
+  "produkte": [
+    {
+      "id": "bowl_klein_julius_caesar",
+      "name": "Julius Caesar Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Caesar Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Kirschtomaten",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Ei (gekocht)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hartkäse",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Caesar Dressing",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Croutons",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_teriyaki_chicken",
+      "name": "Teriyaki Chicken Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "ger. Sesam Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Edamame",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Karottenstifte",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Teriyaki Sauce",
+          "menge_g": 3,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Sesam Streuer",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_falafel_freunde",
+      "name": "Falafel Freunde Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Wild Karachi Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Avocado",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Karottenstifte",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Rotkohl",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Falafel à",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Nordic Vegan",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Körnermix",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_chicken_avocado_crush",
+      "name": "Chicken Avocado Crush Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Zitronenvinaigr",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Avocado",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Kirschtomaten",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Hähnchen",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Chipotle Sauce",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Körnermix",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_beef_banditos",
+      "name": "Beef Banditos Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Cinnam.Dressing",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Kirschtomaten",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Mais",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Rotkohl",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Pulled Beef",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Chipotle Sauce",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "3 Tortilla Chips",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_lachsfang",
+      "name": "Lachsfang Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "ger. Sesam Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Edamame",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Karottenstifte",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Pulled Lachs",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Teriyaki Sauce",
+          "menge_g": 3,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Sesam Streuer",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    },
+    {
+      "id": "bowl_klein_soya_power",
+      "name": "Soya Power Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "ger. Sesam Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Edamame",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Rotkohl",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Gurkenwürfel",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Sesam Tofu",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Erdnuss Sauce",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        },
+        {
+          "name": "Erdnüsse (10g)",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0,
+          "cost": 0
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 0,
+      "vk_out_brutto": 0,
+      "kampagne_start": null,
+      "kampagne_ende": null
+    }
+  ]
+}
