@@ -2684,8 +2684,24 @@ export default function KalkulationsApp() {
         kampagne_start: null, kampagne_ende: null,
       }));
       if (!neu.length) { setCloudMsg("Keine Rezepte erkannt — anderes Format versuchen?"); return; }
-      setProdukte(prev => [...prev, ...neu]);
-      setCloudMsg(`✓ ${neu.length} Rezept(e) erkannt & hinzugefügt — bitte prüfen, dann „In Cloud speichern".`);
+      // Dubletten filtern (gleicher Name + Warengruppe) — im Batch und gegen Bestand
+      const dkey = (p) => `${(p.name || "").trim().toLowerCase()}|${p.gruppe}`;
+      const vorhanden = new Set(produkte.map(dkey));
+      const gesehen = new Set();
+      const neuGefiltert = [];
+      let dubletten = 0;
+      for (const p of neu) {
+        const k = dkey(p);
+        if (gesehen.has(k) || vorhanden.has(k)) { dubletten++; continue; }
+        gesehen.add(k);
+        neuGefiltert.push(p);
+      }
+      if (!neuGefiltert.length) {
+        setCloudMsg(`Alle ${dubletten} erkannten Rezepte sind bereits vorhanden — nichts hinzugefügt.`);
+        return;
+      }
+      setProdukte(prev => [...prev, ...neuGefiltert]);
+      setCloudMsg(`✓ ${neuGefiltert.length} Rezept(e) hinzugefügt${dubletten ? `, ${dubletten} Dublette(n) übersprungen` : ""} — bitte prüfen, dann „In Cloud speichern".`);
     } catch (err) {
       setCloudMsg("Rezept-Upload fehlgeschlagen: " + err.message);
     } finally {
