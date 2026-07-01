@@ -24,7 +24,10 @@ Regeln:
 - Erfinde keine Zutaten. Wenn etwas unklar ist, lass den Wert leer/0.
 - Gib ausschließlich die geforderte JSON-Struktur zurück.`;
 
-const PROMPT = `Extrahiere alle erkennbaren Rezepte/Produkte aus dem oben gezeigten Material und gib sie als strukturierte Produktliste zurück.`;
+const PROMPT = `Extrahiere ALLE Produkte und ALLE Größen aus dem oben gezeigten Material.
+Arbeite systematisch: Gehe jedes "# Tabellenblatt" bzw. jeden Produktabschnitt einzeln durch.
+Für jede Größe (z. B. gibt es Spalten "Menge Klein" UND "Menge Normal", oder Preise "Klein 8,95 € / Normal 12,95 €") legst du einen EIGENEN Eintrag an — mit den JEWEILS eigenen Mengen je Zutat und dem zur Größe gehörenden Verkaufspreis. Die Klein-Variante nutzt die Klein-Mengen, die Normal-Variante die Normal-Mengen — niemals dieselben Mengen für beide.
+Selbstkontrolle am Ende: Ist wirklich JEDE Größe und JEDES Produkt/Tabellenblatt als eigener Eintrag enthalten? Wenn etwas fehlt, ergänze es, bevor du antwortest.`;
 
 const SCHEMA = {
   type: "object",
@@ -95,9 +98,10 @@ export default async (req) => {
     const resp = await client.messages.create({
       model: "claude-opus-4-8",
       max_tokens: 16000,
+      thinking: { type: "adaptive" },
+      output_config: { effort: "high", format: { type: "json_schema", schema: SCHEMA } },
       system: SYSTEM,
       messages: [{ role: "user", content }],
-      output_config: { format: { type: "json_schema", schema: SCHEMA } },
     });
 
     const out = resp.content.find((b) => b.type === "text")?.text || '{"produkte":[]}';
