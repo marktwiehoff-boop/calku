@@ -130,7 +130,14 @@ async function excelToRequests(file) {
     for (const s of sizeCols) {
       const lines = daten.map(r => `${r[nameCol]},${r[s.i] ?? ""},${einheitCol >= 0 ? (r[einheitCol] ?? "") : ""}`);
       const titel = mehrere && s.label ? `${produktName} ${s.label}` : produktName;
-      reqs.push({ text: `Produkt: ${titel}\n${mehrere && s.label ? `Größe: ${s.label}\n` : ""}Kontext (Preise/Größen): ${kopf}\nKomponente,Menge,Einheit\n${lines.join("\n")}` });
+      // VK genau dieser Größe aus dem Kopf parsen (z. B. "Klein 8,95 €") — ohne andere Größen zu nennen
+      let vkHint = "", kontext = `Kontext: ${kopf}\n`;
+      if (mehrere && s.label) {
+        const esc = s.label.replace(/[.*+?^${}()|[\]\\]/g, "");
+        const m = kopf.match(new RegExp(esc + "[^0-9]{0,6}([0-9]+[.,][0-9]{2})", "i"));
+        if (m) { vkHint = `Verkaufspreis brutto (im Haus): ${m[1]} €\n`; kontext = ""; }
+      }
+      reqs.push({ text: `Produkt: ${titel}\n${mehrere && s.label ? `Größe: ${s.label}\n` : ""}${vkHint}${kontext}Komponente,Menge,Einheit\n${lines.join("\n")}\n\nWICHTIG: Gib GENAU EIN Produkt zurück — nur diese eine Größe/dieses eine Rezept, keine weiteren Größen erfinden.` });
     }
   }
   return reqs;
