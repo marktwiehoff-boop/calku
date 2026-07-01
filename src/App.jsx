@@ -104,6 +104,38 @@ function findPreisProG(name, plIndex) {
   return best ? (best.proG || 0) : 0;
 }
 
+// Excel → einzelne KI-Anfragen: pro Tabellenblatt und pro Größen-Spalte
+// ("Menge Klein"/"Menge Normal") ein eigener, einfacher Text. So bekommt die
+// KI je Aufruf genau EIN Produkt mit den richtigen Mengen (zuverlässige Zuordnung).
+async function excelToRequests(file) {
+  const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
+  const reqs = [];
+  for (const sn of wb.SheetNames) {
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, blankrows: false });
+    if (!rows.length) continue;
+    const ganzesBlatt = () => reqs.push({ text: `# ${sn}\n${rows.map(r => r.join(",")).join("\n")}` });
+    const hi = rows.findIndex(r => r.some(c => /komponente|zutat/i.test(String(c ?? ""))) || r.filter(c => /menge/i.test(String(c ?? ""))).length >= 1);
+    if (hi < 0) { ganzesBlatt(); continue; }
+    const header = rows[hi].map(c => String(c ?? ""));
+    const nameCol = Math.max(0, header.findIndex(c => /komponente|zutat/i.test(c)));
+    const einheitCol = header.findIndex(c => /einheit/i.test(c));
+    const sizeCols = header
+      .map((c, i) => ({ i, label: /menge/i.test(c) ? c.replace(/menge/i, "").trim() : null }))
+      .filter(x => x.label !== null);
+    if (!sizeCols.length) { ganzesBlatt(); continue; }
+    const kopf = rows.slice(0, hi).map(r => r.filter(Boolean).join(" ")).filter(Boolean).join(" | ");
+    const produktName = (rows[0] && rows[0].find(Boolean)) ? String(rows[0].find(Boolean)) : sn;
+    const daten = rows.slice(hi + 1).filter(r => r[nameCol] && !/gesamt|summe/i.test(String(r[nameCol])));
+    const mehrere = sizeCols.length >= 2;
+    for (const s of sizeCols) {
+      const lines = daten.map(r => `${r[nameCol]},${r[s.i] ?? ""},${einheitCol >= 0 ? (r[einheitCol] ?? "") : ""}`);
+      const titel = mehrere && s.label ? `${produktName} ${s.label}` : produktName;
+      reqs.push({ text: `Produkt: ${titel}\n${mehrere && s.label ? `Größe: ${s.label}\n` : ""}Kontext (Preise/Größen): ${kopf}\nKomponente,Menge,Einheit\n${lines.join("\n")}` });
+    }
+  }
+  return reqs;
+}
+
 const MWST_IN  = 0.19; // Im Haus
 const MWST_OUT = 0.07; // Außer Haus
 const SCHWUND_PCT = 3.0; // Sicherheitspuffer Soll → Soll-inkl-Schwund
@@ -2645,29 +2677,33 @@ export default function KalkulationsApp() {
     try {
       const istExcel = /\.(xlsx|xls)$/i.test(f.name) || (f.type || "").includes("spreadsheet") || (f.type || "").includes("ms-excel");
       const istText = (f.type || "").startsWith("text/") || /\.(txt|md|csv|json)$/i.test(f.name);
-      let body;
+      let requests;
       if (istExcel) {
-        const wb = XLSX.read(await f.arrayBuffer(), { type: "array" });
-        const text = wb.SheetNames
-          .map(n => `# Tabellenblatt: ${n}\n${XLSX.utils.sheet_to_csv(wb.Sheets[n])}`)
-          .join("\n\n");
-        body = { text };
+        requests = await excelToRequests(f);
       } else if (istText) {
-        body = { text: await f.text() };
+        requests = [{ text: await f.text() }];
       } else {
         const bytes = new Uint8Array(await f.arrayBuffer());
         let bin = "";
         for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-        body = { fileBase64: btoa(bin), mimeType: f.type || "application/octet-stream" };
+        requests = [{ fileBase64: btoa(bin), mimeType: f.type || "application/octet-stream" }];
       }
-      const res = await fetch("/.netlify/functions/extract-recipe", {
-        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || `Fehler ${res.status}`);
+      if (!requests.length) { setCloudMsg("Datei konnte nicht gelesen werden."); return; }
+      if (requests.length > 1) setCloudMsg(`KI liest … (${requests.length} Rezepte/Größen)`);
+
+      const antworten = await Promise.all(requests.map(b =>
+        fetch("/.netlify/functions/extract-recipe", {
+          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(b),
+        }).then(r => r.json()).catch(err => ({ error: err.message }))
+      ));
+      const rohProdukte = [];
+      for (const data of antworten) if (data?.produkte?.length) rohProdukte.push(...data.produkte);
+      if (!rohProdukte.length) throw new Error(antworten.find(a => a?.error)?.error || "Keine Rezepte erkannt");
+
       const plIndex = buildPlIndex(priceList);
-      const neu = (data.produkte || []).map(p => ({
-        id: `ki_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      const stamp = Date.now();
+      const neu = rohProdukte.map((p, i) => ({
+        id: `ki_${stamp}_${i}_${Math.random().toString(36).slice(2, 6)}`,
         name: p.name || "(ohne Name)",
         gruppe: WARENGRUPPEN.includes(p.gruppe) ? p.gruppe : "Bowls",
         untergruppe: p.untergruppe || null,
