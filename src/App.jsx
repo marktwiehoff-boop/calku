@@ -2696,16 +2696,30 @@ export default function KalkulationsApp() {
         requests = [{ fileBase64: btoa(bin), mimeType: f.type || "application/octet-stream" }];
       }
       if (!requests.length) { setCloudMsg("Datei konnte nicht gelesen werden."); return; }
-      if (requests.length > 1) setCloudMsg(`KI liest … (${requests.length} Rezepte/Größen)`);
 
-      const antworten = await Promise.all(requests.map(b =>
-        fetch("/.netlify/functions/extract-recipe", {
-          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(b),
-        }).then(r => r.json()).catch(err => ({ error: err.message }))
-      ));
+      // Aufrufe NACHEINANDER (nicht parallel) mit hartem Timeout je Aufruf,
+      // damit nichts hängen bleibt. Fortschritt anzeigen.
       const rohProdukte = [];
-      for (const data of antworten) if (data?.produkte?.length) rohProdukte.push(...data.produkte);
-      if (!rohProdukte.length) throw new Error(antworten.find(a => a?.error)?.error || "Keine Rezepte erkannt");
+      let letzterFehler = "";
+      for (let i = 0; i < requests.length; i++) {
+        setCloudMsg(`KI liest … (${i + 1}/${requests.length})`);
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 40000);
+        try {
+          const r = await fetch("/.netlify/functions/extract-recipe", {
+            method: "POST", headers: { "content-type": "application/json" },
+            body: JSON.stringify(requests[i]), signal: ctrl.signal,
+          });
+          const data = await r.json();
+          if (data?.produkte?.length) rohProdukte.push(...data.produkte);
+          else if (data?.error) letzterFehler = data.error;
+        } catch (err) {
+          letzterFehler = err.name === "AbortError" ? "Zeitüberschreitung bei der KI" : err.message;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+      if (!rohProdukte.length) throw new Error(letzterFehler || "Keine Rezepte erkannt");
 
       const plIndex = buildPlIndex(priceList);
       const stamp = Date.now();
