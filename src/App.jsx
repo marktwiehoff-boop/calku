@@ -1916,7 +1916,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -1927,6 +1927,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
   const [artikelOpen, setArtikelOpen] = useState(false);
   const [neuArt, setNeuArt]     = useState({ name: "", artNr: "", einheit: "kg", preis: "", menge: "" });
   const [artMsg, setArtMsg]     = useState("");
+  const [abgleichMsg, setAbgleichMsg] = useState("");
 
   // aktueller €/g je Zutat (aus den Rezepturen) – für die Anzeige „aktuell"
   const aktuellerProG = useMemo(() => {
@@ -2046,7 +2047,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       return (
         <tbody>
           {sichtbar.length === 0 && (
-            <tr><td colSpan={6} className="px-3 py-8 text-center text-gray-400 text-sm">
+            <tr><td colSpan={canEdit ? 7 : 6} className="px-3 py-8 text-center text-gray-400 text-sm">
               Keine Treffer. Filter anpassen.
             </td></tr>
           )}
@@ -2058,6 +2059,14 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
               <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
               <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+              {canEdit && (
+                <td className="px-2 py-2 text-center">
+                  <button onClick={() => { if (confirm(`Artikel „${z.name}" wirklich aus der Preisliste löschen?`)) onDeleteArtikel?.(z.name); }}
+                    className="text-gray-300 hover:text-red-600 p-1" title="Artikel löschen">
+                    <Trash2 size={13} />
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -2072,7 +2081,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         bloecke.push(
           <tbody key={aktuelleGruppe}>
             <tr className="bg-emerald-50">
-              <td colSpan={6} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
+              <td colSpan={canEdit ? 7 : 6} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
                 {aktuelleGruppe} <span className="text-emerald-600 font-normal">· {buffer.length}</span>
               </td>
             </tr>
@@ -2095,6 +2104,14 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
           <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
           <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+          {canEdit && (
+            <td className="px-2 py-2 text-center">
+              <button onClick={() => { if (confirm(`Artikel „${z.name}" wirklich aus der Preisliste löschen?`)) onDeleteArtikel?.(z.name); }}
+                className="text-gray-300 hover:text-red-600 p-1" title="Artikel löschen">
+                <Trash2 size={13} />
+              </button>
+            </td>
+          )}
         </tr>
       );
     }
@@ -2102,7 +2119,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     if (bloecke.length === 0) {
       return (
         <tbody>
-          <tr><td colSpan={6} className="px-3 py-8 text-center text-gray-400 text-sm">
+          <tr><td colSpan={canEdit ? 7 : 6} className="px-3 py-8 text-center text-gray-400 text-sm">
             Keine Treffer. Filter anpassen.
           </td></tr>
         </tbody>
@@ -2123,7 +2140,12 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen.
           </p>
           <div className="flex flex-wrap gap-2">
-            <button onClick={() => onPreisAbgleich?.()}
+            <button onClick={() => {
+                const n = onPreisAbgleich?.() ?? 0;
+                setAbgleichMsg(n > 0
+                  ? `✓ ${n} Zutatenpreise in die Rezepturen übernommen — zum Sichern oben „In Cloud speichern".`
+                  : "Alle Rezept-Zutaten haben bereits einen Preis — nichts zu übernehmen.");
+              }}
               className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0"
               title="Zutaten ohne Preis tolerant mit der Preisliste abgleichen und Preise ziehen">
               <RotateCcw size={14} /> Preise aus Liste ziehen
@@ -2137,6 +2159,13 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               <Pencil size={14} /> Frischpress-Preise
             </button>
           </div>
+        </div>
+      )}
+
+      {canEdit && abgleichMsg && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
+          <span>{abgleichMsg}</span>
+          <button onClick={() => setAbgleichMsg("")} className="text-emerald-400 hover:text-emerald-700"><X size={14} /></button>
         </div>
       )}
 
@@ -2314,6 +2343,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
                 {sortHeader("packGroesse",     "Packungsgröße")}
                 {sortHeader("packPreis",       "Packungspreis")}
                 {sortHeader("preisProGramm",   "Preis / g · / kg")}
+                {canEdit && <th className="w-10"></th>}
               </tr>
             </thead>
             {renderTabelle()}
@@ -2559,6 +2589,7 @@ export default function KalkulationsApp() {
   const [produkte, setProdukte] = useState(INITIAL.produkte);
   const [priceList, setPriceList] = useState(INITIAL.priceList);
   const [manuelleArtikel, setManuelleArtikel] = useState([]); // selbst angelegte Einkaufsartikel (persistiert)
+  const [geloeschteArtikel, setGeloeschteArtikel] = useState([]); // gelöschte Einkaufsartikel (Namen, lowercase; persistiert, sonst kämen Basis-Artikel beim Neuladen zurück)
   const [aktiverTab, setAktiverTab] = useState("Smoothies");
   const [importOpen, setImportOpen] = useState(false);
   const [editProdukt, setEditProdukt] = useState(null); // null | "neu" | produktObjekt
@@ -2607,11 +2638,15 @@ export default function KalkulationsApp() {
             setManuelleArtikel(row.data.artikel);
             setPriceList(prev => { const m = { ...prev }; for (const a of row.data.artikel) m[a.ingredient_name.toLowerCase()] = a; return m; });
           }
+          if (row.data.geloescht?.length) {
+            setGeloeschteArtikel(row.data.geloescht);
+            setPriceList(prev => { const m = { ...prev }; for (const k of row.data.geloescht) delete m[k]; return m; });
+          }
           setCloudInfo({ updated_at: row.updated_at, updated_by: row.updated_by });
         } else if (isWriter(session.user?.email) && !seededRef.current) {
           // Erstbefüllung: aktuellen Stand (Susanne) in die Cloud schreiben
           seededRef.current = true;
-          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel });
+          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel });
           setCloudMsg("Startdaten in die Cloud übertragen.");
         }
       } catch (e) {
@@ -2626,6 +2661,10 @@ export default function KalkulationsApp() {
         setManuelleArtikel(data.artikel);
         setPriceList(prev => { const m = { ...prev }; for (const a of data.artikel) m[a.ingredient_name.toLowerCase()] = a; return m; });
       }
+      if (data.geloescht) {
+        setGeloeschteArtikel(data.geloescht);
+        setPriceList(prev => { const m = { ...prev }; for (const k of data.geloescht) delete m[k]; return m; });
+      }
       setCloudInfo({ updated_at: at, updated_by: by });
     });
     return () => { active = false; try { supabase.removeChannel(ch); } catch (_) {} };
@@ -2635,7 +2674,7 @@ export default function KalkulationsApp() {
     if (!writer) return;
     try {
       setCloudMsg("Speichere …");
-      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel });
+      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel });
       setCloudMsg("✓ In Cloud gespeichert");
       setTimeout(() => setCloudMsg(""), 3000);
     } catch (e) {
@@ -2835,13 +2874,28 @@ export default function KalkulationsApp() {
     const key = artikel.ingredient_name.toLowerCase();
     setPriceList(prev => ({ ...prev, [key]: artikel }));
     setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), artikel]);
+    // Falls der Name zuvor gelöscht war: Löschvermerk aufheben, sonst verschwindet er beim nächsten Laden wieder
+    setGeloeschteArtikel(prev => prev.filter(k => k !== key));
+  };
+
+  // Einkaufsartikel aus der Preisliste löschen. Rezepturen behalten ihre Preise
+  // (die Preise sind pro Zutat in den Rezepten gespeichert) — der Artikel ist nur
+  // nicht mehr in der Liste/Auswahl. Löschvermerk wird mit in die Cloud gespeichert.
+  const handleDeleteArtikel = (name) => {
+    const key = (name || "").toLowerCase();
+    if (!key) return;
+    setPriceList(prev => { const m = { ...prev }; delete m[key]; return m; });
+    setManuelleArtikel(prev => prev.filter(a => a.ingredient_name.toLowerCase() !== key));
+    setGeloeschteArtikel(prev => prev.includes(key) ? prev : [...prev, key]);
+    setCloudMsg(`„${name}" aus der Preisliste entfernt — zum Sichern „In Cloud speichern".`);
   };
 
   // Alle Zutaten ohne Preis tolerant gegen die Preisliste abgleichen und Preise ziehen.
+  // Liefert die Anzahl übernommener Preise zurück (für die Rückmeldung am Button).
   const handlePreisAbgleich = () => {
     const plIndex = buildPlIndex(priceList);
     let count = 0;
-    setProdukte(prev => prev.map(p => ({
+    const next = produkte.map(p => ({
       ...p,
       zutaten: (p.zutaten || []).map(z => {
         if ((z.preis_pro_g || 0) > 0) return z;
@@ -2849,10 +2903,12 @@ export default function KalkulationsApp() {
         if (proG > 0) { count++; return { ...z, preis_pro_g: proG, cost: +((z.menge_g || 0) * proG).toFixed(4) }; }
         return z;
       }),
-    })));
+    }));
+    if (count > 0) setProdukte(next);
     setCloudMsg(count > 0
       ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen — prüfen & „In Cloud speichern".`
       : "Keine weiteren Preise aus der Liste zuordenbar.");
+    return count;
   };
 
   const handleProduktSave = (produkt) => {
@@ -3103,7 +3159,7 @@ export default function KalkulationsApp() {
         {aktiverTab === "Einkaufspreise" && (
           <EinkaufspreiseTab priceList={priceList} produkte={produkte}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
-            onPreisAbgleich={handlePreisAbgleich} canEdit={writer} />
+            onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer} />
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
