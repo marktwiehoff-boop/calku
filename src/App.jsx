@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
-  Upload, Download, FileSpreadsheet, AlertTriangle, ChevronDown, ChevronRight,
+  Download, FileSpreadsheet, AlertTriangle, ChevronDown, ChevronRight,
   RotateCcw, Calendar, Search, Plus, Trash2, Info, TrendingUp, Package,
   Pencil, X, Lock, Check
 } from "lucide-react";
@@ -9,7 +9,6 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
-import * as XLSX from "xlsx";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -102,45 +101,6 @@ function findPreisProG(name, plIndex) {
     }
   }
   return best ? (best.proG || 0) : 0;
-}
-
-// Excel → einzelne KI-Anfragen: pro Tabellenblatt und pro Größen-Spalte
-// ("Menge Klein"/"Menge Normal") ein eigener, einfacher Text. So bekommt die
-// KI je Aufruf genau EIN Produkt mit den richtigen Mengen (zuverlässige Zuordnung).
-async function excelToRequests(file) {
-  const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
-  const reqs = [];
-  for (const sn of wb.SheetNames) {
-    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, blankrows: false });
-    if (!rows.length) continue;
-    const ganzesBlatt = () => reqs.push({ text: `# ${sn}\n${rows.map(r => r.join(",")).join("\n")}` });
-    const hi = rows.findIndex(r => r.some(c => /komponente|zutat/i.test(String(c ?? ""))) || r.filter(c => /menge/i.test(String(c ?? ""))).length >= 1);
-    if (hi < 0) { ganzesBlatt(); continue; }
-    const header = rows[hi].map(c => String(c ?? ""));
-    const nameCol = Math.max(0, header.findIndex(c => /komponente|zutat/i.test(c)));
-    const einheitCol = header.findIndex(c => /einheit/i.test(c));
-    const sizeCols = header
-      .map((c, i) => ({ i, label: /menge/i.test(c) ? c.replace(/menge/i, "").trim() : null }))
-      .filter(x => x.label !== null);
-    if (!sizeCols.length) { ganzesBlatt(); continue; }
-    const kopf = rows.slice(0, hi).map(r => r.filter(Boolean).join(" ")).filter(Boolean).join(" | ");
-    const produktName = (rows[0] && rows[0].find(Boolean)) ? String(rows[0].find(Boolean)) : sn;
-    const daten = rows.slice(hi + 1).filter(r => r[nameCol] && !/gesamt|summe/i.test(String(r[nameCol])));
-    const mehrere = sizeCols.length >= 2;
-    for (const s of sizeCols) {
-      const lines = daten.map(r => `${r[nameCol]},${r[s.i] ?? ""},${einheitCol >= 0 ? (r[einheitCol] ?? "") : ""}`);
-      const titel = mehrere && s.label ? `${produktName} ${s.label}` : produktName;
-      // VK genau dieser Größe aus dem Kopf parsen (z. B. "Klein 8,95 €") — ohne andere Größen zu nennen
-      let vkHint = "", kontext = `Kontext: ${kopf}\n`;
-      if (mehrere && s.label) {
-        const esc = s.label.replace(/[.*+?^${}()|[\]\\]/g, "");
-        const m = kopf.match(new RegExp(esc + "[^0-9]{0,6}([0-9]+[.,][0-9]{2})", "i"));
-        if (m) { vkHint = `Verkaufspreis brutto (im Haus): ${m[1]} €\n`; kontext = ""; }
-      }
-      reqs.push({ text: `Produkt: ${titel}\n${mehrere && s.label ? `Größe: ${s.label}\n` : ""}${vkHint}${kontext}Komponente,Menge,Einheit\n${lines.join("\n")}\n\nWICHTIG: Gib GENAU EIN Produkt zurück — nur diese eine Größe/dieses eine Rezept, keine weiteren Größen erfinden.` });
-    }
-  }
-  return reqs;
 }
 
 const MWST_IN  = 0.19; // Im Haus
@@ -1947,7 +1907,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     }
     if (!list.length) { setFrischMsg("Bitte für mindestens einen Artikel Preis und Nettomenge eingeben."); return; }
     onFrischpreise?.(list);
-    setFrischMsg(`✓ ${list.length} Artikel aktualisiert. Zum Sichern oben „In Cloud speichern".`);
+    setFrischMsg(`✓ ${list.length} Artikel aktualisiert. Zum Sichern oben „Speichern".`);
   };
 
   const artikelSpeichern = () => {
@@ -1967,7 +1927,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       manuell: true,
     });
     const proKg = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(proG * 1000);
-    setArtMsg(`✓ „${name}" angelegt (${proKg} €/kg). Sofort als Zutat nutzbar. Zum Sichern oben „In Cloud speichern".`);
+    setArtMsg(`✓ „${name}" angelegt (${proKg} €/kg). Sofort als Zutat nutzbar. Zum Sichern oben „Speichern".`);
     setNeuArt({ name: "", artNr: "", einheit: "kg", preis: "", menge: "" });
   };
 
@@ -2143,7 +2103,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             <button onClick={() => {
                 const n = onPreisAbgleich?.() ?? 0;
                 setAbgleichMsg(n > 0
-                  ? `✓ ${n} Zutatenpreise in die Rezepturen übernommen — zum Sichern oben „In Cloud speichern".`
+                  ? `✓ ${n} Zutatenpreise in die Rezepturen übernommen — zum Sichern oben „Speichern".`
                   : "Alle Rezept-Zutaten haben bereits einen Preis — nichts zu übernehmen.");
               }}
               className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0"
@@ -2600,8 +2560,6 @@ export default function KalkulationsApp() {
   });
   const [letzterImport, setLetzterImport] = useState(null);
   const jsonRef = useRef(null);
-  const rezeptRef = useRef(null);
-  const [rezeptLoading, setRezeptLoading] = useState(false);
 
   // ---- Cloud / Auth (Supabase) ----
   const [session, setSession] = useState(null);
@@ -2675,7 +2633,7 @@ export default function KalkulationsApp() {
     try {
       setCloudMsg("Speichere …");
       await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel });
-      setCloudMsg("✓ In Cloud gespeichert");
+      setCloudMsg("✓ Gespeichert — für alle sichtbar");
       setTimeout(() => setCloudMsg(""), 3000);
     } catch (e) {
       setCloudMsg("Speichern fehlgeschlagen: " + e.message);
@@ -2710,99 +2668,6 @@ export default function KalkulationsApp() {
       }
     };
     reader.readAsText(f);
-  };
-
-  // KI-Rezept-Upload: Datei (Bild/PDF/Text) an die Netlify-Function schicken,
-  // erkannte Produkte ins CALKU-Schema übernehmen und anhängen.
-  const handleRezeptUpload = async (e) => {
-    const f = e.target.files?.[0];
-    if (e.target) e.target.value = "";
-    if (!f) return;
-    setRezeptLoading(true);
-    setCloudMsg("Rezept wird von der KI gelesen …");
-    try {
-      const istExcel = /\.(xlsx|xls)$/i.test(f.name) || (f.type || "").includes("spreadsheet") || (f.type || "").includes("ms-excel");
-      const istText = (f.type || "").startsWith("text/") || /\.(txt|md|csv|json)$/i.test(f.name);
-      let requests;
-      if (istExcel) {
-        requests = await excelToRequests(f);
-      } else if (istText) {
-        requests = [{ text: await f.text() }];
-      } else {
-        const bytes = new Uint8Array(await f.arrayBuffer());
-        let bin = "";
-        for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-        requests = [{ fileBase64: btoa(bin), mimeType: f.type || "application/octet-stream" }];
-      }
-      if (!requests.length) { setCloudMsg("Datei konnte nicht gelesen werden."); return; }
-
-      // Aufrufe NACHEINANDER (nicht parallel) mit hartem Timeout je Aufruf,
-      // damit nichts hängen bleibt. Fortschritt anzeigen.
-      const rohProdukte = [];
-      let letzterFehler = "";
-      for (let i = 0; i < requests.length; i++) {
-        setCloudMsg(`KI liest … (${i + 1}/${requests.length})`);
-        const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), 40000);
-        try {
-          const r = await fetch("/.netlify/functions/extract-recipe", {
-            method: "POST", headers: { "content-type": "application/json" },
-            body: JSON.stringify(requests[i]), signal: ctrl.signal,
-          });
-          const data = await r.json();
-          if (data?.produkte?.length) rohProdukte.push(...data.produkte);
-          else if (data?.error) letzterFehler = data.error;
-        } catch (err) {
-          letzterFehler = err.name === "AbortError" ? "Zeitüberschreitung bei der KI" : err.message;
-        } finally {
-          clearTimeout(timer);
-        }
-      }
-      if (!rohProdukte.length) throw new Error(letzterFehler || "Keine Rezepte erkannt");
-
-      const plIndex = buildPlIndex(priceList);
-      const stamp = Date.now();
-      const neu = rohProdukte.map((p, i) => ({
-        id: `ki_${stamp}_${i}_${Math.random().toString(36).slice(2, 6)}`,
-        name: p.name || "(ohne Name)",
-        gruppe: WARENGRUPPEN.includes(p.gruppe) ? p.gruppe : "Bowls",
-        untergruppe: p.untergruppe || null,
-        kampagne: p.gruppe === "Kampagnen" ? (p.kampagne || null) : null,
-        zutaten: (p.zutaten || []).map(z => {
-          const ausExcel = (+z.preis_pro_kg || 0) / 1000; // €/kg → €/g
-          const proG = ausExcel > 0 ? ausExcel : findPreisProG(z.name, plIndex);
-          const menge = +z.menge_g || 0;
-          return { name: z.name, menge_g: menge, lieferant: "Transgourmet", preis_pro_g: proG, cost: +(menge * proG).toFixed(4) };
-        }),
-        verpackung_eur: +p.verpackung_eur || 0,
-        vk_in_brutto: +p.vk_in_brutto || 0,
-        vk_out_brutto: +p.vk_out_brutto || 0,
-        kampagne_start: null, kampagne_ende: null,
-      }));
-      if (!neu.length) { setCloudMsg("Keine Rezepte erkannt — anderes Format versuchen?"); return; }
-      // Dubletten filtern (gleicher Name + Warengruppe) — im Batch und gegen Bestand
-      const dkey = (p) => `${(p.name || "").trim().toLowerCase()}|${p.gruppe}`;
-      const vorhanden = new Set(produkte.map(dkey));
-      const gesehen = new Set();
-      const neuGefiltert = [];
-      let dubletten = 0;
-      for (const p of neu) {
-        const k = dkey(p);
-        if (gesehen.has(k) || vorhanden.has(k)) { dubletten++; continue; }
-        gesehen.add(k);
-        neuGefiltert.push(p);
-      }
-      if (!neuGefiltert.length) {
-        setCloudMsg(`Alle ${dubletten} erkannten Rezepte sind bereits vorhanden — nichts hinzugefügt.`);
-        return;
-      }
-      setProdukte(prev => [...prev, ...neuGefiltert]);
-      setCloudMsg(`✓ ${neuGefiltert.length} Rezept(e) hinzugefügt${dubletten ? `, ${dubletten} Dublette(n) übersprungen` : ""} — bitte prüfen, dann „In Cloud speichern".`);
-    } catch (err) {
-      setCloudMsg("Rezept-Upload fehlgeschlagen: " + err.message);
-    } finally {
-      setRezeptLoading(false);
-    }
   };
 
   const handleJsonDownload = () => {
@@ -2887,7 +2752,7 @@ export default function KalkulationsApp() {
     setPriceList(prev => { const m = { ...prev }; delete m[key]; return m; });
     setManuelleArtikel(prev => prev.filter(a => a.ingredient_name.toLowerCase() !== key));
     setGeloeschteArtikel(prev => prev.includes(key) ? prev : [...prev, key]);
-    setCloudMsg(`„${name}" aus der Preisliste entfernt — zum Sichern „In Cloud speichern".`);
+    setCloudMsg(`„${name}" aus der Preisliste entfernt — zum Sichern oben „Speichern".`);
   };
 
   // Alle Zutaten ohne Preis tolerant gegen die Preisliste abgleichen und Preise ziehen.
@@ -2906,7 +2771,7 @@ export default function KalkulationsApp() {
     }));
     if (count > 0) setProdukte(next);
     setCloudMsg(count > 0
-      ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen — prüfen & „In Cloud speichern".`
+      ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen — prüfen & „Speichern".`
       : "Keine weiteren Preise aus der Liste zuordenbar.");
     return count;
   };
@@ -3054,31 +2919,23 @@ export default function KalkulationsApp() {
             <div className="flex flex-col items-end gap-1">
               <div className="flex flex-wrap items-center gap-2">
                 {writer && (
-                  <>
-                    <label className={`bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium cursor-pointer flex items-center gap-2 ${rezeptLoading ? "opacity-60 pointer-events-none" : ""}`}>
-                      <Upload size={14} /> {rezeptLoading ? "KI liest …" : "Rezept hochladen"}
-                      <input ref={rezeptRef} type="file" accept="image/*,application/pdf,.txt,.md,.csv,.json,.xlsx,.xls"
-                        onChange={handleRezeptUpload} className="hidden" disabled={rezeptLoading} />
-                    </label>
-                    <button onClick={() => setImportOpen(true)}
-                      className="bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
-                      <FileSpreadsheet size={14} /> CSV-Preise
-                    </button>
-                  </>
+                  <button onClick={() => setImportOpen(true)}
+                    className="bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
+                    <FileSpreadsheet size={14} /> CSV-Preise
+                  </button>
                 )}
+                {/* Ein Speichern-Button: im Cloud-Modus speichert er für alle (Supabase),
+                    im lokalen Modus lädt er die Daten als JSON-Datei herunter. */}
                 {cloudEnabled && writer && (
                   <button onClick={handleCloudSave}
                     className="bg-white text-green-800 hover:bg-green-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
-                    <Download size={14} /> In Cloud speichern
+                    <Download size={14} /> Speichern
                   </button>
                 )}
-                {(!cloudEnabled || writer) && (
+                {!cloudEnabled && (
                   <button onClick={handleJsonDownload}
-                    className={(cloudEnabled
-                      ? "bg-white/15 hover:bg-white/25 text-white"
-                      : "bg-white text-green-800 hover:bg-green-50") +
-                      " backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2"}>
-                    <Download size={14} /> {cloudEnabled ? "Export" : "Speichern"}
+                    className="bg-white text-green-800 hover:bg-green-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
+                    <Download size={14} /> Speichern
                   </button>
                 )}
                 {cloudEnabled && !writer && (
