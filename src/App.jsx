@@ -471,9 +471,6 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
         next.menge_g = Math.max(0, +value || 0);
       } else if (field === "preis_pro_kg") {
         next.preis_pro_g = Math.max(0, +value || 0) / 1000;
-      } else if (field === "ausbeute_prozent") {
-        const a = +value;
-        next.ausbeute_prozent = a >= 1 && a <= 100 ? a : 100;
       }
       next.cost = zutatKosten(next);
       return next;
@@ -531,7 +528,6 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                   <th className="text-left  px-2 py-1 font-medium">Zutat</th>
                   <th className="text-right px-2 py-1 font-medium">Menge</th>
                   <th className="text-right px-2 py-1 font-medium">Preis</th>
-                  <th className="text-right px-2 py-1 font-medium" title="Wie viel der eingekauften Menge im Produkt ankommt (geschälte Ware). 100 = keine Wirkung.">Ausbeute</th>
                   <th className="text-right px-2 py-1 font-medium">Kosten</th>
                   <th className="text-left  px-2 py-1 font-medium">Lieferant</th>
                 </tr>
@@ -548,23 +544,23 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                       <EditNum value={+(z.preis_pro_g * 1000).toFixed(2)} step="0.01" suffix="€/kg" width="w-20"
                         onChange={v => updateZutat(i, "preis_pro_kg", v)} />
                     </td>
-                    <td className="px-2 py-1 text-right">
-                      <EditNum value={+(z.ausbeute_prozent ?? 100)} step="1" suffix="%" width="w-12"
-                        onChange={v => updateZutat(i, "ausbeute_prozent", v)} />
+                    <td className="px-2 py-1 text-right tabular-nums"
+                        title={z.ausbeute_prozent && z.ausbeute_prozent < 100
+                          ? `inkl. Ausbeute ${z.ausbeute_prozent} % (Pflege im Tab Einkaufspreise)` : undefined}>
+                      {fmtEUR(z.cost)}{z.ausbeute_prozent && z.ausbeute_prozent < 100 ? "*" : ""}
                     </td>
-                    <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(z.cost)}</td>
                     <td className="px-2 py-1 text-gray-500">{z.lieferant}</td>
                   </tr>
                 ))}
                 <tr className="border-t border-gray-300 font-medium">
                   <td className="px-2 py-1">Material</td>
-                  <td colSpan={3} />
+                  <td colSpan={2} />
                   <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(calc.material)}</td>
                   <td />
                 </tr>
                 <tr className="text-gray-600">
                   <td className="px-2 py-1">+ Verpackung</td>
-                  <td colSpan={3} className="text-right">
+                  <td colSpan={2} className="text-right">
                     <EditNum value={+p.verpackung_eur.toFixed(2)} step="0.01" suffix="€" width="w-16"
                       onChange={v => onUpdate({ verpackung_eur: Math.max(0, +v || 0) })} />
                   </td>
@@ -573,10 +569,17 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                 </tr>
                 <tr className="font-semibold text-gray-800">
                   <td className="px-2 py-1">= Wareneinsatz gesamt</td>
-                  <td colSpan={3} />
+                  <td colSpan={2} />
                   <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(calc.wareneinsatz)}</td>
                   <td />
                 </tr>
+                {p.zutaten.some(z => z.ausbeute_prozent && z.ausbeute_prozent < 100) && (
+                  <tr>
+                    <td colSpan={5} className="px-2 pt-1 text-[11px] text-gray-400">
+                      * inkl. Ausbeute — zentral gepflegt im Tab „Einkaufspreise".
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </td>
@@ -1175,6 +1178,9 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
     if (treffer && treffer.price_per_gram_ml != null) {
       update.preis_pro_g = treffer.price_per_gram_ml;
       update.lieferant = "Transgourmet";
+      // Artikel-Eigenschaften aus der Preisliste mitnehmen (zentral gepflegt)
+      update.ausbeute_prozent = treffer.ausbeute_prozent ?? null;
+      update.gramm_je_stueck = treffer.gramm_je_stueck ?? null;
     }
     const z = form.zutaten[idx];
     update.cost = zutatKosten({ ...z, ...update });
@@ -1193,27 +1199,12 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
     updateZutat(idx, { preis_pro_g: proG, cost: zutatKosten({ ...z, preis_pro_g: proG }) });
   };
 
-  const handleAusbeuteChange = (idx, wert) => {
-    const z = form.zutaten[idx];
-    const a = +wert;
-    const ausbeute = a >= 1 && a <= 100 ? a : 100;
-    updateZutat(idx, { ausbeute_prozent: ausbeute,
-                       cost: zutatKosten({ ...z, ausbeute_prozent: ausbeute }) });
-  };
-
-  const handleGrammStueckChange = (idx, wert) => {
-    // Nur fuer die Bestell-App (igorder) relevant: Einkaufsgewicht je Stueck
-    // (ungeschaelte Ananas ~1500 g). Ohne Wirkung auf die Kalkulation.
-    const g = +wert;
-    updateZutat(idx, { gramm_je_stueck: g > 0 ? g : null });
-  };
-
   const addZutat = () => {
     setForm({
       ...form,
       zutaten: [...form.zutaten, { name: "", menge_g: 0, lieferant: "Transgourmet",
                                    preis_pro_g: 0, cost: 0,
-                                   ausbeute_prozent: 100, gramm_je_stueck: null }],
+                                   ausbeute_prozent: null, gramm_je_stueck: null }],
     });
   };
 
@@ -1347,15 +1338,13 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
                     <th className="text-left px-2 py-1.5 font-medium">Zutat (aus Preisliste wählen)</th>
                     <th className="text-right px-2 py-1.5 font-medium w-20">Menge (g)</th>
                     <th className="text-right px-2 py-1.5 font-medium w-24">Preis (€/kg)</th>
-                    <th className="text-right px-2 py-1.5 font-medium w-20" title="Wie viel der eingekauften Menge im Produkt ankommt (geschälte Ware). 100 = keine Wirkung. Preis muss dann der reine Einkaufspreis sein!">Ausbeute %</th>
-                    <th className="text-right px-2 py-1.5 font-medium w-20" title="Einkaufsgewicht je Stück für Stückware (ungeschälte Ananas ~1500 g). Nur für die Bestell-App, ohne Wirkung auf die Kalkulation.">g/Stück</th>
                     <th className="text-right px-2 py-1.5 font-medium w-20">Kosten</th>
                     <th className="w-10"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {form.zutaten.length === 0 && (
-                    <tr><td colSpan={7} className="px-2 py-4 text-center text-gray-400">Noch keine Zutaten. Klick auf „Zutat hinzufügen".</td></tr>
+                    <tr><td colSpan={5} className="px-2 py-4 text-center text-gray-400">Noch keine Zutaten. Klick auf „Zutat hinzufügen".</td></tr>
                   )}
                   {form.zutaten.map((z, i) => (
                     <tr key={i} className="border-t border-gray-100">
@@ -1375,18 +1364,11 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
                           onChange={e => handlePreisChange(i, e.target.value)}
                           className="w-20 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
                       </td>
-                      <td className="px-2 py-1.5 text-right">
-                        <input type="number" step="1" min="1" max="100" value={+(z.ausbeute_prozent ?? 100)}
-                          onChange={e => handleAusbeuteChange(i, e.target.value)}
-                          className="w-14 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+                      <td className="px-2 py-1.5 text-right tabular-nums text-gray-700"
+                          title={z.ausbeute_prozent && z.ausbeute_prozent < 100
+                            ? `inkl. Ausbeute ${z.ausbeute_prozent} % (Pflege im Tab Einkaufspreise)` : undefined}>
+                        {fmtEUR(z.cost)}{z.ausbeute_prozent && z.ausbeute_prozent < 100 ? "*" : ""}
                       </td>
-                      <td className="px-2 py-1.5 text-right">
-                        <input type="number" step="10" min="0" value={z.gramm_je_stueck ?? ""}
-                          onChange={e => handleGrammStueckChange(i, e.target.value)}
-                          placeholder="—"
-                          className="w-16 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
-                      </td>
-                      <td className="px-2 py-1.5 text-right tabular-nums text-gray-700">{fmtEUR(z.cost)}</td>
                       <td className="px-2 py-1.5 text-center">
                         <button onClick={() => removeZutat(i)}
                           className="text-gray-400 hover:text-red-600 p-1" title="Zutat entfernen">
@@ -1401,8 +1383,8 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
             <p className="text-xs text-gray-400 mt-1">
               Tipp: Beim Wählen einer Zutat aus der Liste wird der Preis automatisch übernommen. Du kannst Preis und Menge danach noch anpassen.
             </p>
-            <p className="text-xs text-amber-600 mt-1">
-              Ausbeute: Wie viel der eingekauften Ware im Produkt ankommt (geschälte Ananas ≈ 60 %). Wichtig: Wenn du eine Ausbeute unter 100 setzt, muss der Preis der reine TG-Einkaufspreis sein — steckt der Verschnitt schon im Preis, würde er sonst doppelt gerechnet. g/Stück ist das Einkaufsgewicht je Stück (nur für die Bestell-App, ohne Wirkung auf die Kalkulation).
+            <p className="text-xs text-gray-400 mt-1">
+              Ausbeute und g/Stück werden zentral im Tab „Einkaufspreise" gepflegt und wirken hier automatisch (Kosten mit * sind inkl. Ausbeute).
             </p>
           </div>
 
@@ -1932,7 +1914,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -1996,9 +1978,38 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       packGroesse:    z.package_size ?? null,
       packPreis:      z.package_price ?? null,
       preisProGramm:  z.price_per_gram_ml ?? null,
+      ausbeute:       z.ausbeute_prozent ?? null,
+      grammStueck:    z.gramm_je_stueck ?? null,
       untergruppe:    kategorisiereZutat(z.ingredient_name),
     }));
   }, [priceList]);
+
+  // Ausbeute und g/Stück werden HIER zentral gepflegt (Eigenschaft des
+  // Artikels, nicht der Rezeptzeile) und wirken sofort auf alle Rezepturen.
+  const ausbeuteZellen = (z) => (
+    <>
+      <td className="px-3 py-2 text-right">
+        {canEdit ? (
+          <input type="number" min="1" max="100" step="1"
+            key={`a_${z.name}_${z.ausbeute ?? 100}`}
+            defaultValue={z.ausbeute ?? 100}
+            onBlur={e => { const v = +e.target.value;
+              onUpdateArtikel?.(z.name, { ausbeute_prozent: v >= 1 && v < 100 ? v : null }); }}
+            className="w-14 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+        ) : <span className="tabular-nums text-xs">{z.ausbeute ?? 100} %</span>}
+      </td>
+      <td className="px-3 py-2 text-right">
+        {canEdit ? (
+          <input type="number" min="0" step="10"
+            key={`g_${z.name}_${z.grammStueck ?? ""}`}
+            defaultValue={z.grammStueck ?? ""} placeholder="—"
+            onBlur={e => { const v = +e.target.value;
+              onUpdateArtikel?.(z.name, { gramm_je_stueck: v > 0 ? v : null }); }}
+            className="w-16 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+        ) : <span className="tabular-nums text-xs">{z.grammStueck ?? "—"}</span>}
+      </td>
+    </>
+  );
 
   const gruppenZaehlung = useMemo(() => {
     const z = {};
@@ -2063,7 +2074,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       return (
         <tbody>
           {sichtbar.length === 0 && (
-            <tr><td colSpan={canEdit ? 7 : 6} className="px-3 py-8 text-center text-gray-400 text-sm">
+            <tr><td colSpan={canEdit ? 9 : 8} className="px-3 py-8 text-center text-gray-400 text-sm">
               Keine Treffer. Filter anpassen.
             </td></tr>
           )}
@@ -2075,6 +2086,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
               <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
               <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+              {ausbeuteZellen(z)}
               {canEdit && (
                 <td className="px-2 py-2 text-center">
                   <button onClick={() => { if (confirm(`Artikel „${z.name}" wirklich aus der Preisliste löschen?`)) onDeleteArtikel?.(z.name); }}
@@ -2097,7 +2109,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         bloecke.push(
           <tbody key={aktuelleGruppe}>
             <tr className="bg-emerald-50">
-              <td colSpan={canEdit ? 7 : 6} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
+              <td colSpan={canEdit ? 9 : 8} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
                 {aktuelleGruppe} <span className="text-emerald-600 font-normal">· {buffer.length}</span>
               </td>
             </tr>
@@ -2120,6 +2132,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
           <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
           <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+          {ausbeuteZellen(z)}
           {canEdit && (
             <td className="px-2 py-2 text-center">
               <button onClick={() => { if (confirm(`Artikel „${z.name}" wirklich aus der Preisliste löschen?`)) onDeleteArtikel?.(z.name); }}
@@ -2135,7 +2148,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     if (bloecke.length === 0) {
       return (
         <tbody>
-          <tr><td colSpan={canEdit ? 7 : 6} className="px-3 py-8 text-center text-gray-400 text-sm">
+          <tr><td colSpan={canEdit ? 9 : 8} className="px-3 py-8 text-center text-gray-400 text-sm">
             Keine Treffer. Filter anpassen.
           </td></tr>
         </tbody>
@@ -2154,6 +2167,9 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-gray-600">
             <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen.
+            <span className="block text-xs text-amber-600 mt-1">
+              Ausbeute %: Wie viel der eingekauften Ware im Produkt ankommt (geschälte Ananas ≈ 60). Wirkt sofort auf alle Rezepturen mit dieser Zutat — der Preis muss dann der reine Einkaufspreis sein, sonst wird der Verschnitt doppelt gerechnet. g/Stück = Einkaufsgewicht je Stück (nur für die Bestell-App).
+            </span>
           </p>
           <div className="flex flex-wrap gap-2">
             <button onClick={() => {
@@ -2359,6 +2375,8 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
                 {sortHeader("packGroesse",     "Packungsgröße")}
                 {sortHeader("packPreis",       "Packungspreis")}
                 {sortHeader("preisProGramm",   "Preis / g · / kg")}
+                {sortHeader("ausbeute",        "Ausbeute %")}
+                {sortHeader("grammStueck",     "g/Stück")}
                 {canEdit && <th className="w-10"></th>}
               </tr>
             </thead>
@@ -2813,6 +2831,32 @@ export default function KalkulationsApp() {
     setCloudMsg(`„${name}" aus der Preisliste entfernt — zum Sichern oben „Speichern".`);
   };
 
+  // Artikel-Eigenschaften (Ausbeute, g/Stück) zentral pflegen. Die Werte sind
+  // Eigenschaften des ARTIKELS, nicht der Rezeptzeile — sie werden hier gesetzt
+  // und sofort in alle Rezepturen gestempelt, die die Zutat verwenden.
+  // Persistenz wie handleAddArtikel: über manuelleArtikel in die Cloud.
+  const handleArtikelFelder = (name, patch) => {
+    const key = (name || "").toLowerCase();
+    const alt = priceList[key];
+    if (!alt) return;
+    const neu = { ...alt, ...patch };
+    setPriceList(prev => ({ ...prev, [key]: neu }));
+    setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), neu]);
+    setGeloeschteArtikel(prev => prev.filter(k => k !== key));
+    setProdukte(prev => prev.map(p => ({
+      ...p,
+      zutaten: (p.zutaten || []).map(z => {
+        if ((z.name || "").toLowerCase() !== key) return z;
+        const next = { ...z,
+          ausbeute_prozent: neu.ausbeute_prozent ?? null,
+          gramm_je_stueck: neu.gramm_je_stueck ?? null };
+        next.cost = zutatKosten(next);
+        return next;
+      }),
+    })));
+    setCloudMsg(`„${name}" aktualisiert — Rezepturen neu gerechnet. Zum Sichern oben „Speichern".`);
+  };
+
   // Alle Zutaten ohne Preis tolerant gegen die Preisliste abgleichen und Preise ziehen.
   // Liefert die Anzahl übernommener Preise zurück (für die Rückmeldung am Button).
   const handlePreisAbgleich = () => {
@@ -2823,7 +2867,11 @@ export default function KalkulationsApp() {
       zutaten: (p.zutaten || []).map(z => {
         if ((z.preis_pro_g || 0) > 0) return z;
         const proG = findPreisProG(z.name, plIndex);
-        if (proG > 0) { count++; return { ...z, preis_pro_g: proG, cost: +((z.menge_g || 0) * proG).toFixed(4) }; }
+        if (proG > 0) {
+          count++;
+          return { ...z, preis_pro_g: proG,
+                   cost: +zutatKosten({ ...z, preis_pro_g: proG }).toFixed(4) };
+        }
         return z;
       }),
     }));
@@ -3072,7 +3120,7 @@ export default function KalkulationsApp() {
         {aktiverTab === "SystemWE"       && <SystemWeTab produkte={produkte} mix={mix} setMix={setMix} />}
         {aktiverTab === "Naehrwerte"     && <NaehrwerteTab produkte={naehrwerteJson.produkte} />}
         {aktiverTab === "Einkaufspreise" && (
-          <EinkaufspreiseTab priceList={priceList} produkte={produkte}
+          <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
             onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer} />
         )}
