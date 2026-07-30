@@ -282,6 +282,29 @@ function zutatKosten(z) {
   return ((+(z && z.menge_g) || 0) * (+(z && z.preis_pro_g) || 0)) / ausbeuteFaktor(z);
 }
 
+// Preisbasis eines Einkaufsartikels: Stueck, pro Gramm oder pro 100 ml.
+// Wird automatisch aus der Einheit abgeleitet und kann im Einkaufspreise-Tab
+// uebersteuert werden. Das Stueckgewicht wird NIE von Hand eingegeben -
+// es ist rechnerisch Stueckpreis / Preis pro Gramm (Gurke: 1,00 EUR /
+// 0,0022 EUR pro g = 450 g) und fliesst so in die Bestell-App.
+const PREISBASEN = [["gramm", "pro Gramm"], ["stueck", "Stück"], ["ml100", "pro 100 ml"]];
+
+function preisbasisAuto(a) {
+  const einheit = String((a && a.unit) || "").toLowerCase();
+  if (einheit === "ml" || einheit === "l") return "ml100";
+  if (einheit === "g" || einheit === "kg" || einheit === "kiste") return "gramm";
+  if ((+(a && a.package_size) || 0) <= 5) return "stueck";
+  return "gramm";
+}
+
+function stueckgewicht(a) {
+  const basis = (a && a.preisbasis) || preisbasisAuto(a);
+  if (basis !== "stueck") return null;
+  const preis = +(a && a.package_price) || 0;
+  const proG = +(a && a.price_per_gram_ml) || 0;
+  return preis > 0 && proG > 0 ? preis / proG : null;
+}
+
 function berechne(produkt) {
   const material = produkt.zutaten.reduce((s, z) => s + (z.cost || 0), 0);
   const wareneinsatz = material + (produkt.verpackung_eur || 0);
@@ -1178,9 +1201,10 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
     if (treffer && treffer.price_per_gram_ml != null) {
       update.preis_pro_g = treffer.price_per_gram_ml;
       update.lieferant = "Transgourmet";
-      // Artikel-Eigenschaften aus der Preisliste mitnehmen (zentral gepflegt)
+      // Artikel-Eigenschaften aus der Preisliste mitnehmen (zentral gepflegt);
+      // Stueckgewicht rechnerisch aus Stueckpreis / Preis pro Gramm
       update.ausbeute_prozent = treffer.ausbeute_prozent ?? null;
-      update.gramm_je_stueck = treffer.gramm_je_stueck ?? null;
+      update.gramm_je_stueck = stueckgewicht(treffer);
     }
     const z = form.zutaten[idx];
     update.cost = zutatKosten({ ...z, ...update });
@@ -1979,7 +2003,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       packPreis:      z.package_price ?? null,
       preisProGramm:  z.price_per_gram_ml ?? null,
       ausbeute:       z.ausbeute_prozent ?? null,
-      grammStueck:    z.gramm_je_stueck ?? null,
+      preisbasis:     z.preisbasis ?? null,
       untergruppe:    kategorisiereZutat(z.ingredient_name),
     }));
   }, [priceList]);
@@ -1999,14 +2023,30 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         ) : <span className="tabular-nums text-xs">{z.ausbeute ?? 100} %</span>}
       </td>
       <td className="px-3 py-2 text-right">
-        {canEdit ? (
-          <input type="number" min="0" step="10"
-            key={`g_${z.name}_${z.grammStueck ?? ""}`}
-            defaultValue={z.grammStueck ?? ""} placeholder="—"
-            onBlur={e => { const v = +e.target.value;
-              onUpdateArtikel?.(z.name, { gramm_je_stueck: v > 0 ? v : null }); }}
-            className="w-16 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
-        ) : <span className="tabular-nums text-xs">{z.grammStueck ?? "—"}</span>}
+        {(() => {
+          const art = { unit: z.einheit, package_size: z.packGroesse,
+                        package_price: z.packPreis, price_per_gram_ml: z.preisProGramm,
+                        preisbasis: z.preisbasis };
+          const basis = z.preisbasis || preisbasisAuto(art);
+          const gewicht = stueckgewicht({ ...art, preisbasis: basis });
+          return (
+            <div className="flex flex-col items-end gap-0.5">
+              {canEdit ? (
+                <select value={basis}
+                  onChange={e => onUpdateArtikel?.(z.name, { preisbasis: e.target.value })}
+                  className="border border-gray-200 rounded px-1 py-1 text-xs bg-white">
+                  {PREISBASEN.map(([wert, label]) => <option key={wert} value={wert}>{label}</option>)}
+                </select>
+              ) : <span className="text-xs">{(PREISBASEN.find(p => p[0] === basis) || ["", "—"])[1]}</span>}
+              {basis === "stueck" && gewicht && (
+                <span className="text-[10px] text-gray-400 tabular-nums"
+                  title="Rechnerisch aus Stückpreis ÷ Preis pro Gramm — keine Handeingabe nötig">
+                  ≈ {new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(gewicht)} g/Stück
+                </span>
+              )}
+            </div>
+          );
+        })()}
       </td>
     </>
   );
@@ -2381,7 +2421,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
                 {sortHeader("packPreis",       "Packungspreis")}
                 {sortHeader("preisProGramm",   "Preis / g · / kg")}
                 {sortHeader("ausbeute",        "Ausbeute %")}
-                {sortHeader("grammStueck",     "g/Stück")}
+                {sortHeader("preisbasis",      "Berechnung", "left")}
                 {canEdit && <th className="w-10"></th>}
               </tr>
             </thead>
@@ -2845,6 +2885,9 @@ export default function KalkulationsApp() {
     const alt = priceList[key];
     if (!alt) return;
     const neu = { ...alt, ...patch };
+    // Stueckgewicht ist IMMER rechnerisch (Stueckpreis / Preis pro Gramm),
+    // nie Handeingabe - haengt von Preisbasis und Preisen ab
+    neu.gramm_je_stueck = stueckgewicht(neu);
     setPriceList(prev => ({ ...prev, [key]: neu }));
     setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), neu]);
     setGeloeschteArtikel(prev => prev.filter(k => k !== key));
