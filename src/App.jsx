@@ -1914,7 +1914,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -2181,6 +2181,11 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0"
               title="Zutaten ohne Preis tolerant mit der Preisliste abgleichen und Preise ziehen">
               <RotateCcw size={14} /> Preise aus Liste ziehen
+            </button>
+            <button onClick={() => onAltAusbeute?.()}
+              className="bg-white border border-amber-400 text-amber-700 hover:bg-amber-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0"
+              title="Aus der alten Excel-Liste steckt bei manchen Frischwaren der Verschnitt noch IM Listenpreis (Apfel: netto 1,25 €/kg, Liste 2,08 €/kg). Diese Bereinigung setzt den Preis auf netto zurück und trägt den Faktor in die Ausbeute-Spalte ein — Rezeptkosten bleiben unverändert.">
+              Alt-Ausbeuten bereinigen
             </button>
             <button onClick={() => { setArtikelOpen(o => !o); setArtMsg(""); }}
               className="bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0">
@@ -2857,6 +2862,78 @@ export default function KalkulationsApp() {
     setCloudMsg(`„${name}" aktualisiert — Rezepturen neu gerechnet. Zum Sichern oben „Speichern".`);
   };
 
+  // Alt-Ausbeuten aus der Excel-Aera herausloesen: Manche Frischartikel tragen
+  // den Verschnitt noch IM Listenpreis (Apfel: netto 1,25 €/kg eingekauft,
+  // Liste 2,08 €/kg = 60 % Ausbeute eingepreist). Diese Bereinigung setzt den
+  // Listenpreis auf den echten Netto-Einkauf (Packungspreis / Packungsgroesse)
+  // zurueck und traegt den Faktor in die Ausbeute-Spalte ein. Die Rezeptkosten
+  // bleiben dadurch unveraendert: netto / Ausbeute = alter Preis.
+  const handleAltAusbeuten = () => {
+    const funde = [];
+    const auffaellig = [];
+    for (const [key, a] of Object.entries(priceList)) {
+      if (a.ausbeute_prozent != null) continue;          // schon manuell gepflegt
+      const einheit = String(a.unit || "").toLowerCase();
+      let groesseG = null;
+      if (einheit === "g" || einheit === "ml") groesseG = +a.package_size || null;
+      else if (einheit === "kg" || einheit === "l") groesseG = (+a.package_size || 0) * 1000 || null;
+      if (!groesseG || !(+a.package_price > 0) || !(+a.price_per_gram_ml > 0)) continue;
+      const netto = a.package_price / groesseG;
+      const ratio = a.price_per_gram_ml / netto;
+      if (ratio >= 1.02 && ratio <= 5) {
+        funde.push({ key, name: a.ingredient_name, alt: a.price_per_gram_ml,
+                     netto, ausbeute: Math.round(1000 / ratio) / 10 });
+      } else if (ratio < 0.98) {
+        auffaellig.push(a.ingredient_name);
+      }
+    }
+    if (!funde.length) {
+      setCloudMsg("Keine Alt-Ausbeuten in den Listenpreisen gefunden — nichts zu tun."
+        + (auffaellig.length ? ` (${auffaellig.length} Artikel liegen UNTER dem Netto-Einkauf — bitte manuell prüfen: ${auffaellig.slice(0, 5).join(", ")}…)` : ""));
+      return;
+    }
+    const beispiele = funde.slice(0, 8).map(f => `${f.name} (${f.ausbeute} %)`).join(", ");
+    if (!confirm(`${funde.length} Artikel tragen den Verschnitt noch im Listenpreis:\n${beispiele}${funde.length > 8 ? " …" : ""}\n\nJetzt bereinigen? Der Listenpreis wird auf den Netto-Einkauf zurückgesetzt, die Ausbeute-Spalte übernimmt den Faktor — die Rezeptkosten bleiben unverändert.`)) return;
+
+    const map = {};
+    funde.forEach(f => { map[f.key] = f; });
+
+    setPriceList(prev => {
+      const m = { ...prev };
+      for (const f of funde) {
+        m[f.key] = { ...m[f.key], price_per_gram_ml: f.netto, ausbeute_prozent: f.ausbeute };
+      }
+      return m;
+    });
+    setManuelleArtikel(prev => {
+      const rest = prev.filter(a => !map[(a.ingredient_name || "").toLowerCase()]);
+      const neue = funde.map(f => ({ ...(priceList[f.key] || {}),
+        price_per_gram_ml: f.netto, ausbeute_prozent: f.ausbeute }));
+      return [...rest, ...neue];
+    });
+
+    // Rezeptzeilen mitziehen — aber NUR wenn ihr Preis dem alten Listenpreis
+    // entspricht (±2 %). Manuell abweichende Preise bleiben unangetastet,
+    // sonst wuerden sich deren Kosten still veraendern.
+    let zeilen = 0, uebersprungen = 0;
+    setProdukte(prev => prev.map(p => ({
+      ...p,
+      zutaten: (p.zutaten || []).map(z => {
+        const f = map[(z.name || "").toLowerCase()];
+        if (!f) return z;
+        const abweichung = Math.abs((z.preis_pro_g || 0) - f.alt) / f.alt;
+        if (abweichung > 0.02) { uebersprungen++; return z; }
+        zeilen++;
+        const next = { ...z, preis_pro_g: f.netto, ausbeute_prozent: f.ausbeute };
+        next.cost = zutatKosten(next);
+        return next;
+      }),
+    })));
+    setCloudMsg(`✓ ${funde.length} Artikel bereinigt, ${zeilen} Rezeptzeilen umgestellt`
+      + (uebersprungen ? `, ${uebersprungen} Zeilen mit abweichendem Preis unangetastet` : "")
+      + ` — Kosten unverändert. Zum Sichern oben „Speichern".`);
+  };
+
   // Alle Zutaten ohne Preis tolerant gegen die Preisliste abgleichen und Preise ziehen.
   // Liefert die Anzahl übernommener Preise zurück (für die Rückmeldung am Button).
   const handlePreisAbgleich = () => {
@@ -3120,7 +3197,7 @@ export default function KalkulationsApp() {
         {aktiverTab === "SystemWE"       && <SystemWeTab produkte={produkte} mix={mix} setMix={setMix} />}
         {aktiverTab === "Naehrwerte"     && <NaehrwerteTab produkte={naehrwerteJson.produkte} />}
         {aktiverTab === "Einkaufspreise" && (
-          <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder}
+          <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
             onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer} />
         )}
