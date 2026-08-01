@@ -2789,6 +2789,53 @@ export default function KalkulationsApp() {
     reader.readAsText(f);
   };
 
+  // Neue Rezepte aus einer JSON-Datei einspielen ({produkte:[...]}).
+  // Zutaten werden gegen die Preisliste angereichert (Preis, Ausbeute,
+  // Stueckgewicht) und die Kosten ueber zutatKosten gerechnet. Vorhandene
+  // Produkte (gleiche id oder gleicher Name) werden uebersprungen.
+  const handleRezeptImport = (datei) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const daten = JSON.parse(reader.result);
+        const neue = Array.isArray(daten.produkte) ? daten.produkte : [];
+        if (!neue.length) { setCloudMsg("Importdatei enthält keine Produkte."); return; }
+        const ids = new Set(produkte.map(p => p.id));
+        const namen = new Set(produkte.map(p => (p.name || "").toLowerCase()));
+        let uebersprungen = 0;
+        const angereichert = [];
+        for (const p of neue) {
+          if (ids.has(p.id) || namen.has((p.name || "").toLowerCase())) {
+            uebersprungen++; continue;
+          }
+          const zutaten = (p.zutaten || []).map(roh => {
+            const z = { lieferant: "Transgourmet", ...roh };
+            const treffer = priceList[(z.name || "").toLowerCase()];
+            if (treffer) {
+              if (!(z.preis_pro_g > 0) && treffer.price_per_gram_ml != null) {
+                z.preis_pro_g = treffer.price_per_gram_ml;
+              }
+              z.ausbeute_prozent = treffer.ausbeute_prozent ?? z.ausbeute_prozent ?? null;
+              z.gramm_je_stueck = stueckgewicht(treffer);
+            }
+            z.cost = zutatKosten(z);
+            return z;
+          });
+          angereichert.push({ verpackung_eur: 0, vk_in_brutto: 0, vk_out_brutto: 0,
+            kampagne_start: null, kampagne_ende: null, untergruppe: null,
+            ...p, zutaten });
+        }
+        if (angereichert.length) setProdukte(prev => [...prev, ...angereichert]);
+        setCloudMsg(`✓ ${angereichert.length} Rezepte importiert`
+          + (uebersprungen ? `, ${uebersprungen} schon vorhanden` : "")
+          + ` — bitte prüfen und oben „Speichern".`);
+      } catch (fehler) {
+        setCloudMsg("Import fehlgeschlagen: " + fehler.message);
+      }
+    };
+    reader.readAsText(datei);
+  };
+
   const handleJsonDownload = () => {
     const out = {
       meta: { generiert_am: new Date().toISOString(), version: "1.1", quelle: "kalkulations-app",
@@ -3148,6 +3195,15 @@ export default function KalkulationsApp() {
             </div>
             <div className="flex flex-col items-end gap-1">
               <div className="flex flex-wrap items-center gap-2">
+                {writer && (
+                  <label title="Neue Rezepte aus einer JSON-Importdatei einspielen (Preise/Ausbeuten werden aus der Preisliste ergänzt)"
+                    className="bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 cursor-pointer">
+                    <FileSpreadsheet size={14} /> Rezepte importieren
+                    <input type="file" accept=".json,application/json" className="hidden"
+                      onChange={e => { const f = e.target.files && e.target.files[0];
+                        if (f) handleRezeptImport(f); e.target.value = ""; }} />
+                  </label>
+                )}
                 {writer && (
                   <button onClick={() => setImportOpen(true)}
                     className="bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
