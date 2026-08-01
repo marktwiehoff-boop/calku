@@ -1938,7 +1938,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onSpeichern, speichernMsg, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -2429,6 +2429,16 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           </table>
         </div>
       </div>
+
+      {canEdit && onSpeichern && (
+        <div className="flex items-center gap-3 pt-2">
+          <button onClick={onSpeichern}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold flex items-center gap-2">
+            <Download size={14} /> Speichern
+          </button>
+          {speichernMsg && <span className="text-xs text-gray-500">{speichernMsg}</span>}
+        </div>
+      )}
 
       <p className="text-xs text-gray-400">
         Einkaufspreise werden in den Kalkulationen pro Zutat verwendet. Quelle: aktive Preisliste
@@ -3309,7 +3319,9 @@ export default function KalkulationsApp() {
         {aktiverTab === "Einkaufspreise" && (
           <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
-            onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer} />
+            onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer}
+            onSpeichern={cloudEnabled ? (writer ? handleCloudSave : null) : handleJsonDownload}
+            speichernMsg={cloudMsg} />
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
