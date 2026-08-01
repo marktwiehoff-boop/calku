@@ -1,0 +1,43 @@
+functionsDirectory = "C:\\Users\\Media\\OneDrive\\Desktop\\08_Tech_und_Tools\\immergrun-cowork\\kalkulations-app-deploy\\netlify\\functions"
+functionsDirectoryOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[build]
+publish = "C:\\Users\\Media\\OneDrive\\Desktop\\08_Tech_und_Tools\\immergrun-cowork\\kalkulations-app-deploy\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build"
+functions = "C:\\Users\\Media\\OneDrive\\Desktop\\08_Tech_und_Tools\\immergrun-cowork\\kalkulations-app-deploy\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

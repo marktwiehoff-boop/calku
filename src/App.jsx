@@ -52,7 +52,7 @@ const SCHWELLWERTE = {
 };
 
 const WARENGRUPPEN  = ["Smoothies", "Juices", "Iced Drinks", "Bowls", "Wraps", "Kampagnen"];
-const ICED_SUBGROUPS = ["Sweet Iced Matcha", "Iced Matcha", "Frozen Iced Tea", "Refresher", "Iced Coffee Lattes"];
+const ICED_SUBGROUPS = ["Classic Iced Matcha", "Sweet Iced Matcha", "Frozen Iced Tea", "Refresher", "Iced Coffee Lattes"];
 const BOWL_SUBGROUPS = ["Salatbowls", "Reisbowls", "Kartoffelbowls"];
 // Untergruppen je Warengruppe (für Reiter-Unterfilter + Edit-Dialog)
 const SUBGROUPS_BY_GRUPPE = { "Iced Drinks": ICED_SUBGROUPS, "Bowls": BOWL_SUBGROUPS };
@@ -2809,9 +2809,16 @@ export default function KalkulationsApp() {
       try {
         const daten = JSON.parse(reader.result);
         const neue = Array.isArray(daten.produkte) ? daten.produkte : [];
-        if (!neue.length) { setCloudMsg("Importdatei enthält keine Produkte."); return; }
-        const ids = new Set(produkte.map(p => p.id));
-        const namen = new Set(produkte.map(p => (p.name || "").toLowerCase()));
+        // Optional: 'entfernen' = Liste von Produkt-ids, die die Importdatei
+        // ersetzt (z. B. Korrektur falsch angelegter Varianten)
+        const zuEntfernen = new Set(Array.isArray(daten.entfernen) ? daten.entfernen : []);
+        if (!neue.length && !zuEntfernen.size) {
+          setCloudMsg("Importdatei enthält keine Produkte."); return;
+        }
+        const basis = produkte.filter(p => !zuEntfernen.has(p.id));
+        const entfernt = produkte.length - basis.length;
+        const ids = new Set(basis.map(p => p.id));
+        const namen = new Set(basis.map(p => (p.name || "").toLowerCase()));
         let uebersprungen = 0;
         const angereichert = [];
         for (const p of neue) {
@@ -2835,8 +2842,11 @@ export default function KalkulationsApp() {
             kampagne_start: null, kampagne_ende: null, untergruppe: null,
             ...p, zutaten });
         }
-        if (angereichert.length) setProdukte(prev => [...prev, ...angereichert]);
+        if (angereichert.length || zuEntfernen.size) {
+          setProdukte(prev => [...prev.filter(p => !zuEntfernen.has(p.id)), ...angereichert]);
+        }
         setCloudMsg(`✓ ${angereichert.length} Rezepte importiert`
+          + (entfernt ? `, ${entfernt} alte Varianten entfernt` : "")
           + (uebersprungen ? `, ${uebersprungen} schon vorhanden` : "")
           + ` — bitte prüfen und oben „Speichern".`);
       } catch (fehler) {
