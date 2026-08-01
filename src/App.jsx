@@ -2208,7 +2208,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           <p className="text-sm text-gray-600">
             <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen.
             <span className="block text-xs text-amber-600 mt-1">
-              Ausbeute %: Wie viel der eingekauften Ware im Produkt ankommt (geschälte Ananas ≈ 60). Wirkt sofort auf alle Rezepturen mit dieser Zutat — der Preis muss dann der reine Einkaufspreis sein, sonst wird der Verschnitt doppelt gerechnet. g/Stück = Einkaufsgewicht je Stück (nur für die Bestell-App).
+              Ausbeute %: Wie viel der eingekauften Ware im Produkt ankommt (geschälte Ananas ≈ 60). Bei Presswaren ist es die Auspressquote in ml je Gramm Einkauf: 40 heißt, aus 1 kg Möhren werden 400 ml Saft — so wird aus dem Kilopreis der Milliliterpreis. Wirkt sofort auf alle Rezepturen mit dieser Zutat; der Preis muss dann der reine Einkaufspreis sein, sonst wird der Verschnitt doppelt gerechnet.
             </span>
           </p>
           <div className="flex flex-wrap gap-2">
@@ -2791,9 +2791,13 @@ export default function KalkulationsApp() {
 
   const handleJsonDownload = () => {
     const out = {
-      meta: { generiert_am: new Date().toISOString(), version: "1.0", quelle: "kalkulations-app" },
+      meta: { generiert_am: new Date().toISOString(), version: "1.1", quelle: "kalkulations-app",
+              stand: new Date().toISOString().slice(0, 10) },
       mix,
       produkte,
+      // kompletter Artikelstamm inkl. Ausbeute/Preisbasis - Quelle fuer die
+      // Bestell-App (igorder); dort werden die Zutatenwerte daraus gelesen
+      artikel: Object.values(priceList),
     };
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     const url  = URL.createObjectURL(blob);
@@ -3156,6 +3160,13 @@ export default function KalkulationsApp() {
                   <button onClick={handleCloudSave}
                     className="bg-white text-green-800 hover:bg-green-50 rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
                     <Download size={14} /> Speichern
+                  </button>
+                )}
+                {cloudEnabled && (
+                  <button onClick={handleJsonDownload}
+                    title="Aktuellen Stand als JSON-Datei herunterladen — u. a. als Quelle für die Bestell-App (igorder)"
+                    className="bg-white/15 hover:bg-white/25 backdrop-blur rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2">
+                    <FileSpreadsheet size={14} /> Export
                   </button>
                 )}
                 {!cloudEnabled && (
