@@ -84,10 +84,11 @@ for frucht, puree in (("Mango", "Mangopüree"), ("Strawberry", "Erdbeerpüree"))
         produkte.append(produkt(
             f"{frucht.lower()}_matcha_{suffix}", f"{frucht} Matcha {gr}",
             "Iced Drinks", basis, MATCHA_VK[suffix], 0.12, ml))
-        # Sweet-Eis-Variante: + Frappe weiss (Menge folgt von Mark, vorerst 0)
+        # Sweet-Eis-Variante: + Frappe weiss, IMMER 15 g unabhaengig von der
+        # Groesse (Mark, 01.08.2026)
         sweet = [zutat(n, m[idx]) for n, m in MATCHA.items()]
         sweet.append(zutat(puree, (40, 60, 80)[idx]))
-        sweet.append(zutat("Frappe weiß", 0))
+        sweet.append(zutat("Frappe weiß", 15))
         produkte.append(produkt(
             f"sweet_eis_matcha_{frucht.lower()}_{suffix}",
             f"Sweet Eis Matcha {frucht} {gr}", "Iced Drinks",
