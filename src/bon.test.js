@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { BON_BREITE, wrapZeile, formatMenge, formatEuro, zutatenZeilen,
-         VORLAGE_FALLBACK, aufloeseVorlage, renderBon } from "./bon.js";
+         VORLAGE_FALLBACK, aufloeseVorlage, renderBon,
+         bonStatus, bonsAlsCsv, bonsAlsJson } from "./bon.js";
 
 describe("bon", () => {
   it("kennt die Bonbreite", () => {
@@ -168,5 +169,48 @@ describe("renderBon", () => {
 
   it("liefert fuer kein Produkt einen leeren String", () => {
     expect(renderBon(null, vorlagen)).toBe("");
+  });
+});
+
+describe("bonStatus", () => {
+  it("meldet auto ohne jede Pflege", () => {
+    expect(bonStatus({ name: "A" })).toBe("auto");
+  });
+  it("meldet gepflegt bei Schritten", () => {
+    expect(bonStatus({ bon_schritte: "Mixen" })).toBe("gepflegt");
+  });
+  it("meldet abweichend bei eigenen Zutaten", () => {
+    expect(bonStatus({ bon_zutaten: "Sauce 40 g", bon_schritte: "Mixen" })).toBe("abweichend");
+  });
+  it("meldet abweichend bei Override", () => {
+    expect(bonStatus({ bon_override: "frei" })).toBe("abweichend");
+  });
+});
+
+describe("Export", () => {
+  const produkte = [
+    { id: "a", name: "Green Booster", gruppe: "Smoothies", zutaten: [{ name: "Banane", menge_g: 100 }] },
+  ];
+  const vorlagen = { _default: "{produkt}\n{zutaten}" };
+
+  it("baut CSV mit BOM, Semikolon und maskierten Feldern", () => {
+    const csv = bonsAlsCsv(produkte, vorlagen);
+    expect(csv.startsWith("﻿")).toBe(true);
+    expect(csv).toContain("produkt;gruppe;bon_text");
+    expect(csv).toContain(`"Green Booster";"Smoothies";"Green Booster\nBanane 100 g"`);
+  });
+
+  it("verdoppelt Anfuehrungszeichen im Text", () => {
+    const csv = bonsAlsCsv([{ id: "b", name: `Der "Grosse"`, gruppe: "Bowls" }], { _default: "{produkt}" });
+    expect(csv).toContain(`"Der ""Grosse"""`);
+  });
+
+  it("baut JSON mit Vorlagen und gerendertem Text", () => {
+    const obj = JSON.parse(bonsAlsJson(produkte, vorlagen, "2026-08-04"));
+    expect(obj.stand).toBe("2026-08-04");
+    expect(obj.bon_vorlagen).toEqual(vorlagen);
+    expect(obj.bons).toHaveLength(1);
+    expect(obj.bons[0]).toMatchObject({ id: "a", name: "Green Booster", gruppe: "Smoothies" });
+    expect(obj.bons[0].bon_text).toContain("Banane 100 g");
   });
 });

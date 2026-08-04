@@ -141,3 +141,40 @@ export function renderBon(produkt, vorlagen) {
   }
   return verdichte(aus);
 }
+
+// "abweichend" = folgt der Rezeptur nicht mehr, "gepflegt" = Schritte da,
+// "auto" = rein aus Vorlage + Live-Zutaten.
+export function bonStatus(produkt) {
+  const hat = (f) => typeof produkt?.[f] === "string" && produkt[f].trim().length > 0;
+  if (hat("bon_override") || hat("bon_zutaten")) return "abweichend";
+  if (hat("bon_schritte")) return "gepflegt";
+  return "auto";
+}
+
+export function bonsAlsCsv(produkte, vorlagen) {
+  const esc = (s) => `"${String(s ?? "").split(`"`).join(`""`)}"`;
+  const zeilen = [["produkt", "gruppe", "bon_text"].join(";")];
+  for (const p of produkte || []) {
+    zeilen.push([esc(p.name), esc(p.gruppe), esc(renderBon(p, vorlagen))].join(";"));
+  }
+  // BOM, damit Excel die Umlaute richtig liest
+  return "﻿" + zeilen.join("\r\n");
+}
+
+export function bonsAlsJson(produkte, vorlagen, stand) {
+  return JSON.stringify({
+    stand,
+    quelle: "calku",
+    bon_vorlagen: vorlagen || {},
+    bons: (produkte || []).map(p => ({
+      id: p.id,
+      name: p.name,
+      gruppe: p.gruppe,
+      bon_zutaten:  p.bon_zutaten  || null,
+      bon_schritte: p.bon_schritte || null,
+      bon_hinweise: p.bon_hinweise || null,
+      bon_override: p.bon_override || null,
+      bon_text: renderBon(p, vorlagen),
+    })),
+  }, null, 2);
+}
