@@ -114,7 +114,7 @@ export default function BonVorlagenEditor({ warengruppen, vorlagen, onChange, ca
             </div>
           )}
 
-          <VorlagenFeld key={gewaehlt} initialWert={wert} canEdit={canEdit} hatEigen={hatEigen}
+          <VorlagenFeld key={`${gewaehlt}|${hatEigen}`} initialWert={wert} canEdit={canEdit} hatEigen={hatEigen}
             onCommit={setzeVorlage} />
 
           {hatEigen && gewaehlt !== "_default" && canEdit && (
