@@ -148,7 +148,9 @@ nur für Writer; Leser sehen alles schreibgeschützt.
 
 ## Export
 
-Ein Button, zwei Formate über ein kleines Auswahlmenü:
+Zwei Buttons, je ein Format. *(Abweichung vom ersten Entwurf, der ein Auswahlmenü
+hinter einem Button vorsah — zwei Buttons sind ein Klick weniger und ein Bauteil
+weniger. Bewusst so umgesetzt.)*
 
 - **CSV** `bons_YYYY-MM-DD.csv`, Trennzeichen `;`, UTF-8 mit BOM (Excel),
   Spalten `produkt;gruppe;bon_text`. Zeilenumbrüche im Bon-Text stehen in
