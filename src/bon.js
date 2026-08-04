@@ -1,5 +1,10 @@
 // Reine Bon-Logik (ohne React). Einzige Stelle, an der ein Produktionsbon entsteht.
 // Vorschau, Kopieren und Export nutzen alle renderBon().
+//
+// Vertrag: menge_g und vk_out_brutto muessen Zahlen sein, keine Kommastrings
+// ("30,5"). So ein String wird von `+v || 0` zu 0 und laesst die Zutat oder
+// den Preis still verschwinden. App.jsx erzwingt das heute in jedem
+// Schreibpfad; dieses Modul verlaesst sich darauf, ohne es selbst zu pruefen.
 
 export const BON_BREITE = 42; // Zeichen je Zeile, 80-mm-Thermodrucker
 
@@ -105,20 +110,26 @@ function hinweisZeilen(produkt) {
 }
 
 // Ersetzt bekannte Platzhalter in einer Zeile, die Text und Platzhalter
-// mischt (z. B. "{gruppe} VK {vk}"). Enthaelt die Zeile mindestens einen
-// bekannten Platzhalter und sind ALLE darin vorkommenden bekannten
-// Platzhalter leer, entfaellt die Zeile komplett (Rueckgabe null) - genau
-// wie bei einer reinen Einzelplatzhalter-Zeile. War mindestens einer
-// gefuellt, bleibt die Zeile, leere Platzhalter werden zu Leerstrings.
-// Unbekannte Platzhalter (z. B. {filiale}) sind hier nicht enthalten und
-// bleiben dadurch woertlich im Bon stehen - das Modul ersetzt nur, was es
-// kennt, statt fremden Text zu verschlucken.
-function ersetzeBekannte(zeile, werte, bloecke) {
-  const bekannt = { ...werte };
-  for (const [k, v] of Object.entries(bloecke)) bekannt[k] = v.join(" ");
-
+// mischt (z. B. "VK {vk}"). Sind alle darin vorkommenden bekannten
+// Platzhalter leer, entfaellt die Zeile komplett (Rueckgabe null) - genau wie
+// bei einer reinen Einzelplatzhalter-Zeile; war mindestens einer gefuellt,
+// bleibt die Zeile mit Leerstrings fuer die leeren Platzhalter.
+//
+// Konvention fuer Vorlagen: ein Label gehoert mit seinem Platzhalter auf eine
+// eigene Zeile ("VK {vk}"), nicht gemischt mit einem anderen Platzhalter
+// ("{gruppe} VK {vk}") - sonst bleibt das Label bei leerem Wert allein
+// stehen ("Smoothies VK"). Das ist nicht algorithmisch loesbar, kein Code
+// kann wissen, dass "VK" inhaltlich zu {vk} gehoert.
+function ersetzeBekannte(zeile, bekannt) {
+  const alleTokens = zeile.match(/\{[^{}]+\}/g) || [];
   const vorkommend = Object.keys(bekannt).filter(k => zeile.includes(k));
-  if (vorkommend.length && vorkommend.every(k => !bekannt[k])) return null;
+  // Unbekannte Platzhalter (z. B. {filiale}) zaehlen als "gefuellt", sonst
+  // wuerde ein leerer bekannter Platzhalter in derselben Zeile sie mit
+  // loeschen - sie bleiben stattdessen woertlich stehen, ersetzt wird nur,
+  // was bekannt ist.
+  const hatUnbekannte = alleTokens.some(t => !(t in bekannt));
+
+  if (vorkommend.length && !hatUnbekannte && vorkommend.every(k => !bekannt[k])) return null;
 
   let text = zeile;
   for (const k of vorkommend) text = text.split(k).join(bekannt[k]);
@@ -140,7 +151,7 @@ function zuBonText(zeilen) {
 export function renderBon(produkt, vorlagen) {
   if (!produkt) return "";
 
-  const override = gepflegt(produkt.bon_override) ? produkt.bon_override.trim() : "";
+  const override = gepflegt(produkt?.bon_override) ? produkt.bon_override.trim() : "";
   const vorlage  = override || aufloeseVorlage(produkt.gruppe, vorlagen);
 
   const werte = {
@@ -156,7 +167,13 @@ export function renderBon(produkt, vorlagen) {
     "{schritte}": schritteZeilen(produkt),
     "{hinweise}": hinweisZeilen(produkt),
   };
+  // Einmal fuer den ganzen Lauf gebaut statt pro Vorlagenzeile neu - Zutaten-
+  // liste & Co. aendern sich waehrend eines renderBon-Aufrufs nicht.
+  const bekannt = { ...werte };
+  for (const [k, v] of Object.entries(bloecke)) bekannt[k] = v.join(" ");
 
+  // Vorlagenzeilen werden linksbuendig gerendert - eine fuehrende Einrueckung
+  // im Text geht durch das trim() in wrapZeile ohnehin verloren.
   const aus = [];
   for (const zeile of String(vorlage).split("\n")) {
     const roh = zeile.trim();
@@ -173,7 +190,7 @@ export function renderBon(produkt, vorlagen) {
       continue;
     }
     // Gemischte Zeile (Text + Platzhalter) oder reiner Text ohne Platzhalter
-    const ersetzt = ersetzeBekannte(zeile, werte, bloecke);
+    const ersetzt = ersetzeBekannte(zeile, bekannt);
     if (ersetzt === null) continue;
     if (!ersetzt.trim()) { aus.push(""); continue; }
     aus.push(...wrapZeile(ersetzt));
@@ -189,10 +206,15 @@ export function bonStatus(produkt) {
   return "auto";
 }
 
+// Ein kaputter Eintrag (null, undefined, kein Objekt) darf den Export der
+// uebrigen Produkte nicht abreissen - dieselbe Haltung wie bei kaputten
+// Zutatenlisten.
+const istProdukt = (p) => p != null && typeof p === "object";
+
 export function bonsAlsCsv(produkte, vorlagen) {
   const esc = (s) => `"${String(s ?? "").split(`"`).join(`""`)}"`;
   const zeilen = [["produkt", "gruppe", "bon_text"].join(";")];
-  for (const p of produkte || []) {
+  for (const p of (produkte || []).filter(istProdukt)) {
     zeilen.push([esc(p.name), esc(p.gruppe), esc(renderBon(p, vorlagen))].join(";"));
   }
   // BOM, damit Excel die Umlaute richtig liest. Als Escape-Sequenz statt
@@ -206,7 +228,7 @@ export function bonsAlsJson(produkte, vorlagen, stand = new Date().toISOString()
     stand,
     quelle: "calku",
     bon_vorlagen: vorlagen || {},
-    bons: (produkte || []).map(p => ({
+    bons: (produkte || []).filter(istProdukt).map(p => ({
       id: p.id,
       name: p.name,
       gruppe: p.gruppe,

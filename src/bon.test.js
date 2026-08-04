@@ -142,13 +142,17 @@ describe("renderBon", () => {
     ],
   };
   const vorlagen = {
-    _default: "{produkt}\n{gruppe} VK {vk}\n{untergruppe}\n---\n{zutaten}\n---\n{schritte}\n{hinweise}",
+    // Label und Platzhalter zusammen auf einer eigenen Zeile ("VK {vk}"),
+    // nicht gemischt mit einem anderen Platzhalter ("{gruppe} VK {vk}") -
+    // siehe die Konvention bei ersetzeBekannte() in bon.js.
+    _default: "{produkt}\n{gruppe}\nVK {vk}\n{untergruppe}\n---\n{zutaten}\n---\n{schritte}\n{hinweise}",
   };
 
   it("setzt Kopf und Live-Zutaten ein", () => {
     expect(renderBon(basis, vorlagen)).toBe(
       "Green Booster\n" +
-      "Smoothies VK 5,90 €\n" +
+      "Smoothies\n" +
+      "VK 5,90 €\n" +
       "---\n" +
       "Babyspinat 30 g\n" +
       "Banane 100 g\n" +
@@ -243,6 +247,23 @@ describe("renderBon - gemischte Platzhalter-Zeilen", () => {
     const p = { name: "X" };
     expect(renderBon(p, { _default: "{filiale}" })).toBe("{filiale}");
   });
+
+  it("laesst die Zeile stehen, wenn ein unbekannter Platzhalter neben einem leeren bekannten steht", () => {
+    // Ohne diese Regel wuerde ein leerer {vk} die ganze Zeile inklusive des
+    // unbekannten {filiale} loeschen - Widerspruch zum Test darueber.
+    const p = { name: "X", vk_out_brutto: 0 };
+    expect(renderBon(p, { _default: "{filiale} {vk}" })).toBe("{filiale}");
+  });
+
+  it("dokumentiert die Kehrseite der Konvention: gefuellte Gruppe + leerer VK auf einer Zeile ergibt ein nacktes Label", () => {
+    // Bewusst als erwartetes Verhalten festgeschrieben, nicht als Bug: Label
+    // und Platzhalter gehoeren auf eine eigene Zeile ("VK {vk}"). Wer sie mit
+    // einem anderen gefuellten Platzhalter mischt, bekommt bei leerem Wert
+    // ein Label ohne Wert - das kann das Modul nicht erkennen, da es nicht
+    // wissen kann, dass "VK" inhaltlich zu {vk} gehoert.
+    const p = { name: "X", gruppe: "Smoothies", vk_out_brutto: 0 };
+    expect(renderBon(p, { _default: "{gruppe} VK {vk}" })).toBe("Smoothies VK");
+  });
 });
 
 describe("bonStatus", () => {
@@ -300,5 +321,18 @@ describe("Export", () => {
   it("defaultet stand auf das heutige Datum, wenn keins uebergeben wird", () => {
     const obj = JSON.parse(bonsAlsJson(produkte, vorlagen));
     expect(obj.stand).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it("bonsAlsCsv ueberspringt null/Nicht-Objekt-Eintraege statt den Export abzureissen", () => {
+    const kaputt = [null, { id: "a", name: "X", gruppe: "Y" }];
+    expect(() => bonsAlsCsv(kaputt, vorlagen)).not.toThrow();
+    expect(bonsAlsCsv(kaputt, vorlagen)).toContain("X");
+  });
+
+  it("bonsAlsJson ueberspringt null/Nicht-Objekt-Eintraege statt den Export abzureissen", () => {
+    const kaputt = [null, { id: "a", name: "X", gruppe: "Y" }];
+    expect(() => bonsAlsJson(kaputt, vorlagen, "2026-08-04")).not.toThrow();
+    const obj = JSON.parse(bonsAlsJson(kaputt, vorlagen, "2026-08-04"));
+    expect(obj.bons).toHaveLength(1);
   });
 });
