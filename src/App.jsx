@@ -2688,6 +2688,8 @@ export default function KalkulationsApp() {
     "Bowls": 30, "Wraps": 22, "Kampagnen": 3,
   });
   const [letzterImport, setLetzterImport] = useState(null);
+  // Bon-Vorlagen je Warengruppe + "_default"; leer = Fallback aus bon.js
+  const [bonVorlagen, setBonVorlagen] = useState({});
   const jsonRef = useRef(null);
 
   // ---- Cloud / Auth (Supabase) ----
@@ -2729,11 +2731,12 @@ export default function KalkulationsApp() {
             setGeloeschteArtikel(row.data.geloescht);
             setPriceList(prev => { const m = { ...prev }; for (const k of row.data.geloescht) delete m[k]; return m; });
           }
+          if (row.data.bon_vorlagen) setBonVorlagen(row.data.bon_vorlagen);
           setCloudInfo({ updated_at: row.updated_at, updated_by: row.updated_by });
         } else if (isWriter(session.user?.email) && !seededRef.current) {
           // Erstbefüllung: aktuellen Stand (Susanne) in die Cloud schreiben
           seededRef.current = true;
-          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel });
+          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen });
           setCloudMsg("Startdaten in die Cloud übertragen.");
         }
       } catch (e) {
@@ -2752,6 +2755,7 @@ export default function KalkulationsApp() {
         setGeloeschteArtikel(data.geloescht);
         setPriceList(prev => { const m = { ...prev }; for (const k of data.geloescht) delete m[k]; return m; });
       }
+      if (data.bon_vorlagen) setBonVorlagen(data.bon_vorlagen);
       setCloudInfo({ updated_at: at, updated_by: by });
     });
     return () => { active = false; try { supabase.removeChannel(ch); } catch (_) {} };
@@ -2761,7 +2765,7 @@ export default function KalkulationsApp() {
     if (!writer) return;
     try {
       setCloudMsg("Speichere …");
-      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel });
+      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen });
       setCloudMsg("✓ Gespeichert — für alle sichtbar");
       setTimeout(() => setCloudMsg(""), 3000);
     } catch (e) {
@@ -2781,6 +2785,7 @@ export default function KalkulationsApp() {
         if (db.produkte) {
           setProdukte(db.produkte);
           if (db.mix) setMix(db.mix);
+          if (db.bon_vorlagen) setBonVorlagen(db.bon_vorlagen);
           alert(`${db.produkte.length} Produkte aus App-Export geladen.`);
           return;
         }
@@ -2865,6 +2870,7 @@ export default function KalkulationsApp() {
       // kompletter Artikelstamm inkl. Ausbeute/Preisbasis - Quelle fuer die
       // Bestell-App (igorder); dort werden die Zutatenwerte daraus gelesen
       artikel: Object.values(priceList),
+      bon_vorlagen: bonVorlagen,
     };
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     const url  = URL.createObjectURL(blob);
@@ -3083,6 +3089,16 @@ export default function KalkulationsApp() {
 
   const handleProduktDelete = (id) => {
     setProdukte(prev => prev.filter(p => p.id !== id));
+  };
+
+  // Bon-Felder eines Rezepts setzen. Leerstring wird zu null, damit
+  // "leer" ueberall dasselbe bedeutet (= Automatik).
+  const handleBonFeld = (produktId, patch) => {
+    const sauber = {};
+    for (const [k, v] of Object.entries(patch)) {
+      sauber[k] = typeof v === "string" && v.trim() ? v : null;
+    }
+    setProdukte(prev => prev.map(p => (p.id === produktId ? { ...p, ...sauber } : p)));
   };
 
   // Bestehendes Rezept als Kopie in eine Kampagne übernehmen.
