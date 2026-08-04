@@ -31,3 +31,26 @@ export function wrapZeile(text, breite = BON_BREITE, einzug = "") {
   if (aktuell) push();
   return zeilen;
 }
+
+// Menge deutsch, ohne ueberfluessige Nullen: 30 -> "30", 2.5 -> "2,5"
+export function formatMenge(v) {
+  return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(+v || 0);
+}
+
+export function formatEuro(v) {
+  const n = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(+v || 0);
+  return n + " €";
+}
+
+function textZeilen(wert) {
+  return String(wert || "").split("\n").map(z => z.trim()).filter(Boolean);
+}
+
+// Zutatenblock: gepflegter Freitext schlaegt die Rezeptur, leer = live.
+export function zutatenZeilen(produkt) {
+  const eigen = textZeilen(produkt?.bon_zutaten);
+  if (eigen.length) return eigen;
+  return (produkt?.zutaten || [])
+    .filter(z => (+z.menge_g || 0) > 0)
+    .map(z => `${z.name} ${formatMenge(z.menge_g)} g`);
+}
