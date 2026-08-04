@@ -59,9 +59,19 @@ Neuer Top-Level-Schlüssel neben `produkte`, `mix`, `artikel`, `geloescht`:
 | `{schritte}` | nummerierte Arbeitsschritte aus `bon_schritte` |
 | `{hinweise}` | Hinweiszeilen aus `bon_hinweise` |
 
-Leerzeilen-Regel: Ist ein Platzhalter der einzige Inhalt einer Zeile und sein Wert
-leer, entfällt die ganze Zeile (verhindert Löcher im Bon). Steht er zusammen mit
-anderem Text in der Zeile, wird nur durch Leerstring ersetzt.
+Leerzeilen-Regel: Eine Vorlagenzeile entfällt komplett, wenn sie mindestens einen
+bekannten Platzhalter enthält und **alle** darin vorkommenden bekannten Platzhalter
+leer sind (verhindert Löcher im Bon). Ist mindestens einer gefüllt, bleibt die Zeile
+und die leeren werden durch Leerstring ersetzt. Zeilen ganz ohne bekannte Platzhalter
+(Trennstriche, fester Text) bleiben immer. Unbekannte Platzhalter bleiben wörtlich
+stehen und gelten als gefüllt.
+
+**Label-Konvention:** Ein Label gehört mit seinem Platzhalter auf eine eigene Zeile
+(`VK {vk}`). Steht es zusammen mit einem anderen, gefüllten Platzhalter in derselben
+Zeile (`{gruppe} VK {vk}`), überlebt die Zeile und das Label steht bei leerem Wert
+allein da (`Smoothies VK`). Das ist keine Fehlfunktion, sondern die Kehrseite der
+Regel — Code kann nicht wissen, dass „VK" zu `{vk}` gehört. Die Konvention steht als
+Hinweis im Vorlagen-Editor; `VORLAGE_FALLBACK` führt sie vor.
 
 ### Je Rezept (vier optionale Felder am Produkt-Objekt)
 

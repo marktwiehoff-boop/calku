@@ -24,6 +24,8 @@ import {
 import naehrwerteJson from "./data/naehrwerte.json";
 import inventurJson from "./data/inventur.json";
 import logoWeiss from "./assets/logo-weiss.png";
+import BonsTab from "./BonsTab.jsx";
+import { bonStatus } from "./bon.js";
 
 // ============================================================
 //  FORMATTER (de-DE)
@@ -3141,8 +3143,11 @@ export default function KalkulationsApp() {
     { id: "SystemWE",       label: "System-Wareneinsatz" },
     { id: "Naehrwerte",     label: "Nährwerttabelle" },
     { id: "Einkaufspreise", label: "Einkaufspreise" },
+    { id: "Produktionsbons", label: "Produktionsbons" },
     { id: "Inventur",       label: "Inventur" },
   ];
+
+  const bonsGepflegt = useMemo(() => produkte.filter(p => bonStatus(p) !== "auto").length, [produkte]);
 
   const inventurArtikelGesamt = useMemo(() => {
     let n = 0;
@@ -3329,6 +3334,7 @@ export default function KalkulationsApp() {
                   if (t.id === "Naehrwerte")     return <span className="ml-1.5 text-xs text-gray-400">({naehrwerteJson.produkte.length})</span>;
                   if (t.id === "Einkaufspreise") return <span className="ml-1.5 text-xs text-gray-400">({Object.keys(priceList).length})</span>;
                   if (t.id === "Inventur")       return <span className="ml-1.5 text-xs text-gray-400">({inventurArtikelGesamt})</span>;
+                  if (t.id === "Produktionsbons") return <span className="ml-1.5 text-xs text-gray-400">({bonsGepflegt}/{produkte.length})</span>;
                   const n = produkte.filter(p => p.gruppe === t.id).length;
                   return n > 0 ? <span className="ml-1.5 text-xs text-gray-400">({n})</span> : null;
                 })()}
@@ -3350,6 +3356,10 @@ export default function KalkulationsApp() {
             speichernMsg={cloudMsg} />
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
+        {aktiverTab === "Produktionsbons" && (
+          <BonsTab produkte={produkte} warengruppen={WARENGRUPPEN} vorlagen={bonVorlagen}
+            onVorlagen={setBonVorlagen} onFeld={handleBonFeld} canEdit={writer} />
+        )}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
                                        onEdit={setEditProdukt} onDelete={handleProduktDelete} onNeu={handleProduktNeu}
                                        alleProdukte={produkte} onImport={handleKampagneImport} />}

@@ -91,6 +91,10 @@ export default function BonVorlagenEditor({ warengruppen, vorlagen, onChange, ca
             ))}
           </div>
 
+          <p className="text-[11px] text-gray-400 mb-2">
+            {`Ein Label gehoert mit seinem Platzhalter auf eine eigene Zeile, z. B. "VK {vk}". Ist der Wert leer, faellt die ganze Zeile weg. Steht das Label zusammen mit anderem Text in einer Zeile, bleibt es allein stehen.`}
+          </p>
+
           <textarea ref={areaRef} value={wert} rows={12} spellCheck={false}
             readOnly={!canEdit || !hatEigen}
             onChange={(ev) => setzeVorlage(ev.target.value)}
