@@ -53,7 +53,7 @@ export function formatEuro(v) {
 
 // Zentrale Definition von "gepflegt": ein nichtleerer, getrimmter String.
 // Wird fuer Vorlagen, Override und den Bon-Status gleich ausgewertet.
-const gepflegt = (v) => typeof v === "string" && v.trim().length > 0;
+export const gepflegt = (v) => typeof v === "string" && v.trim().length > 0;
 
 function textZeilen(wert) {
   return String(wert || "").split("\n").map(z => z.trim()).filter(Boolean);

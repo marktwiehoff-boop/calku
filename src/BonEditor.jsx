@@ -1,20 +1,34 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { renderBon, zutatenZeilen, BON_BREITE } from "./bon.js";
 
+// Gezackte Bon-Unterkante, als Konstante statt ~700 Zeichen Inline-Style.
+const BON_CLIP_PATH =
+  "polygon(0 0, 100% 0, 100% calc(100% - 6px), 96% 100%, 92% calc(100% - 6px), 88% 100%, 84% calc(100% - 6px), 80% 100%, 76% calc(100% - 6px), 72% 100%, 68% calc(100% - 6px), 64% 100%, 60% calc(100% - 6px), 56% 100%, 52% calc(100% - 6px), 48% 100%, 44% calc(100% - 6px), 40% 100%, 36% calc(100% - 6px), 32% 100%, 28% calc(100% - 6px), 24% 100%, 20% calc(100% - 6px), 16% 100%, 12% calc(100% - 6px), 8% 100%, 4% calc(100% - 6px), 0 100%)";
+
+// Lokaler Puffer, Commit erst onBlur. Kein Derive-during-render: der Aufrufer
+// (BonEditor) wird bei jedem Rezeptwechsel per key neu gemountet, damit ein
+// eingehendes Realtime-Update den Tippspeicher nie ueberschreibt.
 function Feld({ label, hinweis, wert, rows, onCommit, canEdit }) {
   const [lokal, setLokal] = useState(wert || "");
-  // Rezeptwechsel: lokalen Puffer nachziehen
-  const [letzterWert, setLetzterWert] = useState(wert || "");
-  if ((wert || "") !== letzterWert) { setLetzterWert(wert || ""); setLokal(wert || ""); }
+
+  const feld = (
+    <textarea value={lokal} rows={rows} spellCheck={false} readOnly={!canEdit}
+      onChange={(e) => setLokal(e.target.value)}
+      onBlur={() => { if ((wert || "") !== lokal) onCommit(lokal); }}
+      className="w-full text-sm p-3 rounded-lg border border-gray-200 focus:border-green-600 focus:outline-none read-only:bg-gray-50 read-only:text-gray-500" />
+  );
+
+  if (!label) {
+    return <div className="mb-4">{feld}</div>;
+  }
 
   return (
     <div className="mb-4">
-      <label className="block text-xs font-semibold text-gray-600 mb-1">{label}</label>
-      {hinweis && <p className="text-[11px] text-gray-400 mb-1">{hinweis}</p>}
-      <textarea value={lokal} rows={rows} spellCheck={false} readOnly={!canEdit}
-        onChange={(e) => setLokal(e.target.value)}
-        onBlur={() => { if ((wert || "") !== lokal) onCommit(lokal); }}
-        className="w-full text-sm p-3 rounded-lg border border-gray-200 focus:border-green-600 focus:outline-none read-only:bg-gray-50 read-only:text-gray-500" />
+      <label className="block text-xs font-semibold text-gray-600 mb-1">
+        {label}
+        {hinweis && <span className="block text-[11px] font-normal text-gray-400 mb-1">{hinweis}</span>}
+        {feld}
+      </label>
     </div>
   );
 }
@@ -24,17 +38,18 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
   const [overrideOffen, setOverrideOffen] = useState(false);
   const [kopiert, setKopiert] = useState(false);
 
+  const text = useMemo(() => renderBon(produkt, vorlagen), [produkt, vorlagen]);
+
   if (!produkt) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-sm text-gray-400">
-        Links ein Rezept waehlen.
+        Links ein Rezept wählen.
       </div>
     );
   }
 
   const abweichendeZutaten = typeof produkt.bon_zutaten === "string" && produkt.bon_zutaten.trim().length > 0;
   const hatOverride        = typeof produkt.bon_override === "string" && produkt.bon_override.trim().length > 0;
-  const text = renderBon(produkt, vorlagen);
 
   const kopieren = async () => {
     try {
@@ -71,7 +86,7 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
               {canEdit && (
                 <button onClick={() => onFeld(produkt.id, { bon_zutaten: null })}
                   className="text-[11px] font-medium text-green-700 hover:text-green-800">
-                  Zurueck auf Automatik
+                  Zurück auf Automatik
                 </button>
               )}
             </>
@@ -81,14 +96,14 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
               {canEdit && (
                 <button onClick={() => onFeld(produkt.id, { bon_zutaten: zutatenZeilen(produkt).join("\n") })}
                   className="text-[11px] font-medium text-green-700 hover:text-green-800">
-                  Aus Rezeptur befuellen
+                  Aus Rezeptur befüllen
                 </button>
               )}
             </>
           )}
         </div>
         {abweichendeZutaten ? (
-          <Feld label="" wert={produkt.bon_zutaten} rows={6} canEdit={canEdit}
+          <Feld wert={produkt.bon_zutaten} rows={6} canEdit={canEdit}
             onCommit={(v) => onFeld(produkt.id, { bon_zutaten: v })} />
         ) : (
           <pre className="w-full text-sm p-3 mb-4 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 whitespace-pre-wrap">
@@ -111,7 +126,7 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
         {overrideOffen && (
           <div className="mt-2">
             <Feld label="Freier Bon (ersetzt die Vorlage)"
-              hinweis="Nur fuer Sonderfaelle. Platzhalter funktionieren auch hier."
+              hinweis="Nur für Sonderfälle. Platzhalter funktionieren auch hier."
               wert={produkt.bon_override} rows={10} canEdit={canEdit}
               onCommit={(v) => onFeld(produkt.id, { bon_override: v })} />
           </div>
@@ -128,10 +143,7 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
         </div>
         <div className="flex justify-center">
           <pre className="bg-white text-gray-800 font-mono text-[11px] leading-[1.45] px-3 py-4 whitespace-pre shadow-md"
-            style={{
-              width: `${BON_BREITE}ch`,
-              clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 6px), 96% 100%, 92% calc(100% - 6px), 88% 100%, 84% calc(100% - 6px), 80% 100%, 76% calc(100% - 6px), 72% 100%, 68% calc(100% - 6px), 64% 100%, 60% calc(100% - 6px), 56% 100%, 52% calc(100% - 6px), 48% 100%, 44% calc(100% - 6px), 40% 100%, 36% calc(100% - 6px), 32% 100%, 28% calc(100% - 6px), 24% 100%, 20% calc(100% - 6px), 16% 100%, 12% calc(100% - 6px), 8% 100%, 4% calc(100% - 6px), 0 100%)",
-            }}>
+            style={{ width: `${BON_BREITE}ch`, clipPath: BON_CLIP_PATH }}>
             {text}
           </pre>
         </div>

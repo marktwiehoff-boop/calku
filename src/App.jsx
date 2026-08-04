@@ -3096,6 +3096,7 @@ export default function KalkulationsApp() {
   // Bon-Felder eines Rezepts setzen. Leerstring wird zu null, damit
   // "leer" ueberall dasselbe bedeutet (= Automatik).
   const handleBonFeld = (produktId, patch) => {
+    if (!writer) return;
     const sauber = {};
     for (const [k, v] of Object.entries(patch)) {
       sauber[k] = typeof v === "string" && v.trim() ? v : null;
