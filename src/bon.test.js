@@ -1,13 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { BON_BREITE, wrapZeile, formatMenge, formatEuro, zutatenZeilen,
-         VORLAGE_FALLBACK, aufloeseVorlage, renderBon,
+         VORLAGE_FALLBACK, standardVorlage, aufloeseVorlage, renderBon,
          bonStatus, bonsAlsCsv, bonsAlsJson } from "./bon.js";
-
-describe("bon", () => {
-  it("kennt die Bonbreite", () => {
-    expect(BON_BREITE).toBe(42);
-  });
-});
 
 describe("wrapZeile", () => {
   it("laesst kurze Zeilen unveraendert", () => {
@@ -33,7 +27,9 @@ describe("wrapZeile", () => {
 
   it("haelt sich an die Standardbreite", () => {
     const text = "Erst die Sauce auf den Boden geben, dann den Salat locker darauf schichten und zuletzt die Toppings verteilen";
-    for (const z of wrapZeile(text, BON_BREITE, "  ")) {
+    const zeilen = wrapZeile(text, BON_BREITE, "  ");
+    expect(zeilen.length).toBeGreaterThan(1);
+    for (const z of zeilen) {
       expect(z.length).toBeLessThanOrEqual(BON_BREITE);
     }
   });
@@ -77,6 +73,35 @@ describe("zutatenZeilen", () => {
 
   it("vertraegt ein Produkt ohne Zutaten", () => {
     expect(zutatenZeilen({ name: "Leer" })).toEqual([]);
+  });
+
+  it("vertraegt zutaten, das kein Array ist", () => {
+    expect(zutatenZeilen({ name: "Kaputt", zutaten: "nicht-array" })).toEqual([]);
+  });
+
+  it("ueberspringt Zutaten ohne brauchbaren Namen", () => {
+    const p = {
+      name: "X",
+      zutaten: [
+        { menge_g: 30 },
+        { name: "", menge_g: 20 },
+        { name: "   ", menge_g: 15 },
+        { name: "Banane", menge_g: 100 },
+      ],
+    };
+    expect(zutatenZeilen(p)).toEqual(["Banane 100 g"]);
+  });
+});
+
+describe("standardVorlage", () => {
+  it("nimmt den gepflegten Standard", () => {
+    expect(standardVorlage({ _default: "STANDARD" })).toBe("STANDARD");
+  });
+
+  it("faellt ohne gepflegten Standard auf den Fallback zurueck", () => {
+    expect(standardVorlage({})).toBe(VORLAGE_FALLBACK);
+    expect(standardVorlage(null)).toBe(VORLAGE_FALLBACK);
+    expect(standardVorlage({ _default: "   " })).toBe(VORLAGE_FALLBACK);
   });
 });
 
@@ -131,10 +156,6 @@ describe("renderBon", () => {
     );
   });
 
-  it("laesst die Zeile eines leeren Einzelplatzhalters entfallen", () => {
-    expect(renderBon(basis, vorlagen)).not.toContain("\n\n");
-  });
-
   it("nummeriert Schritte und markiert Hinweise", () => {
     const p = { ...basis, bon_schritte: "Spinat in den Mixer\n\nBanane dazu", bon_hinweise: "Nicht daempfen" };
     const text = renderBon(p, vorlagen);
@@ -156,7 +177,9 @@ describe("renderBon", () => {
 
   it("haelt die Bonbreite ein", () => {
     const p = { ...basis, bon_schritte: "Erst die Sauce auf den Boden geben, dann den Salat locker darauf schichten" };
-    for (const z of renderBon(p, vorlagen).split("\n")) {
+    const zeilen = renderBon(p, vorlagen).split("\n");
+    expect(zeilen.length).toBeGreaterThan(1);
+    for (const z of zeilen) {
       expect(z.length).toBeLessThanOrEqual(BON_BREITE);
     }
   });
@@ -167,8 +190,58 @@ describe("renderBon", () => {
     expect(text).toContain("Babyspinat 30 g");
   });
 
+  it("rendert den Fallback-Bon exakt, wenn keine Vorlage gepflegt ist", () => {
+    const trenner = "-".repeat(BON_BREITE);
+    expect(renderBon(basis, {})).toBe(
+      "Green Booster\n" +
+      "Smoothies\n" +
+      trenner + "\n" +
+      "Babyspinat 30 g\n" +
+      "Banane 100 g\n" +
+      trenner
+    );
+  });
+
   it("liefert fuer kein Produkt einen leeren String", () => {
     expect(renderBon(null, vorlagen)).toBe("");
+  });
+});
+
+describe("renderBon - Preis", () => {
+  // Reine {vk}-Zeile: unbepreiste Produkte (0, null, undefined) zeigen keinen
+  // Preis. Ein falscher Preis (0,00 €) waere schlimmer als gar keiner.
+  const vorlagen = { _default: "{produkt}\n{vk}" };
+
+  it.each([0, null, undefined])("zeigt keine Preiszeile, wenn vk_out_brutto=%s ist", (vk) => {
+    const p = { name: "Ohne Preis", gruppe: "Smoothies", vk_out_brutto: vk };
+    expect(renderBon(p, vorlagen)).toBe("Ohne Preis");
+  });
+
+  it("zeigt den Preis, wenn er gepflegt ist", () => {
+    const p = { name: "Mit Preis", vk_out_brutto: 5.9 };
+    expect(renderBon(p, vorlagen)).toBe("Mit Preis\n5,90 €");
+  });
+});
+
+describe("renderBon - gemischte Platzhalter-Zeilen", () => {
+  it("laesst eine gemischte Zeile weg, wenn alle darin vorkommenden Platzhalter leer sind", () => {
+    const p = { name: "X", gruppe: "", vk_out_brutto: 0 };
+    expect(renderBon(p, { _default: "{gruppe} VK {vk}" })).toBe("");
+  });
+
+  it("behaelt eine gemischte Zeile, wenn mindestens ein Platzhalter gefuellt ist", () => {
+    const p = { name: "X", gruppe: "", vk_out_brutto: 5.9 };
+    expect(renderBon(p, { _default: "{gruppe} VK {vk}" })).toBe("VK 5,90 €");
+  });
+
+  it("laesst Zeilen ohne bekannten Platzhalter immer stehen", () => {
+    const p = { name: "X" };
+    expect(renderBon(p, { _default: "---" })).toBe("---");
+  });
+
+  it("laesst unbekannte Platzhalter woertlich im Bon stehen", () => {
+    const p = { name: "X" };
+    expect(renderBon(p, { _default: "{filiale}" })).toBe("{filiale}");
   });
 });
 
@@ -195,7 +268,7 @@ describe("Export", () => {
 
   it("baut CSV mit BOM, Semikolon und maskierten Feldern", () => {
     const csv = bonsAlsCsv(produkte, vorlagen);
-    expect(csv.startsWith("﻿")).toBe(true);
+    expect(csv.startsWith("\uFEFF")).toBe(true);
     expect(csv).toContain("produkt;gruppe;bon_text");
     expect(csv).toContain(`"Green Booster";"Smoothies";"Green Booster\nBanane 100 g"`);
   });
@@ -205,6 +278,16 @@ describe("Export", () => {
     expect(csv).toContain(`"Der ""Grosse"""`);
   });
 
+  it("vertraegt Zutaten, die kein Array sind, ohne den gesamten Export abzureissen", () => {
+    const kaputt = [
+      { id: "a", name: "Kaputt", gruppe: "Smoothies", zutaten: "nicht-array" },
+      { id: "b", name: "Heil", gruppe: "Bowls", zutaten: [{ name: "Reis", menge_g: 50 }] },
+    ];
+    expect(() => bonsAlsCsv(kaputt, vorlagen)).not.toThrow();
+    const csv = bonsAlsCsv(kaputt, vorlagen);
+    expect(csv).toContain("Reis 50 g");
+  });
+
   it("baut JSON mit Vorlagen und gerendertem Text", () => {
     const obj = JSON.parse(bonsAlsJson(produkte, vorlagen, "2026-08-04"));
     expect(obj.stand).toBe("2026-08-04");
@@ -212,5 +295,10 @@ describe("Export", () => {
     expect(obj.bons).toHaveLength(1);
     expect(obj.bons[0]).toMatchObject({ id: "a", name: "Green Booster", gruppe: "Smoothies" });
     expect(obj.bons[0].bon_text).toContain("Banane 100 g");
+  });
+
+  it("defaultet stand auf das heutige Datum, wenn keins uebergeben wird", () => {
+    const obj = JSON.parse(bonsAlsJson(produkte, vorlagen));
+    expect(obj.stand).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
