@@ -854,7 +854,7 @@ Create `src/BonVorlagenEditor.jsx`:
 
 ```jsx
 import React, { useRef, useState } from "react";
-import { VORLAGE_FALLBACK, aufloeseVorlage } from "./bon.js";
+import { standardVorlage, aufloeseVorlage } from "./bon.js";
 
 const PLATZHALTER = [
   { tag: "{produkt}",     hilfe: "Produktname" },
@@ -875,7 +875,7 @@ export default function BonVorlagenEditor({ warengruppen, vorlagen, onChange, ca
   const eigen    = vorlagen?.[gewaehlt];
   const hatEigen = gewaehlt === "_default" || (typeof eigen === "string" && eigen.trim().length > 0);
   const wert     = gewaehlt === "_default"
-    ? (typeof vorlagen?._default === "string" && vorlagen._default.trim() ? vorlagen._default : VORLAGE_FALLBACK)
+    ? standardVorlage(vorlagen)
     : (hatEigen ? eigen : aufloeseVorlage(gewaehlt, vorlagen));
 
   const setzeVorlage = (text) => onChange({ ...(vorlagen || {}), [gewaehlt]: text });
