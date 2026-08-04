@@ -78,3 +78,66 @@ export function aufloeseVorlage(gruppe, vorlagen) {
   if (typeof std === "string" && std.trim()) return std;
   return VORLAGE_FALLBACK;
 }
+
+export function schritteZeilen(produkt) {
+  return textZeilen(produkt?.bon_schritte).map((z, i) => `${i + 1}. ${z}`);
+}
+
+export function hinweisZeilen(produkt) {
+  return textZeilen(produkt?.bon_hinweise).map(z => `! ${z}`);
+}
+
+// Hoechstens eine Leerzeile am Stueck, keine am Anfang oder Ende.
+function verdichte(zeilen) {
+  const out = [];
+  for (const z of zeilen) {
+    if (z === "" && (out.length === 0 || out[out.length - 1] === "")) continue;
+    out.push(z);
+  }
+  while (out.length && out[out.length - 1] === "") out.pop();
+  return out.join("\n");
+}
+
+// Der eine Weg vom Rezept zum Bon-Text.
+export function renderBon(produkt, vorlagen) {
+  if (!produkt) return "";
+
+  const override = typeof produkt.bon_override === "string" ? produkt.bon_override.trim() : "";
+  const vorlage  = override || aufloeseVorlage(produkt.gruppe, vorlagen);
+
+  const werte = {
+    "{produkt}":     produkt.name || "",
+    "{gruppe}":      produkt.gruppe || "",
+    "{untergruppe}": produkt.untergruppe || "",
+    "{vk}":          produkt.vk_out_brutto != null ? formatEuro(produkt.vk_out_brutto) : "",
+  };
+  const bloecke = {
+    "{zutaten}":  zutatenZeilen(produkt),
+    "{schritte}": schritteZeilen(produkt),
+    "{hinweise}": hinweisZeilen(produkt),
+  };
+
+  const aus = [];
+  for (const zeile of String(vorlage).split("\n")) {
+    const roh = zeile.trim();
+
+    // Zeile besteht NUR aus einem Blockplatzhalter
+    if (Object.prototype.hasOwnProperty.call(bloecke, roh)) {
+      for (const b of bloecke[roh]) aus.push(...wrapZeile(b, BON_BREITE, "  "));
+      continue;
+    }
+    // Zeile besteht NUR aus einem Einzelplatzhalter -> leer heisst: Zeile entfaellt
+    if (Object.prototype.hasOwnProperty.call(werte, roh)) {
+      if (!werte[roh]) continue;
+      aus.push(...wrapZeile(werte[roh]));
+      continue;
+    }
+    // Gemischte Zeile: alles ersetzen, Bloecke einzeilig zusammenziehen
+    let text = zeile;
+    for (const [k, v] of Object.entries(werte))   text = text.split(k).join(v);
+    for (const [k, v] of Object.entries(bloecke)) text = text.split(k).join(v.join(" "));
+    if (!text.trim()) { aus.push(""); continue; }
+    aus.push(...wrapZeile(text));
+  }
+  return verdichte(aus);
+}

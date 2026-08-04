@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { BON_BREITE, wrapZeile, formatMenge, formatEuro, zutatenZeilen,
-         VORLAGE_FALLBACK, aufloeseVorlage } from "./bon.js";
+         VORLAGE_FALLBACK, aufloeseVorlage, renderBon } from "./bon.js";
 
 describe("bon", () => {
   it("kennt die Bonbreite", () => {
@@ -101,5 +101,72 @@ describe("aufloeseVorlage", () => {
 
   it("behandelt eine leere Vorlage wie nicht gepflegt", () => {
     expect(aufloeseVorlage("Bowls", { _default: "STANDARD", Bowls: "   " })).toBe("STANDARD");
+  });
+});
+
+describe("renderBon", () => {
+  const basis = {
+    name: "Green Booster",
+    gruppe: "Smoothies",
+    untergruppe: null,
+    vk_out_brutto: 5.9,
+    zutaten: [
+      { name: "Babyspinat", menge_g: 30 },
+      { name: "Banane", menge_g: 100 },
+    ],
+  };
+  const vorlagen = {
+    _default: "{produkt}\n{gruppe} VK {vk}\n{untergruppe}\n---\n{zutaten}\n---\n{schritte}\n{hinweise}",
+  };
+
+  it("setzt Kopf und Live-Zutaten ein", () => {
+    expect(renderBon(basis, vorlagen)).toBe(
+      "Green Booster\n" +
+      "Smoothies VK 5,90 €\n" +
+      "---\n" +
+      "Babyspinat 30 g\n" +
+      "Banane 100 g\n" +
+      "---"
+    );
+  });
+
+  it("laesst die Zeile eines leeren Einzelplatzhalters entfallen", () => {
+    expect(renderBon(basis, vorlagen)).not.toContain("\n\n");
+  });
+
+  it("nummeriert Schritte und markiert Hinweise", () => {
+    const p = { ...basis, bon_schritte: "Spinat in den Mixer\n\nBanane dazu", bon_hinweise: "Nicht daempfen" };
+    const text = renderBon(p, vorlagen);
+    expect(text).toContain("1. Spinat in den Mixer");
+    expect(text).toContain("2. Banane dazu");
+    expect(text).toContain("! Nicht daempfen");
+  });
+
+  it("ersetzt bei Override die komplette Vorlage", () => {
+    const p = { ...basis, bon_override: "NUR DAS: {produkt}" };
+    expect(renderBon(p, vorlagen)).toBe("NUR DAS: Green Booster");
+  });
+
+  it("nutzt die Vorlage der Warengruppe", () => {
+    const p = { ...basis, gruppe: "Bowls" };
+    const v = { ...vorlagen, Bowls: "BOWL {produkt}" };
+    expect(renderBon(p, v)).toBe("BOWL Green Booster");
+  });
+
+  it("haelt die Bonbreite ein", () => {
+    const p = { ...basis, bon_schritte: "Erst die Sauce auf den Boden geben, dann den Salat locker darauf schichten" };
+    for (const z of renderBon(p, vorlagen).split("\n")) {
+      expect(z.length).toBeLessThanOrEqual(BON_BREITE);
+    }
+  });
+
+  it("vertraegt ein Produkt ohne jede Bon-Pflege und ohne Vorlagen", () => {
+    const text = renderBon(basis, {});
+    expect(text).toContain("Green Booster");
+    expect(text).toContain("Babyspinat 30 g");
+  });
+
+  it("liefert fuer kein Produkt einen leeren String", () => {
+    expect(renderBon(null, vorlagen)).toBe("");
   });
 });
