@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { BON_BREITE, wrapZeile, formatMenge, formatEuro, zutatenZeilen } from "./bon.js";
+import { BON_BREITE, wrapZeile, formatMenge, formatEuro, zutatenZeilen,
+         VORLAGE_FALLBACK, aufloeseVorlage } from "./bon.js";
 
 describe("bon", () => {
   it("kennt die Bonbreite", () => {
@@ -75,5 +76,30 @@ describe("zutatenZeilen", () => {
 
   it("vertraegt ein Produkt ohne Zutaten", () => {
     expect(zutatenZeilen({ name: "Leer" })).toEqual([]);
+  });
+});
+
+describe("aufloeseVorlage", () => {
+  const vorlagen = { _default: "STANDARD", Bowls: "BOWL-VORLAGE", Wraps: null };
+
+  it("nimmt die eigene Vorlage der Warengruppe", () => {
+    expect(aufloeseVorlage("Bowls", vorlagen)).toBe("BOWL-VORLAGE");
+  });
+
+  it("erbt den Standard bei null", () => {
+    expect(aufloeseVorlage("Wraps", vorlagen)).toBe("STANDARD");
+  });
+
+  it("erbt den Standard bei fehlendem Schluessel", () => {
+    expect(aufloeseVorlage("Smoothies", vorlagen)).toBe("STANDARD");
+  });
+
+  it("faellt ohne jede Pflege auf den Fallback zurueck", () => {
+    expect(aufloeseVorlage("Bowls", {})).toBe(VORLAGE_FALLBACK);
+    expect(aufloeseVorlage("Bowls", null)).toBe(VORLAGE_FALLBACK);
+  });
+
+  it("behandelt eine leere Vorlage wie nicht gepflegt", () => {
+    expect(aufloeseVorlage("Bowls", { _default: "STANDARD", Bowls: "   " })).toBe("STANDARD");
   });
 });

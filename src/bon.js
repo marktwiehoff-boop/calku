@@ -54,3 +54,27 @@ export function zutatenZeilen(produkt) {
     .filter(z => (+z.menge_g || 0) > 0)
     .map(z => `${z.name} ${formatMenge(z.menge_g)} g`);
 }
+
+const TRENNER = "-".repeat(BON_BREITE);
+
+// Greift, solange keine Vorlage gepflegt ist - die App soll auch dann
+// einen brauchbaren Bon zeigen.
+export const VORLAGE_FALLBACK = [
+  "{produkt}",
+  "{gruppe}",
+  TRENNER,
+  "{zutaten}",
+  TRENNER,
+  "{schritte}",
+  "{hinweise}",
+].join("\n");
+
+// Warengruppe > Standard > Fallback. Leere Strings gelten als nicht gepflegt.
+export function aufloeseVorlage(gruppe, vorlagen) {
+  const v = vorlagen || {};
+  const eigen = v[gruppe];
+  if (typeof eigen === "string" && eigen.trim()) return eigen;
+  const std = v._default;
+  if (typeof std === "string" && std.trim()) return std;
+  return VORLAGE_FALLBACK;
+}
