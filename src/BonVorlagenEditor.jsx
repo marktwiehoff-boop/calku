@@ -4,6 +4,7 @@ import { standardVorlage, aufloeseVorlage, gepflegt } from "./bon.js";
 const PLATZHALTER = [
   { tag: "{produkt}",     hilfe: "Produktname" },
   { tag: "{gruppe}",      hilfe: "Warengruppe" },
+  { tag: "{kampagne}",    hilfe: "Kampagnenname, falls gesetzt" },
   { tag: "{untergruppe}", hilfe: "Untergruppe, z. B. Salatbowls" },
   { tag: "{vk}",          hilfe: "Verkaufspreis brutto" },
   { tag: "{zutaten}",     hilfe: "Zutatenliste mit Mengen" },

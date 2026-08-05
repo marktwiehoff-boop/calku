@@ -3104,6 +3104,20 @@ export default function KalkulationsApp() {
     setProdukte(prev => prev.map(p => (p.id === produktId ? { ...p, ...sauber } : p)));
   };
 
+  // Bon-Felder EINER Zutat (Kuechenmass, Handlungsanweisung) setzen.
+  const handleBonZutat = (produktId, index, patch) => {
+    if (!writer) return;
+    const sauber = {};
+    for (const [k, v] of Object.entries(patch)) {
+      sauber[k] = typeof v === "string" && v.trim() ? v : null;
+    }
+    setProdukte(prev => prev.map(p => {
+      if (p.id !== produktId) return p;
+      const zutaten = (p.zutaten || []).map((z, i) => (i === index ? { ...z, ...sauber } : z));
+      return { ...p, zutaten };
+    }));
+  };
+
   // Bestehendes Rezept als Kopie in eine Kampagne übernehmen.
   const handleKampagneImport = (produktId, kampagneName) => {
     setProdukte(prev => {
@@ -3359,7 +3373,7 @@ export default function KalkulationsApp() {
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
         {aktiverTab === "Produktionsbons" && (
           <BonsTab produkte={produkte} warengruppen={WARENGRUPPEN} vorlagen={bonVorlagen}
-            onVorlagen={setBonVorlagen} onFeld={handleBonFeld} canEdit={writer} />
+            onVorlagen={setBonVorlagen} onFeld={handleBonFeld} onZutat={handleBonZutat} canEdit={writer} />
         )}
         {aktiverTab === "Kampagnen"&& <KampagnenTab produkte={produkteImTab} setProdukte={setProdukte}
                                        onEdit={setEditProdukt} onDelete={handleProduktDelete} onNeu={handleProduktNeu}

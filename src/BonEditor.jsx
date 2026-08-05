@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { renderBon, zutatenZeilen, BON_BREITE } from "./bon.js";
+import { renderBon, zutatenZeilen, formatMenge, BON_BREITE } from "./bon.js";
 
 // Gezackte Bon-Unterkante, als Konstante statt ~700 Zeichen Inline-Style.
 const BON_CLIP_PATH =
@@ -33,8 +33,20 @@ function Feld({ label, hinweis, wert, rows, onCommit, canEdit }) {
   );
 }
 
+// Einzeiliges Eingabefeld (Zeilenfeld einer Zutat): lokaler Puffer, Commit erst
+// onBlur - dieselbe Konvention wie bei Feld().
+function ZeileInput({ wert, platzhalter, canEdit, onCommit }) {
+  const [lokal, setLokal] = useState(wert || "");
+  return (
+    <input type="text" value={lokal} placeholder={platzhalter} readOnly={!canEdit}
+      onChange={(e) => setLokal(e.target.value)}
+      onBlur={() => { if ((wert || "") !== lokal) onCommit(lokal); }}
+      className="w-full text-sm px-2 py-1 rounded-md border border-gray-200 focus:border-green-600 focus:outline-none read-only:bg-gray-50 read-only:text-gray-500" />
+  );
+}
+
 // Rechte Spalte des Bon-Reiters: Felder, Notausgang, Live-Vorschau.
-export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
+export default function BonEditor({ produkt, vorlagen, onFeld, onZutat, canEdit }) {
   const [overrideOffen, setOverrideOffen] = useState(false);
   const [kopiert, setKopiert] = useState(false);
 
@@ -92,7 +104,7 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
             </>
           ) : (
             <>
-              <span className="text-[11px] text-gray-400">live aus der Rezeptur</span>
+              <span className="text-[11px] text-gray-400">Zutaten und Gramm live aus der Rezeptur, Maß und Anweisung hier</span>
               {canEdit && (
                 <button onClick={() => onFeld(produkt.id, { bon_zutaten: zutatenZeilen(produkt).join("\n") })}
                   className="text-[11px] font-medium text-green-700 hover:text-green-800">
@@ -106,9 +118,38 @@ export default function BonEditor({ produkt, vorlagen, onFeld, canEdit }) {
           <Feld wert={produkt.bon_zutaten} rows={6} canEdit={canEdit}
             onCommit={(v) => onFeld(produkt.id, { bon_zutaten: v })} />
         ) : (
-          <pre className="w-full text-sm p-3 mb-4 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 whitespace-pre-wrap">
-            {zutatenZeilen(produkt).join("\n") || "(keine Zutaten im Rezept)"}
-          </pre>
+          <div className="mb-4 rounded-lg border border-gray-200 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gray-50 text-[11px] text-gray-500">
+                  <th className="text-left px-2 py-1.5 font-semibold">Zutat</th>
+                  <th className="text-left px-2 py-1.5 font-semibold w-[34%]">Menge auf dem Bon</th>
+                  <th className="text-left px-2 py-1.5 font-semibold w-[34%]">Handlungsanweisung</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(produkt.zutaten || []).length === 0 && (
+                  <tr><td colSpan={3} className="px-2 py-3 text-xs text-gray-400">Keine Zutaten im Rezept.</td></tr>
+                )}
+                {(produkt.zutaten || []).map((z, i) => (
+                  <tr key={`${i}-${z.name}`} className="border-t border-gray-100 align-middle">
+                    <td className="px-2 py-1 text-gray-700">
+                      {z.name}
+                      <span className="text-gray-400"> · {formatMenge(z.menge_g)} g</span>
+                    </td>
+                    <td className="px-1 py-1">
+                      <ZeileInput wert={z.bon_menge} platzhalter={`${formatMenge(z.menge_g)} g`} canEdit={canEdit}
+                        onCommit={(v) => onZutat(produkt.id, i, { bon_menge: v })} />
+                    </td>
+                    <td className="px-1 py-1">
+                      <ZeileInput wert={z.bon_anweisung} platzhalter="(keine)" canEdit={canEdit}
+                        onCommit={(v) => onZutat(produkt.id, i, { bon_anweisung: v })} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
 
         <Feld label="Arbeitsschritte" hinweis="Eine Zeile = ein Schritt, wird automatisch nummeriert."

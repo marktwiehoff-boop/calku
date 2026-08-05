@@ -20,7 +20,7 @@ function download(inhalt, dateiname, typ) {
 }
 
 // Reiter "Produktionsbons": Vorlagen oben, Rezeptliste links, Editor rechts.
-export default function BonsTab({ produkte, warengruppen, vorlagen, onVorlagen, onFeld, canEdit }) {
+export default function BonsTab({ produkte, warengruppen, vorlagen, onVorlagen, onFeld, onZutat, canEdit }) {
   const [filter, setFilter] = useState("Alle");
   const [suche, setSuche]   = useState("");
   const [gewaehlt, setGewaehlt] = useState(null);
@@ -103,7 +103,7 @@ export default function BonsTab({ produkte, warengruppen, vorlagen, onVorlagen, 
           </div>
         </div>
 
-        <BonEditor key={aktiv?.id} produkt={aktiv} vorlagen={vorlagen} onFeld={onFeld} canEdit={canEdit} />
+        <BonEditor key={aktiv?.id} produkt={aktiv} vorlagen={vorlagen} onFeld={onFeld} onZutat={onZutat} canEdit={canEdit} />
       </div>
     </div>
   );
