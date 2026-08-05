@@ -53,13 +53,29 @@ describe("zutatenZeilen", () => {
     name: "Green Booster",
     zutaten: [
       { name: "Babyspinat", menge_g: 30 },
-      { name: "Banane", menge_g: 100 },
+      { name: "Banane", menge_g: 100, bon_anweisung: "Zum Schluss dazu" },
       { name: "Deko", menge_g: 0 },
     ],
   };
 
-  it("baut Zeilen aus der Rezeptur", () => {
-    expect(zutatenZeilen(produkt)).toEqual(["Babyspinat 30 g", "Banane 100 g"]);
+  it("staffelt Menge, Zutat und Anweisung untereinander", () => {
+    expect(zutatenZeilen(produkt)).toEqual([
+      "30 g",
+      "  Babyspinat",
+      "100 g",
+      "  Banane",
+      "  > Zum Schluss dazu",
+    ]);
+  });
+
+  it("nimmt das Kuechenmass statt der Gramm, wenn gepflegt", () => {
+    const p = { zutaten: [{ name: "Gurkenwuerfel", menge_g: 40, bon_menge: "1/4 Cup (40 g)" }] };
+    expect(zutatenZeilen(p)).toEqual(["1/4 Cup (40 g)", "  Gurkenwuerfel"]);
+  });
+
+  it("behaelt eine Zutat mit Kuechenmass auch ohne Gramm", () => {
+    const p = { zutaten: [{ name: "Salz", menge_g: 0, bon_menge: "1 Prise" }] };
+    expect(zutatenZeilen(p)).toEqual(["1 Prise", "  Salz"]);
   });
 
   it("nimmt den abweichenden Text, wenn gepflegt", () => {
@@ -68,15 +84,18 @@ describe("zutatenZeilen", () => {
   });
 
   it("faellt bei leerem Text auf die Rezeptur zurueck", () => {
-    expect(zutatenZeilen({ ...produkt, bon_zutaten: "   " })).toEqual(["Babyspinat 30 g", "Banane 100 g"]);
+    expect(zutatenZeilen({ ...produkt, bon_zutaten: "   " })).toEqual([
+      "30 g",
+      "  Babyspinat",
+      "100 g",
+      "  Banane",
+      "  > Zum Schluss dazu",
+    ]);
   });
 
-  it("vertraegt ein Produkt ohne Zutaten", () => {
+  it("vertraegt ein Produkt ohne Zutaten und ein kaputtes Zutatenfeld", () => {
     expect(zutatenZeilen({ name: "Leer" })).toEqual([]);
-  });
-
-  it("vertraegt zutaten, das kein Array ist", () => {
-    expect(zutatenZeilen({ name: "Kaputt", zutaten: "nicht-array" })).toEqual([]);
+    expect(zutatenZeilen({ zutaten: "nicht-array" })).toEqual([]);
   });
 
   it("ueberspringt Zutaten ohne brauchbaren Namen", () => {
@@ -89,7 +108,7 @@ describe("zutatenZeilen", () => {
         { name: "Banane", menge_g: 100 },
       ],
     };
-    expect(zutatenZeilen(p)).toEqual(["Banane 100 g"]);
+    expect(zutatenZeilen(p)).toEqual(["100 g", "  Banane"]);
   });
 });
 
@@ -154,8 +173,10 @@ describe("renderBon", () => {
       "Smoothies\n" +
       "VK 5,90 €\n" +
       "---\n" +
-      "Babyspinat 30 g\n" +
-      "Banane 100 g\n" +
+      "30 g\n" +
+      "  Babyspinat\n" +
+      "100 g\n" +
+      "  Banane\n" +
       "---"
     );
   });
@@ -191,7 +212,8 @@ describe("renderBon", () => {
   it("vertraegt ein Produkt ohne jede Bon-Pflege und ohne Vorlagen", () => {
     const text = renderBon(basis, {});
     expect(text).toContain("Green Booster");
-    expect(text).toContain("Babyspinat 30 g");
+    expect(text).toContain("30 g");
+    expect(text).toContain("Babyspinat");
   });
 
   it("rendert den Fallback-Bon exakt, wenn keine Vorlage gepflegt ist", () => {
@@ -200,14 +222,33 @@ describe("renderBon", () => {
       "Green Booster\n" +
       "Smoothies\n" +
       trenner + "\n" +
-      "Babyspinat 30 g\n" +
-      "Banane 100 g\n" +
-      trenner
+      "30 g\n" +
+      "  Babyspinat\n" +
+      "100 g\n" +
+      "  Banane\n" +
+      trenner + "\n" +
+      "Reihenfolge = Bau-Reihenfolge von oben nach\n" +
+      "unten."
     );
   });
 
   it("liefert fuer kein Produkt einen leeren String", () => {
     expect(renderBon(null, vorlagen)).toBe("");
+  });
+
+  it("haelt beim Umbruch den Einzug der Zutatenzeile", () => {
+    const p = { zutaten: [{ name: "Eine sehr lange Zutatenbezeichnung die umbrechen muss weil sie nicht passt", menge_g: 30 }] };
+    const zeilen = renderBon(p, { _default: "{zutaten}" }).split("\n");
+    expect(zeilen[0]).toBe("30 g");
+    expect(zeilen[1].startsWith("  ")).toBe(true);
+    expect(zeilen[2].startsWith("    ")).toBe(true);
+    for (const z of zeilen) expect(z.length).toBeLessThanOrEqual(BON_BREITE);
+  });
+
+  it("setzt die Kampagne ein und laesst die Zeile ohne Kampagne entfallen", () => {
+    const v = { _default: "{produkt}\n{kampagne}" };
+    expect(renderBon({ name: "A", kampagne: "Seoul Mate" }, v)).toBe("A\nSeoul Mate");
+    expect(renderBon({ name: "A" }, v)).toBe("A");
   });
 });
 
@@ -291,7 +332,7 @@ describe("Export", () => {
     const csv = bonsAlsCsv(produkte, vorlagen);
     expect(csv.startsWith("\uFEFF")).toBe(true);
     expect(csv).toContain("produkt;gruppe;bon_text");
-    expect(csv).toContain(`"Green Booster";"Smoothies";"Green Booster\nBanane 100 g"`);
+    expect(csv).toContain(`"Green Booster";"Smoothies";"Green Booster\n100 g\n  Banane"`);
   });
 
   it("verdoppelt Anfuehrungszeichen im Text", () => {
@@ -306,7 +347,8 @@ describe("Export", () => {
     ];
     expect(() => bonsAlsCsv(kaputt, vorlagen)).not.toThrow();
     const csv = bonsAlsCsv(kaputt, vorlagen);
-    expect(csv).toContain("Reis 50 g");
+    expect(csv).toContain("50 g");
+    expect(csv).toContain("Reis");
   });
 
   it("baut JSON mit Vorlagen und gerendertem Text", () => {
@@ -315,7 +357,8 @@ describe("Export", () => {
     expect(obj.bon_vorlagen).toEqual(vorlagen);
     expect(obj.bons).toHaveLength(1);
     expect(obj.bons[0]).toMatchObject({ id: "a", name: "Green Booster", gruppe: "Smoothies" });
-    expect(obj.bons[0].bon_text).toContain("Banane 100 g");
+    expect(obj.bons[0].bon_text).toContain("100 g");
+    expect(obj.bons[0].bon_text).toContain("Banane");
   });
 
   it("defaultet stand auf das heutige Datum, wenn keins uebergeben wird", () => {

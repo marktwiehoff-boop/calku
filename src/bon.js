@@ -6,7 +6,7 @@
 // den Preis still verschwinden. App.jsx erzwingt das heute in jedem
 // Schreibpfad; dieses Modul verlaesst sich darauf, ohne es selbst zu pruefen.
 
-export const BON_BREITE = 42; // Zeichen je Zeile, 80-mm-Thermodrucker
+export const BON_BREITE = 48; // Zeichen je Zeile, 80-mm-Thermodrucker (Mark, 05.08.2026)
 
 // Bricht einen Text auf die Bonbreite um. Folgezeilen bekommen den Einzug
 // vorangestellt, damit fortgesetzte Zutaten/Schritte optisch eingerueckt sind.
@@ -59,17 +59,33 @@ function textZeilen(wert) {
   return String(wert || "").split("\n").map(z => z.trim()).filter(Boolean);
 }
 
-// Zutatenblock: gepflegter Freitext schlaegt die Rezeptur, leer = live.
-// zutaten kann aus echten Produktdaten kommen und muss nicht zwingend ein
-// Array sein (kaputte Datensaetze); Zutaten ohne brauchbaren Namen werden
-// uebersprungen, sonst stuende "undefined 30 g" auf dem Bon.
+// Gestaffelt je Zutat: Menge, Zutat eingerueckt, optionale Anweisung mit "> ".
+// Die Reihenfolge der Zutaten IST die Bau-Reihenfolge (Vorgabe Susanne, 05.08.2026).
+// Gepflegter Freitext in bon_zutaten schlaegt die Rezeptur, leer = live.
 export function zutatenZeilen(produkt) {
   const eigen = textZeilen(produkt?.bon_zutaten);
   if (eigen.length) return eigen;
+
   const zutaten = Array.isArray(produkt?.zutaten) ? produkt.zutaten : [];
-  return zutaten
-    .filter(z => (+z.menge_g || 0) > 0 && typeof z.name === "string" && z.name.trim())
-    .map(z => `${z.name} ${formatMenge(z.menge_g)} g`);
+  const aus = [];
+  for (const z of zutaten) {
+    if (!gepflegt(z?.name)) continue;
+    const eigeneMenge = gepflegt(z.bon_menge);
+    if (!eigeneMenge && !((+z.menge_g || 0) > 0)) continue;
+    aus.push(eigeneMenge ? z.bon_menge.trim() : `${formatMenge(z.menge_g)} g`);
+    aus.push(`  ${z.name.trim()}`);
+    if (gepflegt(z.bon_anweisung)) aus.push(`  > ${z.bon_anweisung.trim()}`);
+  }
+  return aus;
+}
+
+// Bricht eine Blockzeile um und erhaelt dabei ihren eigenen Einzug; Folgezeilen
+// werden zusaetzlich zwei Zeichen tiefer gesetzt.
+function wrapBlockZeile(zeile) {
+  const roh = String(zeile ?? "");
+  const einzug = (roh.match(/^\s*/) || [""])[0];
+  const breite = Math.max(8, BON_BREITE - einzug.length);
+  return wrapZeile(roh.slice(einzug.length), breite, "  ").map(z => einzug + z);
 }
 
 const TRENNER = "-".repeat(BON_BREITE);
@@ -79,11 +95,13 @@ const TRENNER = "-".repeat(BON_BREITE);
 export const VORLAGE_FALLBACK = [
   "{produkt}",
   "{gruppe}",
+  "{kampagne}",
   TRENNER,
   "{zutaten}",
   TRENNER,
   "{schritte}",
   "{hinweise}",
+  "Reihenfolge = Bau-Reihenfolge von oben nach unten.",
 ].join("\n");
 
 // Der Standard, auf den jede Warengruppe ohne eigene Vorlage zurueckfaellt.
@@ -158,6 +176,7 @@ export function renderBon(produkt, vorlagen) {
     "{produkt}":     produkt.name || "",
     "{gruppe}":      produkt.gruppe || "",
     "{untergruppe}": produkt.untergruppe || "",
+    "{kampagne}":    produkt.kampagne || "",
     // Ungepflegter/nullwertiger VK ("0") ist kein echter Preis - ein
     // falscher Preis auf dem Kuechenbon ist schlimmer als gar keiner.
     "{vk}":          Number(produkt.vk_out_brutto) > 0 ? formatEuro(produkt.vk_out_brutto) : "",
@@ -180,7 +199,7 @@ export function renderBon(produkt, vorlagen) {
 
     // Zeile besteht NUR aus einem Blockplatzhalter
     if (Object.prototype.hasOwnProperty.call(bloecke, roh)) {
-      for (const b of bloecke[roh]) aus.push(...wrapZeile(b, BON_BREITE, "  "));
+      for (const b of bloecke[roh]) aus.push(...wrapBlockZeile(b));
       continue;
     }
     // Zeile besteht NUR aus einem Einzelplatzhalter -> leer heisst: Zeile entfaellt
