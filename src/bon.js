@@ -101,7 +101,8 @@ export const VORLAGE_FALLBACK = [
   TRENNER,
   "{schritte}",
   "{hinweise}",
-  "Reihenfolge = Bau-Reihenfolge von oben nach unten.",
+  "Reihenfolge = Bau-Reihenfolge",
+  "von oben nach unten.",
 ].join("\n");
 
 // Der Standard, auf den jede Warengruppe ohne eigene Vorlage zurueckfaellt.

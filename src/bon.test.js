@@ -227,8 +227,8 @@ describe("renderBon", () => {
       "100 g\n" +
       "  Banane\n" +
       trenner + "\n" +
-      "Reihenfolge = Bau-Reihenfolge von oben nach\n" +
-      "unten."
+      "Reihenfolge = Bau-Reihenfolge\n" +
+      "von oben nach unten."
     );
   });
 
