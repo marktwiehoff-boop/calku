@@ -53,6 +53,7 @@ Neuer Top-Level-Schlüssel neben `produkte`, `mix`, `artikel`, `geloescht`:
 |---|---|
 | `{produkt}` | `produkt.name` |
 | `{gruppe}` | `produkt.gruppe` |
+| `{kampagne}` | `produkt.kampagne` (leer → Zeile entfällt) |
 | `{untergruppe}` | `produkt.untergruppe` (leer → Zeile entfällt, s. u.) |
 | `{vk}` | `produkt.vk_out_brutto`, de-DE mit „€" |
 | `{zutaten}` | Zutatenblock (s. u.) |
@@ -82,7 +83,18 @@ Hinweis im Vorlagen-Editor; `VORLAGE_FALLBACK` führt sie vor.
 | `bon_hinweise` | `string \| null` | Warnungen, Verpackung, Allergene, eine Zeile = ein Hinweis |
 | `bon_override` | `string \| null` | Kompletter Bon-Text, ersetzt die Vorlage für dieses Rezept |
 
-Bestand ist unberührt: alle vier Felder undefined = Bon rein aus Vorlage +
+### Je Zutat (zwei optionale Felder in `produkte[].zutaten[]`, 05.08.2026)
+
+| Feld | Typ | Bedeutung |
+|---|---|---|
+| `bon_menge` | `string \| null` | Küchenmaß als Freitext. Leer = `"{menge_g} g"` aus der Rezeptur. |
+| `bon_anweisung` | `string \| null` | Handlungsanweisung dieser Zeile. Leer = keine Anweisungszeile. |
+
+Beide gehören bewusst an die **Rezeptzeile**, nicht an den Artikel: `1/4 Cup` gilt für
+40 g in diesem Gericht, bei 80 g wäre es `1/2 Cup`. Umgekehrter Fall zur Ausbeute, die
+am Artikel hängt.
+
+Bestand ist unberührt: alle sechs Felder undefined = Bon rein aus Vorlage +
 Live-Zutaten. **Keine Migration nötig.**
 
 ## Rendering-Regeln
@@ -93,16 +105,25 @@ entsteht (Vorschau, Kopieren, Export nutzen alle diese Funktion).
 1. Ist `bon_override` gesetzt (nach `trim()` nicht leer), wird **nur** dieser Text
    verwendet — Platzhalter werden auch darin ersetzt.
 2. Sonst: Vorlage der Warengruppe auflösen, Platzhalter ersetzen.
-3. **Zutatenblock:**
+3. **Zutatenblock — gestaffelt** (Susannes Vorgabe, 05.08.2026):
    - `bon_zutaten` gesetzt → dieser Text wird zeilenweise übernommen
-   - sonst → je Zutat eine Zeile `"{name} {menge} g"`; die Menge kommt aus
-     `zutat.menge_g`, deutsch formatiert (Komma, keine überflüssigen Nullen).
-     Zutaten mit `menge_g <= 0` werden übersprungen.
+   - sonst je Zutat bis zu drei Zeilen, in dieser Reihenfolge:
+     1. **Menge** — `zutat.bon_menge`, falls gepflegt (Küchenmaß als Freitext,
+        z. B. `1/4 Cup (40 g)` oder `5 g / 1 Pumpstoß`), sonst `"{menge} g"` aus
+        `zutat.menge_g`, deutsch formatiert
+     2. **Zutat**, zwei Leerzeichen eingerückt
+     3. **Handlungsanweisung** `"  > {text}"`, nur wenn `zutat.bon_anweisung` gepflegt
+   - Übersprungen wird eine Zutat nur, wenn sie keinen Namen hat oder weder
+     `bon_menge` noch eine Menge > 0 trägt.
+   - Die **Reihenfolge der Zutaten ist die Bau-Reihenfolge** — das ersetzt für diesen
+     Aufbau den nummerierten `{schritte}`-Block, der für übergreifende Hinweise bleibt.
+   - Beim Umbruch bleibt der Einzug einer Zeile erhalten; Folgezeilen sitzen zwei
+     Zeichen tiefer als ihre eigene Zeile.
 4. **Schritte:** nichtleere Zeilen aus `bon_schritte`, durchnummeriert `1. `, `2. ` …
 5. **Hinweise:** nichtleere Zeilen aus `bon_hinweise`, präfigiert mit `! `
-6. **Zeilenumbruch:** harter Umbruch auf **42 Zeichen** (80-mm-Thermodrucker).
+6. **Zeilenumbruch:** harter Umbruch auf **48 Zeichen** (80-mm-Thermodrucker, Mark 05.08.2026; vorher 42).
    Umbruch an Wortgrenzen; Fortsetzungszeilen von Zutaten/Schritten werden um zwei
-   Leerzeichen eingerückt. Wörter länger als 42 Zeichen werden hart getrennt.
+   Leerzeichen eingerückt. Wörter länger als die Bonbreite werden hart getrennt.
 7. Ausgabe ohne führende/abschließende Leerzeilen, maximal eine Leerzeile am Stück.
 
 ## Oberfläche
@@ -132,14 +153,18 @@ Neuer Tab `{ id: "Produktionsbons", label: "Produktionsbons" }` in `tabs`
 - Zähler im Kopf: „X von Y gepflegt".
 
 **Rechts — Editor + Vorschau**
-- Textfelder: Zutaten (mit Button **„Aus Rezeptur befüllen"** und, wenn befüllt,
-  **„Zurück auf Automatik"**), Arbeitsschritte, Hinweise.
+- **Zutatentabelle** (Normalfall): je Rezeptzeile Name und Gramm schreibgeschützt aus
+  der Rezeptur, daneben zwei Eingaben — „Menge auf dem Bon" (Küchenmaß) und
+  „Handlungsanweisung". Commit onBlur wie überall.
+- Freitextfelder: Arbeitsschritte, Hinweise. Der Button **„Aus Rezeptur befüllen"**
+  ersetzt die Tabelle durch einen freien Zutatenblock, **„Zurück auf Automatik"**
+  stellt sie wieder her.
 - `bon_zutaten` gesetzt → oranges Badge **„abweichend — folgt der Rezeptur nicht mehr"**
   in Liste und Editor.
 - `bon_override` in einem separat aufklappbaren Bereich „Kompletten Bon frei schreiben"
   (Notausgang, standardmäßig zu). Ist er gesetzt, wird das im Editor deutlich
   gekennzeichnet und die Vorlage als wirkungslos markiert.
-- **Live-Vorschau** darunter: Monospace, 42 Zeichen breit, weißer Papierstreifen mit
+- **Live-Vorschau** darunter: Monospace, 48 Zeichen breit, weißer Papierstreifen mit
   Zackenkante, exakt das Ergebnis von `renderBon`.
 - Button **„Bon kopieren"** (Zwischenablage, Erfolgsmeldung direkt am Button).
 
@@ -181,7 +206,7 @@ weniger. Bewusst so umgesetzt.)*
    stellt den Live-Bezug wieder her.
 5. Änderung einer Zutatenmenge im Warengruppen-Tab schlägt sofort in der Bon-Vorschau
    durch, solange `bon_zutaten` leer ist.
-6. Vorschau bricht auf 42 Zeichen um, keine Zeile ist länger.
+6. Vorschau bricht auf 48 Zeichen um, keine Zeile ist länger.
 7. Speichern → Neuladen → Vorlagen und alle vier Rezeptfelder sind da.
 8. CSV öffnet in Excel mit korrekten Umlauten; JSON enthält `bon_text` je Rezept.
 9. Bestandsrezepte ohne Bon-Felder verursachen keinen Fehler.
