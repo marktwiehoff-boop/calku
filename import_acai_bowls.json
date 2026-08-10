@@ -1,0 +1,567 @@
+{
+  "meta": {
+    "quelle": "Susanne, immergruen_acai_rezepturen.xlsx + Bestellliste Acai Bowl.xlsx",
+    "stand": "2026-08-10",
+    "hinweis": "Einkaufspreise aus der Bestellliste gerechnet, noch nicht in der CALKU-Preisliste"
+  },
+  "produkte": [
+    {
+      "id": "acai_classic_03l",
+      "name": "Açaí Bowl Classic 0,3 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 22,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004543,
+          "cost": 0.0999,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Chia-Kokos-Pudding",
+          "menge_g": 38,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003974,
+          "cost": 0.151,
+          "bon_anweisung": "Aus Quetschflasche kreisend auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.1263,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Erdnüsse",
+          "menge_g": 8,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00975,
+          "cost": 0.078,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.1227,
+          "bon_anweisung": "Dekorativ auf eine Seite legen"
+        },
+        {
+          "name": "Banane (Scheiben)",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00149,
+          "cost": 0.0447,
+          "bon_anweisung": "Bananenschneider für gleichmäßige Scheiben, fächern"
+        },
+        {
+          "name": "Cacao Nibs",
+          "menge_g": 4,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.030338,
+          "cost": 0.1214,
+          "bon_anweisung": "Sparsam über die Mitte streuen"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 8.95,
+      "vk_out_brutto": 8.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    },
+    {
+      "id": "acai_classic_04l",
+      "name": "Açaí Bowl Classic 0,4 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004543,
+          "cost": 0.1363,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Chia-Kokos-Pudding",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003974,
+          "cost": 0.1987,
+          "bon_anweisung": "Aus Quetschflasche kreisend auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 45,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.1895,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Erdnüsse",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00975,
+          "cost": 0.0975,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.1636,
+          "bon_anweisung": "Dekorativ auf eine Seite legen"
+        },
+        {
+          "name": "Banane (Scheiben)",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00149,
+          "cost": 0.0596,
+          "bon_anweisung": "Bananenschneider für gleichmäßige Scheiben, fächern"
+        },
+        {
+          "name": "Cacao Nibs",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.030338,
+          "cost": 0.1517,
+          "bon_anweisung": "Sparsam über die Mitte streuen"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 9.95,
+      "vk_out_brutto": 9.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    },
+    {
+      "id": "acai_classic_05l",
+      "name": "Açaí Bowl Classic 0,5 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Erdnussbutter",
+          "menge_g": 38,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.004543,
+          "cost": 0.1726,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Chia-Kokos-Pudding",
+          "menge_g": 63,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003974,
+          "cost": 0.2504,
+          "bon_anweisung": "Aus Quetschflasche kreisend auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.2105,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Erdnüsse",
+          "menge_g": 13,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00975,
+          "cost": 0.1268,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.2045,
+          "bon_anweisung": "Dekorativ auf eine Seite legen"
+        },
+        {
+          "name": "Banane (Scheiben)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00149,
+          "cost": 0.0745,
+          "bon_anweisung": "Bananenschneider für gleichmäßige Scheiben, fächern"
+        },
+        {
+          "name": "Cacao Nibs",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.030338,
+          "cost": 0.1517,
+          "bon_anweisung": "Sparsam über die Mitte streuen"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 10.95,
+      "vk_out_brutto": 10.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    },
+    {
+      "id": "acai_pistazie_03l",
+      "name": "Açaí Bowl Pistazie 0,3 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Pistaziensauce",
+          "menge_g": 22,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014653,
+          "cost": 0.3224,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Kokos-Joghurt Greek Style pur",
+          "menge_g": 38,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003576,
+          "cost": 0.1359,
+          "bon_anweisung": "Gleichmäßig auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.1263,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Kokoschips (Layer)",
+          "menge_g": 8,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.0664,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.4966,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Goji-Beeren",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0209,
+          "cost": 0.1045,
+          "bon_anweisung": "Dekorativ verteilen (rot)"
+        },
+        {
+          "name": "Kokoschips (Streu-Deko)",
+          "menge_g": 4,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.0332,
+          "bon_anweisung": "Über die Mitte streuen (hell)"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 15,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.1227,
+          "bon_anweisung": "Dekorativ auf eine Seite legen (dunkelblau)"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 8.95,
+      "vk_out_brutto": 8.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    },
+    {
+      "id": "acai_pistazie_04l",
+      "name": "Açaí Bowl Pistazie 0,4 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Pistaziensauce",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014653,
+          "cost": 0.4396,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Kokos-Joghurt Greek Style pur",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003576,
+          "cost": 0.1788,
+          "bon_anweisung": "Gleichmäßig auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 45,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.1895,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Kokoschips (Layer)",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.083,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 80,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.6621,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Goji-Beeren",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0209,
+          "cost": 0.1045,
+          "bon_anweisung": "Dekorativ verteilen (rot)"
+        },
+        {
+          "name": "Kokoschips (Streu-Deko)",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.0415,
+          "bon_anweisung": "Über die Mitte streuen (hell)"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.1636,
+          "bon_anweisung": "Dekorativ auf eine Seite legen (dunkelblau)"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 9.95,
+      "vk_out_brutto": 9.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    },
+    {
+      "id": "acai_pistazie_05l",
+      "name": "Açaí Bowl Pistazie 0,5 l",
+      "gruppe": "Kampagnen",
+      "untergruppe": null,
+      "kampagne": "Acai Bowls",
+      "zutaten": [
+        {
+          "name": "Pistaziensauce",
+          "menge_g": 38,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.014653,
+          "cost": 0.5568,
+          "bon_anweisung": "Am Becherrand rundherum verteilen (Coating), sichtbar von außen"
+        },
+        {
+          "name": "Açaí (Schicht 1 – Boden)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Gleichmäßig einfüllen, Boden komplett bedecken"
+        },
+        {
+          "name": "Kokos-Joghurt Greek Style pur",
+          "menge_g": 63,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.003576,
+          "cost": 0.2253,
+          "bon_anweisung": "Gleichmäßig auftragen"
+        },
+        {
+          "name": "Açaí (Schicht 2)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Gleichmäßig einfüllen"
+        },
+        {
+          "name": "Granola (Kölln Knusper Klassik)",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00421,
+          "cost": 0.2105,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Kokoschips (Layer)",
+          "menge_g": 13,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.1079,
+          "bon_anweisung": "Gleichmäßig einstreuen"
+        },
+        {
+          "name": "Açaí (Schicht 3 – Deckschicht)",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.008277,
+          "cost": 0.8277,
+          "bon_anweisung": "Glatt abschließen, saubere Oberfläche"
+        },
+        {
+          "name": "Goji-Beeren",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0209,
+          "cost": 0.1045,
+          "bon_anweisung": "Dekorativ verteilen (rot)"
+        },
+        {
+          "name": "Kokoschips (Streu-Deko)",
+          "menge_g": 5,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0083,
+          "cost": 0.0415,
+          "bon_anweisung": "Über die Mitte streuen (hell)"
+        },
+        {
+          "name": "Blaubeeren frisch",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00818,
+          "cost": 0.2045,
+          "bon_anweisung": "Dekorativ auf eine Seite legen (dunkelblau)"
+        }
+      ],
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 10.95,
+      "vk_out_brutto": 10.95,
+      "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten"
+    }
+  ]
+}

@@ -222,7 +222,11 @@ export function renderBon(produkt, vorlagen) {
 // "auto" = rein aus Vorlage + Live-Zutaten.
 export function bonStatus(produkt) {
   if (gepflegt(produkt?.bon_override) || gepflegt(produkt?.bon_zutaten)) return "abweichend";
-  if (gepflegt(produkt?.bon_schritte)) return "gepflegt";
+  if (gepflegt(produkt?.bon_schritte) || gepflegt(produkt?.bon_hinweise)) return "gepflegt";
+  // Auch Pflege auf Zeilenebene zaehlt: ein Rezept, dessen Zutaten Kuechenmasse
+  // oder Handlungsanweisungen tragen, ist gepflegt - auch ohne Text am Produkt.
+  const zutaten = Array.isArray(produkt?.zutaten) ? produkt.zutaten : [];
+  if (zutaten.some(z => gepflegt(z?.bon_menge) || gepflegt(z?.bon_anweisung))) return "gepflegt";
   return "auto";
 }
 

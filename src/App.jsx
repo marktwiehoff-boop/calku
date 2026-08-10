@@ -2813,6 +2813,14 @@ export default function KalkulationsApp() {
   const handleRezeptImport = (datei) => {
     const reader = new FileReader();
     reader.onload = () => {
+      const roh = String(reader.result || "");
+      // Haeufigster Fehlgriff: eine Excel-Rezeptur statt einer JSON-Importdatei.
+      // xlsx/docx/zip beginnen alle mit "PK" - ohne diesen Hinweis kommt nur ein
+      // unverstaendlicher Parserfehler ("Unexpected token 'P'").
+      if (roh.startsWith("PK")) {
+        setCloudMsg(`„${datei.name}“ ist eine Excel-Datei. „Rezepte importieren“ liest nur JSON-Importdateien. Excel-Rezepturen müssen vorher umgewandelt werden.`);
+        return;
+      }
       try {
         const daten = JSON.parse(reader.result);
         const neue = Array.isArray(daten.produkte) ? daten.produkte : [];
@@ -2857,7 +2865,7 @@ export default function KalkulationsApp() {
           + (uebersprungen ? `, ${uebersprungen} schon vorhanden` : "")
           + ` — bitte prüfen und oben „Speichern".`);
       } catch (fehler) {
-        setCloudMsg("Import fehlgeschlagen: " + fehler.message);
+        setCloudMsg(`„${datei.name}“ ist keine gültige JSON-Importdatei (${fehler.message}).`);
       }
     };
     reader.readAsText(datei);
@@ -3298,7 +3306,9 @@ export default function KalkulationsApp() {
                   </div>
                 )}
               </div>
-              {cloudEnabled && (cloudMsg || cloudInfo?.updated_by) && (
+              {/* Import- und Speichermeldungen gehoeren nicht an den Cloud-Modus:
+                  im lokalen Modus lief der Import sonst ohne jede Rueckmeldung. */}
+              {(cloudMsg || (cloudEnabled && cloudInfo?.updated_by)) && (
                 <span className="text-xs text-green-100">
                   {cloudMsg || `Zuletzt gespeichert: ${cloudInfo.updated_by || "—"}`}
                 </span>

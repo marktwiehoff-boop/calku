@@ -317,6 +317,18 @@ describe("bonStatus", () => {
   it("meldet abweichend bei eigenen Zutaten", () => {
     expect(bonStatus({ bon_zutaten: "Sauce 40 g", bon_schritte: "Mixen" })).toBe("abweichend");
   });
+  it("meldet gepflegt bei Hinweisen am Produkt", () => {
+    expect(bonStatus({ bon_hinweise: "Kalt halten" })).toBe("gepflegt");
+  });
+  it("meldet gepflegt, wenn eine Zutat eine Anweisung traegt", () => {
+    expect(bonStatus({ zutaten: [{ name: "Acai", menge_g: 80, bon_anweisung: "Einfuellen" }] })).toBe("gepflegt");
+  });
+  it("meldet gepflegt, wenn eine Zutat ein Kuechenmass traegt", () => {
+    expect(bonStatus({ zutaten: [{ name: "Sirup", menge_g: 5, bon_menge: "1 Pumpstoss" }] })).toBe("gepflegt");
+  });
+  it("meldet auto bei Zutaten ohne Zeilenpflege", () => {
+    expect(bonStatus({ zutaten: [{ name: "Acai", menge_g: 80 }] })).toBe("auto");
+  });
   it("meldet abweichend bei Override", () => {
     expect(bonStatus({ bon_override: "frei" })).toBe("abweichend");
   });
