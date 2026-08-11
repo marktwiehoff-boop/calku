@@ -9,6 +9,7 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
+import { verarbeitePreisimport } from "./preisimport.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -1461,6 +1462,11 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
 function ImportModal({ open, onClose, onImport }) {
   const [preview, setPreview] = useState(null);
   const [mapping, setMapping] = useState({ name: "", preis: "", einheit: "", artNr: "" });
+  // Preissemantik: die TG-Artikelliste (Artikel/Artikelkurztext/VKP-ME/
+  // Kundenpreis) fuehrt den Preis JE GEBINDE - die alte Annahme "EUR pro kg"
+  // haette dort selbst bei Treffern falsche Preise geschrieben.
+  const [semantik, setSemantik] = useState("gebinde");
+  const [ergebnis, setErgebnis] = useState(null);
   const fileRef = useRef(null);
 
   if (!open) return null;
@@ -1473,13 +1479,22 @@ function ImportModal({ open, onClose, onImport }) {
       complete: (res) => {
         const cols = res.meta?.fields || [];
         setPreview({ rows: res.data.slice(0, 5), cols, all: res.data });
-        // Auto-Mapping versuchen
-        const guess = (k, candidates) => cols.find(c => candidates.some(x => c.toLowerCase().includes(x))) || "";
+        // Auto-Mapping, KANDIDATENWEISE: der spezifischste Kandidat gewinnt
+        // ueber alle Spalten, erst dann kommt der naechste dran. Spaltenweise
+        // gesucht wuerde "VKP-ME" (enthaelt "vk") den "Kundenpreis" schlagen,
+        // und die Nummernspalte "Artikel" den "Artikelkurztext".
+        const guess = (k, candidates) => {
+          for (const x of candidates) {
+            const c = cols.find(c => c.toLowerCase().includes(x));
+            if (c) return c;
+          }
+          return "";
+        };
         setMapping({
-          name:    guess("name",    ["bezeichnung", "artikelname", "name", "artikel"]),
-          preis:   guess("preis",   ["preis", "price", "vk", "ek"]),
-          einheit: guess("einheit", ["einheit", "unit", "vpe", "gebinde"]),
-          artNr:   guess("artNr",   ["artikelnummer", "art.nr", "artnr", "nummer"]),
+          name:    guess("name",    ["artikelkurztext", "bezeichnung", "artikelname", "name"]),
+          preis:   guess("preis",   ["kundenpreis", "preis", "price", "vk", "ek"]),
+          einheit: guess("einheit", ["vkp-me", "einheit", "unit", "vpe", "gebinde"]),
+          artNr:   guess("artNr",   ["artikelnummer", "art.nr", "artnr", "nummer", "artikel"]),
         });
       },
     });
@@ -1495,10 +1510,12 @@ function ImportModal({ open, onClose, onImport }) {
         artNr:   r[mapping.artNr]   || null,
       }))
       .filter(r => r.name && !isNaN(r.preis));
-    onImport(aktualisierungen);
+    const bericht = onImport(aktualisierungen, semantik);
     setPreview(null);
-    onClose();
+    setErgebnis(bericht || null);
   };
+
+  const schliessen = () => { setErgebnis(null); setPreview(null); onClose(); };
 
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
@@ -1507,10 +1524,57 @@ function ImportModal({ open, onClose, onImport }) {
           <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
             <FileSpreadsheet className="text-emerald-600" size={20} /> Transgourmet-Preisliste importieren
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+          <button onClick={schliessen} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
         </div>
         <div className="p-5 space-y-4">
-          {!preview ? (
+          {ergebnis ? (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { label: "Preise geändert", wert: ergebnis.geaendert, farbe: "text-green-700" },
+                  { label: "unverändert (Stempel neu)", wert: ergebnis.unveraendert, farbe: "text-gray-700" },
+                  { label: "ohne Treffer im Stamm", wert: ergebnis.ohneMatch.length, farbe: ergebnis.ohneMatch.length ? "text-amber-600" : "text-gray-700" },
+                  { label: "Veraltet-Kandidaten", wert: ergebnis.veraltet.length, farbe: ergebnis.veraltet.length ? "text-red-600" : "text-gray-700" },
+                ].map(k => (
+                  <div key={k.label} className="border border-gray-200 rounded-lg p-3">
+                    <div className="text-xs text-gray-500">{k.label}</div>
+                    <div className={`text-xl font-bold tabular-nums ${k.farbe}`}>{k.wert}</div>
+                  </div>
+                ))}
+              </div>
+              {ergebnis.pruefen.length > 0 && (
+                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2">
+                  Ohne alten Gebindepreis übernommen, bitte prüfen: {ergebnis.pruefen.join(", ")}
+                </p>
+              )}
+              {ergebnis.ohneMatch.length > 0 && (
+                <label className="text-xs font-medium text-gray-600 flex flex-col gap-1">
+                  CSV-Zeilen ohne Treffer im CALKU-Stamm (weder Nummer noch Name) — zum Kopieren:
+                  <textarea readOnly rows={Math.min(6, ergebnis.ohneMatch.length)}
+                    className="border border-gray-200 rounded-lg p-2 text-xs font-mono"
+                    value={ergebnis.ohneMatch.map(z => `${z.artNr || "?"}  ${z.name || "?"}  ${z.preis}`).join("\n")} />
+                </label>
+              )}
+              {ergebnis.veraltet.length > 0 && (
+                <label className="text-xs font-medium text-gray-600 flex flex-col gap-1">
+                  Stammartikel, deren Nummer in der CSV fehlt — veraltete Nummern ODER Artikel, die diese Liste
+                  gar nicht führt (z. B. Frische bei der Trockensortiment-Liste). Nachpflegeliste:
+                  <textarea readOnly rows={Math.min(6, ergebnis.veraltet.length)}
+                    className="border border-gray-200 rounded-lg p-2 text-xs font-mono"
+                    value={ergebnis.veraltet.map(a => `${a.article_number || "?"}  ${a.ingredient_name}`).join("\n")} />
+                </label>
+              )}
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-gray-500">
+                  Änderungen sind übernommen — zum Sichern oben „Speichern".
+                </span>
+                <button onClick={schliessen}
+                  className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-800">
+                  Fertig
+                </button>
+              </div>
+            </>
+          ) : !preview ? (
             <>
               <p className="text-sm text-gray-600">
                 Lade die aktuelle Transgourmet-Preisliste als CSV hoch (Export aus shop.transgourmet.de).
@@ -1557,6 +1621,19 @@ function ImportModal({ open, onClose, onImport }) {
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              <div className="flex gap-4 text-sm text-gray-700 border border-gray-200 rounded-lg p-3">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="semantik" checked={semantik === "gebinde"}
+                    onChange={() => setSemantik("gebinde")} />
+                  Preis je Gebinde/VE (TG-Artikelliste, „Kundenpreis" — Standard)
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="semantik" checked={semantik === "grundpreis"}
+                    onChange={() => setSemantik("grundpreis")} />
+                  Preis je kg/l (Grundpreisliste)
+                </label>
               </div>
 
               <div className="flex justify-between items-center">
@@ -2891,29 +2968,37 @@ export default function KalkulationsApp() {
     URL.revokeObjectURL(url);
   };
 
-  const handlePriceImport = (aktualisierungen) => {
-    // Map: name (lowercase) → neuer Preis pro g
-    const updates = {};
-    aktualisierungen.forEach(u => {
-      // Annahme: Preis ist immer EUR pro Einheit (kg/l). Umrechnung auf pro g/ml = /1000.
-      const proG = u.preis / 1000;
-      updates[u.name.toLowerCase()] = proG;
-    });
-
-    let veraendert = 0;
-    setProdukte(prev => prev.map(p => {
-      const zutaten = p.zutaten.map(z => {
-        const neuer = updates[z.name.toLowerCase()];
-        if (neuer != null && neuer !== z.preis_pro_g) {
-          veraendert++;
-          return { ...z, preis_pro_g: neuer,
-                   cost: zutatKosten({ ...z, preis_pro_g: neuer }) };
-        }
-        return z;
-      });
-      return { ...p, zutaten };
-    }));
-    setLetzterImport({ datum: new Date(), anzahl: aktualisierungen.length, veraendert });
+  // Preislisten-Import: matcht ueber die Artikelnummer gegen den STAMM
+  // (priceList), aktualisiert dort Preis + Pruefdatum und stempelt von da in
+  // alle Rezepturen. Bis 08/2026 traf der Import nur namensgleiche
+  // Rezeptzeilen und liess den Stamm auf dem Ur-Import von 03/2025 stehen -
+  // Susannes Wochen-Upload kam deshalb nie an. Logik in preisimport.js
+  // (getestet); Persistenz wie handleArtikelFelder ueber manuelleArtikel.
+  const handlePriceImport = (aktualisierungen, semantik = "gebinde") => {
+    const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik });
+    const patches = ergebnis.patches;
+    if (Object.keys(patches).length > 0) {
+      setPriceList(prev => ({ ...prev, ...patches }));
+      setManuelleArtikel(prev => [
+        ...prev.filter(a => !patches[(a.ingredient_name || "").toLowerCase()]),
+        ...Object.values(patches),
+      ]);
+      setProdukte(prev => prev.map(p => ({
+        ...p,
+        zutaten: (p.zutaten || []).map(z => {
+          const neu = patches[(z.name || "").toLowerCase()];
+          if (!neu || !(+neu.price_per_gram_ml > 0) || neu.price_per_gram_ml === z.preis_pro_g) return z;
+          const next = { ...z, preis_pro_g: neu.price_per_gram_ml };
+          next.cost = zutatKosten(next);
+          return next;
+        }),
+      })));
+    }
+    setLetzterImport({ datum: new Date(), anzahl: aktualisierungen.length,
+                       veraendert: ergebnis.geaendert });
+    setCloudMsg(`Preisimport: ${ergebnis.geaendert} geändert, ${ergebnis.unveraendert} bestätigt, `
+      + `${ergebnis.ohneMatch.length} ohne Treffer — zum Sichern oben „Speichern".`);
+    return ergebnis;
   };
 
   const handleProduktUpdate = (id, updates) => {
