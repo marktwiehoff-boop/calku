@@ -1474,9 +1474,7 @@ function ImportModal({ open, onClose, onImport }) {
   const onFile = (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    Papa.parse(f, {
-      header: true, skipEmptyLines: true,
-      complete: (res) => {
+    const uebernehmen = (res) => {
         const cols = res.meta?.fields || [];
         setPreview({ rows: res.data.slice(0, 5), cols, all: res.data });
         // Auto-Mapping, KANDIDATENWEISE: der spezifischste Kandidat gewinnt
@@ -1491,13 +1489,30 @@ function ImportModal({ open, onClose, onImport }) {
           return "";
         };
         setMapping({
-          name:    guess("name",    ["artikelkurztext", "bezeichnung", "artikelname", "name"]),
+          // "artikeltext" deckt die TG-Artikelliste ab (Artikeltext1/2) - ohne
+          // diesen Kandidaten blieb der Pflicht-Eintrag leer und der Import-
+          // Button unerklaerlich grau.
+          name:    guess("name",    ["artikelkurztext", "artikelbezeichnung", "bezeichnung", "artikelname", "artikeltext", "name"]),
           preis:   guess("preis",   ["kundenpreis", "preis", "price", "vk", "ek"]),
           einheit: guess("einheit", ["vkp-me", "einheit", "unit", "vpe", "gebinde"]),
           artNr:   guess("artNr",   ["artikelnummer", "art.nr", "artnr", "nummer", "artikel"]),
         });
+    };
+
+    // Erst als UTF-8 lesen. Steht danach das Ersatzzeichen im Text, war die
+    // Datei ANSI (Excel-Standard beim CSV-Export) - dann als windows-1252
+    // erneut lesen. Sonst sind alle Umlaute kaputt und Artikel wie
+    // "Erdnuesse" finden ihren Stamm-Eintrag nicht mehr.
+    const lesen = (encoding) => Papa.parse(f, {
+      header: true, skipEmptyLines: true, encoding,
+      complete: (res) => {
+        const probe = (res.meta?.fields || []).join("|")
+          + res.data.slice(0, 50).map(r => Object.values(r).join("|")).join("|");
+        if (!encoding && probe.includes("�")) { lesen("windows-1252"); return; }
+        uebernehmen(res);
       },
     });
+    lesen(undefined);
   };
 
   const importieren = () => {
@@ -1604,6 +1619,14 @@ function ImportModal({ open, onClose, onImport }) {
                   </label>
                 ))}
               </div>
+
+              {(!mapping.name || !mapping.preis) && (
+                <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  {!mapping.name
+                    ? `Die Spalte mit dem Artikelnamen wurde nicht automatisch erkannt. Bitte oben unter „Artikelname" die richtige Spalte wählen, bei Transgourmet-Listen ist das meist „Artikeltext1". Danach lässt sich der Import starten.`
+                    : `Bitte oben unter „Preis" die richtige Spalte wählen, danach lässt sich der Import starten.`}
+                </p>
+              )}
 
               <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <div className="bg-gray-50 px-3 py-2 text-xs font-medium text-gray-600">Vorschau (erste 5 Zeilen)</div>
