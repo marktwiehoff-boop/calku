@@ -9,7 +9,7 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
-import { verarbeitePreisimport } from "./preisimport.js";
+import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -1459,9 +1459,13 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
   );
 }
 
-function ImportModal({ open, onClose, onImport }) {
+function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }) {
   const [preview, setPreview] = useState(null);
   const [mapping, setMapping] = useState({ name: "", preis: "", einheit: "", artNr: "" });
+  // Signatur der gerade geladenen Dateiform + Hinweis, ob die Zuordnung aus
+  // dem Gedaechtnis kam (dann fragt der Dialog dieselbe Form nie wieder).
+  const [signatur, setSignatur] = useState("");
+  const [ausGedaechtnis, setAusGedaechtnis] = useState(false);
   // Preissemantik: die TG-Artikelliste (Artikel/Artikelkurztext/VKP-ME/
   // Kundenpreis) fuehrt den Preis JE GEBINDE - die alte Annahme "EUR pro kg"
   // haette dort selbst bei Treffern falsche Preise geschrieben.
@@ -1477,26 +1481,31 @@ function ImportModal({ open, onClose, onImport }) {
     const uebernehmen = (res) => {
         const cols = res.meta?.fields || [];
         setPreview({ rows: res.data.slice(0, 5), cols, all: res.data });
-        // Auto-Mapping, KANDIDATENWEISE: der spezifischste Kandidat gewinnt
-        // ueber alle Spalten, erst dann kommt der naechste dran. Spaltenweise
-        // gesucht wuerde "VKP-ME" (enthaelt "vk") den "Kundenpreis" schlagen,
-        // und die Nummernspalte "Artikel" den "Artikelkurztext".
-        const guess = (k, candidates) => {
-          for (const x of candidates) {
-            const c = cols.find(c => c.toLowerCase().includes(x));
-            if (c) return c;
-          }
-          return "";
-        };
-        setMapping({
-          // "artikeltext" deckt die TG-Artikelliste ab (Artikeltext1/2) - ohne
-          // diesen Kandidaten blieb der Pflicht-Eintrag leer und der Import-
-          // Button unerklaerlich grau.
-          name:    guess("name",    ["artikelkurztext", "artikelbezeichnung", "bezeichnung", "artikelname", "artikeltext", "name"]),
-          preis:   guess("preis",   ["kundenpreis", "preis", "price", "vk", "ek"]),
-          einheit: guess("einheit", ["vkp-me", "einheit", "unit", "vpe", "gebinde"]),
-          artNr:   guess("artNr",   ["artikelnummer", "art.nr", "artnr", "nummer", "artikel"]),
-        });
+
+        // 1. Gedaechtnis: dieselbe Dateiform schon einmal importiert? Dann
+        //    genau die Zuordnung von damals - inkl. Preissemantik. Fehlt auch
+        //    nur eine der gemerkten Spalten in der Datei, ist die Erinnerung
+        //    wertlos und wir erkennen neu (sonst importierte der Dialog
+        //    stillschweigend gegen eine Spalte, die es nicht mehr gibt).
+        const sig = spaltenSignatur(cols);
+        setSignatur(sig);
+        const gemerkt = mappings[sig];
+        const vollstaendig = gemerkt && ["name", "preis", "einheit", "artNr"]
+          .every(k => !gemerkt[k] || cols.includes(gemerkt[k]));
+        if (gemerkt && vollstaendig) {
+          setMapping({
+            name: gemerkt.name || "", preis: gemerkt.preis || "",
+            einheit: gemerkt.einheit || "", artNr: gemerkt.artNr || "",
+          });
+          if (gemerkt.semantik) setSemantik(gemerkt.semantik);
+          setAusGedaechtnis(true);
+          return;
+        }
+        // 2. Sonst inhaltsbasiert erkennen (siehe preisimport.js) - die
+        //    Kopfzeile allein hat bei "Artikeltext1" und den drei
+        //    Preis-Spalten nicht getragen.
+        setAusGedaechtnis(false);
+        setMapping(erkenneSpalten(cols, res.data));
     };
 
     // Erst als UTF-8 lesen. Steht danach das Ersatzzeichen im Text, war die
@@ -1525,12 +1534,20 @@ function ImportModal({ open, onClose, onImport }) {
         artNr:   r[mapping.artNr]   || null,
       }))
       .filter(r => r.name && !isNaN(r.preis));
+    // Die tatsaechlich benutzte Zuordnung merken - auch die von Hand
+    // korrigierte. Beim naechsten Upload derselben Dateiform fragt der Dialog
+    // dann nicht noch einmal.
+    if (signatur && onMappingMerken) onMappingMerken(signatur, mapping, semantik);
     const bericht = onImport(aktualisierungen, semantik);
     setPreview(null);
+    setAusGedaechtnis(false);
     setErgebnis(bericht || null);
   };
 
-  const schliessen = () => { setErgebnis(null); setPreview(null); onClose(); };
+  const schliessen = () => {
+    setErgebnis(null); setPreview(null); setAusGedaechtnis(false); setSignatur("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
@@ -1611,7 +1628,8 @@ function ImportModal({ open, onClose, onImport }) {
                 ].map(f => (
                   <label key={f.k} className="text-xs font-medium text-gray-600 flex flex-col">
                     {f.label}
-                    <select value={mapping[f.k]} onChange={e => setMapping({ ...mapping, [f.k]: e.target.value })}
+                    <select value={mapping[f.k]}
+                      onChange={e => { setAusGedaechtnis(false); setMapping({ ...mapping, [f.k]: e.target.value }); }}
                       className="mt-1 border border-gray-200 rounded px-2 py-1.5 text-sm bg-white">
                       <option value="">— Spalte wählen —</option>
                       {preview.cols.map(c => <option key={c} value={c}>{c}</option>)}
@@ -1619,6 +1637,12 @@ function ImportModal({ open, onClose, onImport }) {
                   </label>
                 ))}
               </div>
+
+              {ausGedaechtnis && (
+                <p className="text-xs text-gray-500">
+                  Zuordnung übernommen aus dem letzten Import dieser Dateiform — änderbar, die Änderung wird gemerkt.
+                </p>
+              )}
 
               {(!mapping.name || !mapping.preis) && (
                 <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
@@ -2792,6 +2816,10 @@ export default function KalkulationsApp() {
   const [letzterImport, setLetzterImport] = useState(null);
   // Bon-Vorlagen je Warengruppe + "_default"; leer = Fallback aus bon.js
   const [bonVorlagen, setBonVorlagen] = useState({});
+  // Gemerkte Spaltenzuordnungen des Preisimports, je Dateiform (Signatur der
+  // Spaltenliste) -> {name, preis, einheit, artNr, semantik}. Damit fragt der
+  // Import-Dialog dieselbe TG-Exportform kein zweites Mal.
+  const [importMappings, setImportMappings] = useState({});
   const jsonRef = useRef(null);
 
   // ---- Cloud / Auth (Supabase) ----
@@ -2834,11 +2862,12 @@ export default function KalkulationsApp() {
             setPriceList(prev => { const m = { ...prev }; for (const k of row.data.geloescht) delete m[k]; return m; });
           }
           if (row.data.bon_vorlagen) setBonVorlagen(row.data.bon_vorlagen);
+          if (row.data.import_mappings) setImportMappings(row.data.import_mappings);
           setCloudInfo({ updated_at: row.updated_at, updated_by: row.updated_by });
         } else if (isWriter(session.user?.email) && !seededRef.current) {
           // Erstbefüllung: aktuellen Stand (Susanne) in die Cloud schreiben
           seededRef.current = true;
-          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen });
+          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen, import_mappings: importMappings });
           setCloudMsg("Startdaten in die Cloud übertragen.");
         }
       } catch (e) {
@@ -2858,6 +2887,7 @@ export default function KalkulationsApp() {
         setPriceList(prev => { const m = { ...prev }; for (const k of data.geloescht) delete m[k]; return m; });
       }
       if (data.bon_vorlagen) setBonVorlagen(data.bon_vorlagen);
+      if (data.import_mappings) setImportMappings(data.import_mappings);
       setCloudInfo({ updated_at: at, updated_by: by });
     });
     return () => { active = false; try { supabase.removeChannel(ch); } catch (_) {} };
@@ -2867,7 +2897,7 @@ export default function KalkulationsApp() {
     if (!writer) return;
     try {
       setCloudMsg("Speichere …");
-      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen });
+      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen, import_mappings: importMappings });
       setCloudMsg("✓ Gespeichert — für alle sichtbar");
       setTimeout(() => setCloudMsg(""), 3000);
     } catch (e) {
@@ -3505,7 +3535,10 @@ export default function KalkulationsApp() {
         )}
       </main>
 
-      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport} />
+      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport}
+        mappings={importMappings}
+        onMappingMerken={(signatur, mapping, semantik) =>
+          setImportMappings(prev => ({ ...prev, [signatur]: { ...mapping, semantik } }))} />
 
       <ProduktEditModal
         open={editProdukt !== null}
