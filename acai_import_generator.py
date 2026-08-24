@@ -99,12 +99,19 @@ for sorte, id_stamm, zeilen in SORTEN:
             "bon_hinweise": "1x Cup = gestrichen bis zum Rand gefüllt\nGrammatur = Zielwert, im Store justierbar\nAçaí immer 3 gleiche Schichten",
         })
 
+# Platzhalter aus der Kampagne, den die sechs echten Rezepte ersetzen.
+# ID aus den Exporten vom 01./02.08. (dort noch "Acai 0,3 " in Kampagne "Acai",
+# im Stand vom 10.08. umbenannt zu "Acai Classic", Wareneinsatz 0,18 EUR).
+# Trifft die ID nicht mehr zu, entfernt der Import schlicht nichts.
+PLATZHALTER = ["neu_1783671186003_pwqsv"]
+
 out = {
     "meta": {
         "quelle": "Susanne, immergruen_acai_rezepturen.xlsx + Bestellliste Acai Bowl.xlsx",
-        "stand": "2026-08-10",
+        "stand": "2026-08-12",
         "hinweis": "Einkaufspreise aus der Bestellliste gerechnet, noch nicht in der CALKU-Preisliste",
     },
+    "entfernen": PLATZHALTER,
     "produkte": produkte,
 }
 io.open("import_acai_bowls.json", "w", encoding="utf-8").write(
