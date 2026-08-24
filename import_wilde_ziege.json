@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "quelle": "PDF 'Mini Rezept neu', Tabelle Wilde Ziege",
+    "erzeugt": "2026-08-07",
+    "hinweis": "Haushaltsmaße über Vergleichsrezepte in Gramm umgerechnet, Herkunft je Zeile im Report."
+  },
+  "produkte": [
+    {
+      "id": "bowl_normal_wilde_ziege",
+      "name": "Wilde Ziege Normal",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 12.95,
+      "vk_out_brutto": 12.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 100.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0059,
+          "cost": 0.59
+        },
+        {
+          "name": "w. Balsamico Dressing",
+          "menge_g": 20.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Kirschtomaten",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00315,
+          "cost": 0.1575
+        },
+        {
+          "name": "Pink Onions",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Grillgemüse",
+          "menge_g": 40.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Bedda Hirtenkäse",
+          "menge_g": 50.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Walnüsse",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Balsamico Creme",
+          "menge_g": 2.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        }
+      ]
+    },
+    {
+      "id": "bowl_klein_wilde_ziege",
+      "name": "Wilde Ziege Klein",
+      "gruppe": "Bowls",
+      "untergruppe": null,
+      "verpackung_eur": 0.25,
+      "vk_in_brutto": 8.95,
+      "vk_out_brutto": 8.95,
+      "kampagne_start": null,
+      "kampagne_ende": null,
+      "zutaten": [
+        {
+          "name": "Salatmix",
+          "menge_g": 60.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0059,
+          "cost": 0.354
+        },
+        {
+          "name": "w. Balsamico Dressing",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Kirschtomaten",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00315,
+          "cost": 0.07875
+        },
+        {
+          "name": "Pink Onions",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Grillgemüse",
+          "menge_g": 25.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Bedda Hirtenkäse",
+          "menge_g": 30.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Walnüsse",
+          "menge_g": 10.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        },
+        {
+          "name": "Balsamico Creme",
+          "menge_g": 2.0,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0,
+          "cost": 0.0
+        }
+      ]
+    }
+  ]
+}
