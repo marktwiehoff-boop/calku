@@ -760,16 +760,17 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
   const stats = useMemo(() => {
     const calced = gefiltert.map(p => ({ p, c: berechne(p) }));
     const n = calced.length;
-    if (n === 0) return { n: 0, weIn: 0, weOut: 0, dbIn: 0, ueberSchwelle: 0 };
-    const weIn  = calced.reduce((s, x) => s + x.c.we_in,  0) / n;
+    if (n === 0) return { n: 0, weOut: 0, dbOut: 0, ueberSchwelle: 0 };
+    // Steuerungsgroesse ist das Ausser-Haus-Geschaeft (7 % MwSt.). Die
+    // Im-Haus-Werte (19 %) bleiben in der Produkttabelle daneben stehen.
     const weOut = calced.reduce((s, x) => s + x.c.we_out, 0) / n;
-    const dbIn  = calced.reduce((s, x) => s + x.c.db_in,  0) / n;
+    const dbOut = calced.reduce((s, x) => s + x.c.db_out, 0) / n;
     const schwelle = SCHWELLWERTE[gruppe].rot;
-    const ueberSchwelle = calced.filter(x => x.c.we_in > schwelle).length;
-    return { n, weIn, weOut, dbIn, ueberSchwelle };
+    const ueberSchwelle = calced.filter(x => x.c.we_out > schwelle).length;
+    return { n, weOut, dbOut, ueberSchwelle };
   }, [gefiltert, gruppe]);
 
-  const stufeWeIn = stats.weIn > SCHWELLWERTE[gruppe].rot ? "rot" : "gruen";
+  const stufeWeOut = stats.weOut > SCHWELLWERTE[gruppe].rot ? "rot" : "gruen";
 
   return (
     <div className="space-y-4">
@@ -789,11 +790,11 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <KPICard title="Produkte" value={fmtNum(stats.n)} sub={gruppe} stufe="info" />
-        <KPICard title="Ø Wareneinsatz IN" value={fmtPct(stats.weIn)}
-                 sub={`Schwellwert: ${SCHWELLWERTE[gruppe].rot} %`} stufe={stufeWeIn} />
-        <KPICard title="Ø Deckungsbeitrag IN" value={fmtEUR(stats.dbIn)} sub="pro Produkt, netto" stufe="info" />
+        <KPICard title="Ø Wareneinsatz OUT" value={fmtPct(stats.weOut)}
+                 sub={`Schwellwert: ${SCHWELLWERTE[gruppe].rot} % · 7 % MwSt.`} stufe={stufeWeOut} />
+        <KPICard title="Ø Deckungsbeitrag OUT" value={fmtEUR(stats.dbOut)} sub="pro Produkt, netto (7 % MwSt.)" stufe="info" />
         <KPICard title="Über Schwellwert" value={`${stats.ueberSchwelle} / ${stats.n}`}
-                 sub={`> ${SCHWELLWERTE[gruppe].rot} % WE`}
+                 sub={`> ${SCHWELLWERTE[gruppe].rot} % WE (außer Haus)`}
                  stufe={stats.ueberSchwelle > 0 ? "rot" : "gruen"} />
       </div>
 
@@ -833,8 +834,8 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
       const e = ende ? new Date(ende) : null;
       const aktiv = (!s || s <= heute) && (!e || e >= heute);
       const calcs = items.map(berechne);
-      const avgWe = calcs.length ? calcs.reduce((x, c) => x + c.we_in, 0) / calcs.length : 0;
-      const sumDb = calcs.reduce((x, c) => x + c.db_in, 0);
+      const avgWe = calcs.length ? calcs.reduce((x, c) => x + c.we_out, 0) / calcs.length : 0;
+      const sumDb = calcs.reduce((x, c) => x + c.db_out, 0);
       return { name, items, start, ende, aktiv, avgWe, sumDb };
     }).sort((a, b) => (Number(b.aktiv) - Number(a.aktiv)) || a.name.localeCompare(b.name, "de"));
   }, [produkte]);
@@ -927,7 +928,7 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
               {/* Rollup */}
               <div className="flex flex-wrap gap-x-5 gap-y-1 mt-2 text-xs">
                 <span className={`font-medium ${ampel.text}`}>Ø Wareneinsatz {fmtPct(k.avgWe)}</span>
-                <span className="text-gray-600">Σ Deckungsbeitrag (im Haus) {fmtEUR(k.sumDb)}</span>
+                <span className="text-gray-600">Σ Deckungsbeitrag (außer Haus) {fmtEUR(k.sumDb)}</span>
                 {k.start && <span className="text-gray-500">{fmtDate(k.start)} – {k.ende ? fmtDate(k.ende) : "offen"}</span>}
               </div>
             </div>
@@ -936,13 +937,13 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
             <div className="divide-y divide-gray-100">
               {k.items.map(p => {
                 const c = berechne(p);
-                const a = ampelFarbe(c.we_in, "Kampagnen");
+                const a = ampelFarbe(c.we_out, "Kampagnen");
                 return (
                   <div key={p.id} className="px-4 py-2.5 flex flex-wrap items-center gap-3 hover:bg-gray-50">
                     <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${a.dot}`} />
                     <span className="flex-1 min-w-[150px] text-sm font-medium text-gray-800">{p.name || "(ohne Name)"}</span>
                     <span className="text-xs text-gray-500 tabular-nums">
-                      WE {fmtEUR(c.wareneinsatz)} · VK {fmtEUR(p.vk_in_brutto)} · WE-Quote {fmtPct(c.we_in)} · DB {fmtEUR(c.db_in)}
+                      WE {fmtEUR(c.wareneinsatz)} · VK {fmtEUR(p.vk_out_brutto)} · WE-Quote {fmtPct(c.we_out)} · DB {fmtEUR(c.db_out)}
                     </span>
                     <button onClick={() => onEdit && onEdit(p)} title="Bearbeiten"
                       className="text-gray-300 hover:text-emerald-700 p-0.5"><Pencil size={13} /></button>
@@ -1029,12 +1030,12 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
 //  SYSTEM-WARENEINSATZ-TAB (Mix-Kalkulator)
 // ============================================================
 function SystemWeTab({ produkte, mix, setMix }) {
-  // Pro Warengruppe: Ø WE-Quote (IN) und Anzahl Produkte
+  // Pro Warengruppe: Ø WE-Quote (OUT, 7 % MwSt.) und Anzahl Produkte
   const gruppenStats = useMemo(() => {
     return WARENGRUPPEN.map(g => {
       const ps = produkte.filter(p => p.gruppe === g);
       if (ps.length === 0) return { gruppe: g, anzahl: 0, we_quote: 0 };
-      const sum = ps.reduce((s, p) => s + berechne(p).we_in, 0);
+      const sum = ps.reduce((s, p) => s + berechne(p).we_out, 0);
       return { gruppe: g, anzahl: ps.length, we_quote: sum / ps.length };
     });
   }, [produkte]);
@@ -1240,7 +1241,7 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
   };
 
   const calc = berechne(form);
-  const aIn  = ampelFarbe(calc.we_in,  form.gruppe);
+  const aOut = ampelFarbe(calc.we_out, form.gruppe);
   const istNeu = !produkt?.name || produkt.id === form.id && produkt.name === "";
 
   const handleSave = () => {
@@ -1427,10 +1428,10 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
               <div className="text-xs text-gray-500 uppercase tracking-wide">Wareneinsatz</div>
               <div className="text-lg font-bold tabular-nums">{fmtEUR(calc.wareneinsatz)}</div>
             </div>
-            <div className={`rounded-lg px-3 py-2 border ${aIn.bg} ${aIn.border}`}>
-              <div className={`text-xs uppercase tracking-wide ${aIn.text}`}>WE % IN · DB IN</div>
-              <div className={`text-lg font-bold tabular-nums ${aIn.text}`}>
-                {fmtPct(calc.we_in)} · {fmtEUR(calc.db_in)}
+            <div className={`rounded-lg px-3 py-2 border ${aOut.bg} ${aOut.border}`}>
+              <div className={`text-xs uppercase tracking-wide ${aOut.text}`}>WE % OUT · DB OUT</div>
+              <div className={`text-lg font-bold tabular-nums ${aOut.text}`}>
+                {fmtPct(calc.we_out)} · {fmtEUR(calc.db_out)}
               </div>
             </div>
           </div>
@@ -3288,7 +3289,7 @@ export default function KalkulationsApp() {
     return WARENGRUPPEN.reduce((s, g) => {
       const ps = produkte.filter(p => p.gruppe === g);
       if (ps.length === 0) return s;
-      const avg = ps.reduce((x, p) => x + berechne(p).we_in, 0) / ps.length;
+      const avg = ps.reduce((x, p) => x + berechne(p).we_out, 0) / ps.length;
       return s + avg * (mix[g] || 0) / 100;
     }, 0);
   }, [produkte, mix]);
@@ -3551,6 +3552,7 @@ export default function KalkulationsApp() {
 
       <footer className="max-w-7xl mx-auto px-6 py-4 text-xs text-gray-400 text-center app-chrome-footer">
         Wareneinsatz inkl. Verpackung · IN = 19 % MwSt. · OUT = 7 % MwSt. ·
+        Kennzahlen und Ampeln rechnen mit OUT (außer Haus) ·
         Schwellwert Smoothies/Juices/Iced Drinks: 24 % · Bowls/Wraps/Kampagnen: 26 % ·
         Schwund-Puffer: 3 %
       </footer>
