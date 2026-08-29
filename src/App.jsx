@@ -106,8 +106,33 @@ function findPreisProG(name, plIndex) {
   return best ? (best.proG || 0) : 0;
 }
 
-const MWST_IN  = 0.19; // Im Haus
-const MWST_OUT = 0.07; // Außer Haus
+// Seit 2026 gilt fuer Speisen im Haus derselbe Satz wie ausser Haus. Der
+// Steuersatz haengt damit nicht mehr am Verkaufsort, sondern an der
+// Produktart: Speisen, Acai, Smoothies und Frozen Yoghurt 7 %, uebrige
+// Getraenke 19 %. Der Unterschied zwischen IN und OUT ist nur noch die
+// Verpackung - im Haus wird auf Geschirr serviert.
+const MWST_SPEISEN  = 0.07;
+const MWST_GETRAENK = 0.19;
+
+// Vorgabe je Warengruppe. Kampagnen sind gemischt - Bagel, Korean Glaze
+// Bowl, Acai und Frozen Yoghurt sind Speisen, ein Dragon Fruit Refresher
+// ist es nicht. Deshalb steht dort 7 % als Vorgabe, und der Satz laesst
+// sich am einzelnen Rezept uebersteuern.
+const MWST_GRUPPE = {
+  "Smoothies":   MWST_SPEISEN,
+  "Juices":      MWST_GETRAENK,
+  "Iced Drinks": MWST_GETRAENK,
+  "Bowls":       MWST_SPEISEN,
+  "Wraps":       MWST_SPEISEN,
+  "Kampagnen":   MWST_SPEISEN,
+};
+
+// Satz eines Produkts: ein am Rezept hinterlegter Wert schlaegt die Vorgabe.
+function mwstSatz(p) {
+  const eigen = +(p && p.mwst_satz);
+  if (eigen === MWST_SPEISEN || eigen === MWST_GETRAENK) return eigen;
+  return MWST_GRUPPE[p && p.gruppe] ?? MWST_GETRAENK;
+}
 const SCHWUND_PCT = 3.0; // Sicherheitspuffer Soll → Soll-inkl-Schwund
 
 // ============================================================
@@ -310,20 +335,27 @@ function stueckgewicht(a) {
 
 function berechne(produkt) {
   const material = produkt.zutaten.reduce((s, z) => s + (z.cost || 0), 0);
-  const wareneinsatz = material + (produkt.verpackung_eur || 0);
-  const vk_in_netto  = (produkt.vk_in_brutto  || 0) / (1 + MWST_IN);
-  const vk_out_netto = (produkt.vk_out_brutto || 0) / (1 + MWST_OUT);
-  const we_in  = vk_in_netto  > 0 ? wareneinsatz / vk_in_netto  * 100 : 0;
-  const we_out = vk_out_netto > 0 ? wareneinsatz / vk_out_netto * 100 : 0;
+  const satz = mwstSatz(produkt);
+  // Im Haus faellt keine Verpackung an (Geschirr), ausser Haus schon.
+  const we_in_eur  = material;
+  const we_out_eur = material + (produkt.verpackung_eur || 0);
+  const vk_in_netto  = (produkt.vk_in_brutto  || 0) / (1 + satz);
+  const vk_out_netto = (produkt.vk_out_brutto || 0) / (1 + satz);
+  const we_in  = vk_in_netto  > 0 ? we_in_eur  / vk_in_netto  * 100 : 0;
+  const we_out = vk_out_netto > 0 ? we_out_eur / vk_out_netto * 100 : 0;
   return {
     material,
-    wareneinsatz,
+    satz,
+    // "wareneinsatz" ist die Ausser-Haus-Sicht - alle verdichteten
+    // Kennzahlen laufen darauf.
+    wareneinsatz: we_out_eur,
+    wareneinsatz_in: we_in_eur,
     vk_in_netto,
     vk_out_netto,
     we_in,
     we_out,
-    db_in:  vk_in_netto  - wareneinsatz,
-    db_out: vk_out_netto - wareneinsatz,
+    db_in:  vk_in_netto  - we_in_eur,
+    db_out: vk_out_netto - we_out_eur,
   };
 }
 
@@ -594,7 +626,7 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                   <td />
                 </tr>
                 <tr className="font-semibold text-gray-800">
-                  <td className="px-2 py-1">= Wareneinsatz gesamt</td>
+                  <td className="px-2 py-1">= Wareneinsatz außer Haus</td>
                   <td colSpan={2} />
                   <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(calc.wareneinsatz)}</td>
                   <td />
@@ -696,7 +728,7 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr className="text-gray-600">
               <th className="text-left  px-3 py-2 font-medium">{gruppiert ? "Sorte / Größe" : "Produkt"}</th>
-              <th className="text-right px-3 py-2 font-medium">Wareneinsatz €</th>
+              <th className="text-right px-3 py-2 font-medium">Wareneinsatz OUT €</th>
               <th className="text-right px-3 py-2 font-medium">VK IN brutto</th>
               <th className="text-right px-3 py-2 font-medium">netto</th>
               <th className="text-right px-3 py-2 font-medium">WE % IN</th>
@@ -1329,18 +1361,30 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
             <h4 className="text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">Verkaufspreise (brutto)</h4>
             <div className="grid grid-cols-2 gap-3">
               <label className="text-xs font-medium text-gray-600 flex flex-col">
-                VK IN (Im Haus, 19 % MwSt.)
+                VK IN (Im Haus)
                 <input type="number" step="0.10" min="0" value={form.vk_in_brutto}
                   onChange={e => setF({ vk_in_brutto: Math.max(0, +e.target.value || 0) })}
                   className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white tabular-nums" />
               </label>
               <label className="text-xs font-medium text-gray-600 flex flex-col">
-                VK OUT (Außer Haus, 7 % MwSt.)
+                VK OUT (Außer Haus)
                 <input type="number" step="0.10" min="0" value={form.vk_out_brutto}
                   onChange={e => setF({ vk_out_brutto: Math.max(0, +e.target.value || 0) })}
                   className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white tabular-nums" />
               </label>
             </div>
+            <label className="text-xs font-medium text-gray-600 flex flex-col mt-3">
+              MwSt.-Satz
+              <select value={mwstSatz(form)}
+                onChange={e => setF({ mwst_satz: +e.target.value })}
+                className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white">
+                <option value={MWST_SPEISEN}>7 % — Speisen, Açaí, Smoothies, Frozen Yoghurt</option>
+                <option value={MWST_GETRAENK}>19 % — übrige Getränke</option>
+              </select>
+              <span className="mt-1 text-[11px] text-gray-400 font-normal">
+                Gilt im Haus wie außer Haus. Vorgabe kommt aus der Warengruppe.
+              </span>
+            </label>
           </div>
 
           {/* Zutaten */}
@@ -1425,7 +1469,7 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
                 className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white tabular-nums" />
             </label>
             <div className="bg-gray-50 rounded-lg px-3 py-2">
-              <div className="text-xs text-gray-500 uppercase tracking-wide">Wareneinsatz</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wide">Wareneinsatz OUT</div>
               <div className="text-lg font-bold tabular-nums">{fmtEUR(calc.wareneinsatz)}</div>
             </div>
             <div className={`rounded-lg px-3 py-2 border ${aOut.bg} ${aOut.border}`}>
@@ -3551,7 +3595,8 @@ export default function KalkulationsApp() {
       />
 
       <footer className="max-w-7xl mx-auto px-6 py-4 text-xs text-gray-400 text-center app-chrome-footer">
-        Wareneinsatz inkl. Verpackung · IN = 19 % MwSt. · OUT = 7 % MwSt. ·
+        MwSt.: Speisen, Açaí, Smoothies, Frozen Yoghurt 7 % · übrige Getränke 19 % ·
+        im Haus wie außer Haus · Unterschied IN/OUT ist allein die Verpackung ·
         Kennzahlen und Ampeln rechnen mit OUT (außer Haus) ·
         Schwellwert Smoothies/Juices/Iced Drinks: 24 % · Bowls/Wraps/Kampagnen: 26 % ·
         Schwund-Puffer: 3 %
