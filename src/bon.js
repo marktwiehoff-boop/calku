@@ -1,10 +1,11 @@
 // Reine Bon-Logik (ohne React). Einzige Stelle, an der ein Produktionsbon entsteht.
 // Vorschau, Kopieren und Export nutzen alle renderBon().
 //
-// Vertrag: menge_g und vk_out_brutto muessen Zahlen sein, keine Kommastrings
-// ("30,5"). So ein String wird von `+v || 0` zu 0 und laesst die Zutat oder
-// den Preis still verschwinden. App.jsx erzwingt das heute in jedem
-// Schreibpfad; dieses Modul verlaesst sich darauf, ohne es selbst zu pruefen.
+// Vertrag: menge_g (bzw. menge_stk bei einheit "stk") und vk_out_brutto
+// muessen Zahlen sein, keine Kommastrings ("30,5"). So ein String wird von
+// `+v || 0` zu 0 und laesst die Zutat oder den Preis still verschwinden.
+// App.jsx erzwingt das heute in jedem Schreibpfad; dieses Modul verlaesst
+// sich darauf, ohne es selbst zu pruefen.
 
 export const BON_BREITE = 48; // Zeichen je Zeile, 80-mm-Thermodrucker (Mark, 05.08.2026)
 
@@ -71,8 +72,11 @@ export function zutatenZeilen(produkt) {
   for (const z of zutaten) {
     if (!gepflegt(z?.name)) continue;
     const eigeneMenge = gepflegt(z.bon_menge);
-    if (!eigeneMenge && !((+z.menge_g || 0) > 0)) continue;
-    aus.push(eigeneMenge ? z.bon_menge.trim() : `${formatMenge(z.menge_g)} g`);
+    // Stueck-Zeilen (Ei, Wrap) zeigen Stueck, alle anderen Gramm
+    const stueck = z.einheit === "stk";
+    const menge = stueck ? (+z.menge_stk || 0) : (+z.menge_g || 0);
+    if (!eigeneMenge && !(menge > 0)) continue;
+    aus.push(eigeneMenge ? z.bon_menge.trim() : `${formatMenge(menge)} ${stueck ? "Stk" : "g"}`);
     aus.push(`  ${z.name.trim()}`);
     if (gepflegt(z.bon_anweisung)) aus.push(`  > ${z.bon_anweisung.trim()}`);
   }

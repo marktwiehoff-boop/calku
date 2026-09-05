@@ -35,6 +35,8 @@ const fmtEUR  = v => new Intl.NumberFormat("de-DE", { style: "currency", currenc
 const fmtEUR0 = v => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v || 0);
 const fmtPct  = v => new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v || 0) + " %";
 const fmtNum  = v => new Intl.NumberFormat("de-DE").format(Math.round(v || 0));
+const fmtNum2 = v => new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v || 0);
+const fmtMenge = v => new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(v || 0);
 const fmtDate = d => d ? new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(d)) : "—";
 
 // ============================================================
@@ -56,12 +58,57 @@ const SCHWELLWERTE = {
 
 const WARENGRUPPEN  = ["Smoothies", "Juices", "Iced Drinks", "Bowls", "Wraps", "Kampagnen"];
 const ICED_SUBGROUPS = ["Classic Iced Matcha", "Sweet Iced Matcha", "Frozen Iced Tea", "Refresher", "Iced Coffee Lattes"];
-const BOWL_SUBGROUPS = ["Salatbowls", "Reisbowls", "Kartoffelbowls"];
+const BOWL_SUBGROUPS = ["Salatbowls", "Kartoffelbowls", "Reisbowls"];
 // Untergruppen je Warengruppe (für Reiter-Unterfilter + Edit-Dialog)
 const SUBGROUPS_BY_GRUPPE = { "Iced Drinks": ICED_SUBGROUPS, "Bowls": BOWL_SUBGROUPS };
 // Default-Untergruppe, wenn am Produkt keine gesetzt ist
 const DEFAULT_UNTERGRUPPE = { "Bowls": "Salatbowls" };
 const untergruppeVon = (p) => p.untergruppe || DEFAULT_UNTERGRUPPE[p.gruppe] || null;
+
+// ============================================================
+//  BOWL-VARIANTEN: eine Bowl, drei Basen (Salat / Kartoffel / Reis)
+// ============================================================
+// In der Kasse ist jede Bowl drei Artikel („Julius Caesar Bowl“, „Julius
+// Caesar Kartoffel (normal)“, „Julius Caesar Reis (normal)“). In CALKU bleibt
+// sie EIN Rezept: alle Zutaten sind in den drei Varianten gleich, nur der
+// Salatmix schrumpft in der Kartoffel- und Reis-Variante, und die Basis
+// (Kartoffeln + Basissauce + Röstzwiebeln bzw. Reis) kommt dazu. Die Basis
+// steht genau einmal im Dokument (bowl_basis) und gilt für alle Bowls mit
+// wählbarer Basis — eine Information, ein Ort. Beim Speichern schreibt die
+// App zusätzlich `produkte_aufgeloest`: je Variante ein eigenes Produkt mit
+// den ids `<id>` (Salat), `<id>_kartoffel`, `<id>_reis` — das lesen
+// Bestellvorschlag und BigQuery (Zuordnung zu den Kassenartikeln).
+const BOWL_VARIANTEN = [
+  { key: "salat",     label: "Salatbowl",     kurz: "Salat",     untergruppe: "Salatbowls",     idSuffix: "",           nameZusatz: "" },
+  { key: "kartoffel", label: "Kartoffelbowl", kurz: "Kartoffel", untergruppe: "Kartoffelbowls", idSuffix: "_kartoffel", nameZusatz: "Kartoffel" },
+  { key: "reis",      label: "Reisbowl",      kurz: "Reis",      untergruppe: "Reisbowls",      idSuffix: "_reis",      nameZusatz: "Reis" },
+];
+const BOWL_VARIANTE = Object.fromEntries(BOWL_VARIANTEN.map(v => [v.key, v]));
+const BOWL_GROESSEN = [["normal", "Normal"], ["klein", "Klein"]];
+
+// Vorgabe, solange im Dokument keine Basis gepflegt ist. Mengen: Rezeptur-
+// Entscheidung Mark 03./05.09.2026 (Salatmix 100 g Salatbowl, 50 g Kartoffel-
+// und Reisbowl; Kartoffeln gegart 230 g, Basissauce 40 g, Röstzwiebeln 5 g;
+// Reis 150 g). Klein = zwei Drittel auf 5 g gerundet, Salatmix klein halbiert
+// — bitte im Bowls-Tab bestätigen. Preise aus den CALKU-Rezepten (Quark
+// Kartoffel Bowl, Korean Glaze Bowl) bzw. der TG-Einkaufspreisliste.
+const DEFAULT_BOWL_BASIS = {
+  version: 1,
+  salat: {
+    zutaten: ["Salatmix", "Mixsalat"],
+    menge: { normal: { kartoffel: 50, reis: 50 }, klein: { kartoffel: 30, reis: 30 } },
+  },
+  varianten: {
+    kartoffel: { zutaten: [
+      { name: "Kartoffeln gegart",    lieferant: "Transgourmet", preis_pro_g: 0.001988, menge: { normal: 230, klein: 155 } },
+      { name: "Kartoffel Basissauce", lieferant: "Transgourmet", preis_pro_g: 0.004380, menge: { normal: 40,  klein: 25 } },
+      { name: "Röstzwiebeln",         lieferant: "Transgourmet", preis_pro_g: 0.005080, menge: { normal: 5,   klein: 5 } },
+    ] },
+    reis: { zutaten: [
+      { name: "Quinoa Reismix",       lieferant: "Transgourmet", preis_pro_g: 0.001450, menge: { normal: 150, klein: 100 } },
+    ] },
+  },
+};
 
 // ============================================================
 //  PREIS-ABGLEICH: Zutatenname → Preisliste (tolerant)
@@ -306,29 +353,126 @@ function ausbeuteFaktor(z) {
   return Math.min(100, Math.max(1, a)) / 100;
 }
 
+// ---- Einheit einer Rezeptzeile: g (Standard), ml oder Stück -------------
+// Ei, Wrap, Tortilla: der Gast bekommt EIN Stück, und ein Stück hat einen
+// Stückpreis. Solche Zeilen rechnen in Stück (menge_stk × preis_je_stueck)
+// und führen menge_g / preis_pro_g nur als Gramm-Äquivalent mit
+// (menge_stk × g/Stück), damit Bestellvorschlag, Bons und BigQuery weiter in
+// Gramm rechnen können. Fehlt das Stückgewicht, ist das Gramm-Äquivalent 0
+// und die Zeile fehlt im Bestellvorschlag — die App weist darauf hin.
+const EINHEITEN = [
+  { key: "g",   menge: "g",   preis: "€/kg"  },
+  { key: "ml",  menge: "ml",  preis: "€/l"   },
+  { key: "stk", menge: "Stk", preis: "€/Stk" },
+];
+const EINHEIT = Object.fromEntries(EINHEITEN.map(e => [e.key, e]));
+function zutatEinheit(z) {
+  const e = z && z.einheit;
+  return e === "stk" || e === "ml" ? e : "g";
+}
+const istStueck = (z) => zutatEinheit(z) === "stk";
+// Menge in der Einheit der Zeile
+function zutatMenge(z) {
+  return istStueck(z) ? (+(z && z.menge_stk) || 0) : (+(z && z.menge_g) || 0);
+}
+// Preis in der Anzeige-Einheit der Zeile: €/kg bzw. €/l, bei Stück €/Stk
+function zutatPreisAnzeige(z) {
+  return istStueck(z) ? (+(z && z.preis_je_stueck) || 0) : (+(z && z.preis_pro_g) || 0) * 1000;
+}
+
 function zutatKosten(z) {
+  if (istStueck(z)) {
+    return ((+(z && z.menge_stk) || 0) * (+(z && z.preis_je_stueck) || 0)) / ausbeuteFaktor(z);
+  }
   return ((+(z && z.menge_g) || 0) * (+(z && z.preis_pro_g) || 0)) / ausbeuteFaktor(z);
+}
+
+// Der eine Weg, eine Rezeptzeile nach einer Änderung konsistent zu machen:
+// Stück-Zeilen bekommen ihr Gramm-Äquivalent, jede Zeile neue Kosten.
+function normalisiereZutat(z) {
+  const n = { ...z };
+  if (istStueck(n)) {
+    n.einheit = "stk";
+    n.menge_stk = Math.max(0, +n.menge_stk || 0);
+    n.preis_je_stueck = Math.max(0, +n.preis_je_stueck || 0);
+    const g = +n.gramm_je_stueck || 0;
+    n.menge_g = g > 0 ? n.menge_stk * g : 0;
+    n.preis_pro_g = g > 0 ? n.preis_je_stueck / g : 0;
+  } else {
+    if (n.einheit !== "ml") delete n.einheit;
+    n.menge_g = Math.max(0, +n.menge_g || 0);
+    n.preis_pro_g = Math.max(0, +n.preis_pro_g || 0);
+  }
+  n.cost = zutatKosten(n);
+  return n;
+}
+// Menge einer Zeile setzen (in ihrer Einheit) und neu rechnen
+function mitMenge(z, menge) {
+  const m = Math.max(0, +menge || 0);
+  return normalisiereZutat(istStueck(z) ? { ...z, menge_stk: m } : { ...z, menge_g: m });
+}
+// Anzeigepreis einer Zeile setzen (€/kg, €/l oder €/Stk) und neu rechnen
+function mitPreis(z, preisAnzeige) {
+  const p = Math.max(0, +preisAnzeige || 0);
+  return normalisiereZutat(istStueck(z) ? { ...z, preis_je_stueck: p } : { ...z, preis_pro_g: p / 1000 });
+}
+// Einheit wechseln. Die Zahlen auf dem Bildschirm bleiben stehen, nur die
+// Einheit dahinter ändert sich: aus „1 g · 0,28 €/kg“ (so stand das Ei
+// bisher da) wird „1 Stk · 0,28 €/Stk“.
+function mitEinheit(z, einheit, artikel) {
+  if (zutatEinheit(z) === einheit) return z;
+  const menge = zutatMenge(z);
+  const preis = zutatPreisAnzeige(z);
+  const n = { ...z, einheit };
+  if (einheit === "stk") {
+    n.menge_stk = menge;
+    n.preis_je_stueck = preis;
+    n.gramm_je_stueck = stueckgewicht(artikel) || z.gramm_je_stueck || null;
+  } else {
+    n.menge_g = menge;
+    n.preis_pro_g = preis / 1000;
+    delete n.menge_stk;
+    delete n.preis_je_stueck;
+  }
+  return normalisiereZutat(n);
 }
 
 // Preisbasis eines Einkaufsartikels: Stueck, pro Gramm oder pro 100 ml.
 // Wird automatisch aus der Einheit abgeleitet und kann im Einkaufspreise-Tab
-// uebersteuert werden. Das Stueckgewicht wird NIE von Hand eingegeben -
-// es ist rechnerisch Stueckpreis / Preis pro Gramm (Gurke: 1,00 EUR /
-// 0,0022 EUR pro g = 450 g) und fliesst so in die Bestell-App.
+// uebersteuert werden. Das Stueckgewicht ist rechnerisch Stueckpreis /
+// Preis pro Gramm (Gurke: 1,00 EUR / 0,0022 EUR pro g = 450 g) - oder, wo
+// die Liste keinen brauchbaren Grammpreis hat (Eier: 30 Stueck fuer 8,45
+// EUR), als gewicht_je_stueck_g gepflegt. Es fliesst so in die Bestell-App.
 const PREISBASEN = [["gramm", "pro Gramm"], ["stueck", "Stück"], ["ml100", "pro 100 ml"]];
+const STUECK_EINHEITEN = new Set(["stück", "stueck", "stk", "stk.", "st", "st.", "stck"]);
 
 function preisbasisAuto(a) {
   const einheit = String((a && a.unit) || "").toLowerCase();
   if (einheit === "ml" || einheit === "l") return "ml100";
   if (einheit === "g" || einheit === "kg" || einheit === "kiste") return "gramm";
+  if (STUECK_EINHEITEN.has(einheit)) return "stueck";
   if ((+(a && a.package_size) || 0) <= 5) return "stueck";
   return "gramm";
 }
 
-function stueckgewicht(a) {
-  const basis = (a && a.preisbasis) || preisbasisAuto(a);
-  if (basis !== "stueck") return null;
+function istStueckArtikel(a) {
+  return !!a && ((a.preisbasis || preisbasisAuto(a)) === "stueck");
+}
+
+// Stueckpreis eines Stueck-Artikels: Packungspreis / Stueck je Packung
+// (Eier: 8,45 EUR / 30 = 0,28 EUR; Gurke: 1,00 EUR / 1 = 1,00 EUR).
+function stueckpreis(a) {
+  if (!istStueckArtikel(a)) return null;
   const preis = +(a && a.package_price) || 0;
+  const anzahl = +(a && a.package_size) || 1;
+  return preis > 0 ? preis / Math.max(1, anzahl) : null;
+}
+
+function stueckgewicht(a) {
+  if (!istStueckArtikel(a)) return null;
+  const manuell = +(a && a.gewicht_je_stueck_g) || 0;
+  if (manuell > 0) return manuell;
+  const preis = stueckpreis(a);
   const proG = +(a && a.price_per_gram_ml) || 0;
   return preis > 0 && proG > 0 ? preis / proG : null;
 }
@@ -357,6 +501,172 @@ function berechne(produkt) {
     db_in:  vk_in_netto  - we_in_eur,
     db_out: vk_out_netto - we_out_eur,
   };
+}
+
+// ============================================================
+//  BOWL-VARIANTEN: Hilfsfunktionen
+// ============================================================
+function bowlBasisOderDefault(basis) {
+  return basis && basis.varianten ? basis : DEFAULT_BOWL_BASIS;
+}
+
+// Größe einer Bowl: explizit (p.groesse) oder aus dem Namen („… Klein“).
+function bowlGroesse(p) {
+  if (p?.groesse === "klein" || p?.groesse === "normal") return p.groesse;
+  return /\bklein\b/i.test(p?.name || "") ? "klein" : "normal";
+}
+
+// Welche Basen bietet eine Bowl? Explizit (p.varianten), sonst aus der
+// Untergruppe (Reisbowls → nur Reis), sonst: steckt eine Basiszutat schon im
+// Rezept selbst (Quark Kartoffel Bowl), ist es genau diese Variante — alles
+// andere ist eine Bowl mit wählbarer Basis (Salat / Kartoffel / Reis).
+function bowlVarianten(p, basis) {
+  if (!p || p.gruppe !== "Bowls") return null;
+  if (Array.isArray(p.varianten)) {
+    const gueltig = BOWL_VARIANTEN.map(v => v.key).filter(k => p.varianten.includes(k));
+    if (gueltig.length) return gueltig;
+  }
+  const einzel = BOWL_VARIANTEN.find(v => v.key !== "salat" && v.untergruppe === p.untergruppe);
+  if (einzel) return [einzel.key];
+  if (p.untergruppe !== "Salatbowls") {
+    const b = bowlBasisOderDefault(basis);
+    const namen = new Set((p.zutaten || []).map(z => (z.name || "").trim().toLowerCase()));
+    for (const v of BOWL_VARIANTEN) {
+      const bz = b.varianten?.[v.key]?.zutaten || [];
+      if (bz.some(x => namen.has((x.name || "").trim().toLowerCase()))) return [v.key];
+    }
+  }
+  return BOWL_VARIANTEN.map(v => v.key);
+}
+
+// Bowl mit wählbarer Basis = mehr als eine Variante. Nur dann kommt die
+// zentrale Basis dazu; Einzelrezepte (Korean Glaze, Quark Kartoffel) sind
+// komplett, wie sie sind.
+function basisWaehlbar(p, basis) {
+  const v = bowlVarianten(p, basis);
+  return !!v && v.length > 1;
+}
+
+// Untergruppe in der Kassen-Sicht: Einzelvarianten tragen ihre Basis, auch
+// wenn am Produkt keine Untergruppe gepflegt ist (Quark Kartoffel Bowl).
+function bowlUntergruppe(p, basis) {
+  const v = bowlVarianten(p, basis);
+  if (v && v.length === 1) return BOWL_VARIANTE[v[0]].untergruppe;
+  return untergruppeVon(p);
+}
+
+function istSalatZutat(z, basis) {
+  const n = (z?.name || "").trim().toLowerCase();
+  if (!n) return false;
+  const muster = bowlBasisOderDefault(basis).salat?.zutaten || DEFAULT_BOWL_BASIS.salat.zutaten;
+  return muster.some(m => {
+    const s = String(m).trim().toLowerCase();
+    return s && (n === s || n.startsWith(s + " "));
+  });
+}
+
+// Menge einer Rezeptzeile in einer Variante (Einheit der Zeile). Eine
+// Zeilen-Ausnahme (menge_je_variante) schlägt die zentrale Salatmix-Regel,
+// die schlägt die normale Menge des Rezepts.
+function zutatMengeVariante(z, variante, p, basis) {
+  const ausnahme = z?.menge_je_variante?.[variante];
+  if (ausnahme != null && ausnahme !== "") return Math.max(0, +ausnahme || 0);
+  if (variante !== "salat" && istSalatZutat(z, basis)) {
+    const regel = bowlBasisOderDefault(basis).salat?.menge?.[bowlGroesse(p)]?.[variante];
+    if (regel != null && regel !== "") return Math.max(0, +regel || 0);
+  }
+  return zutatMenge(z);
+}
+
+// Zeilen der zentralen Basis für eine Variante und Größe, als Rezeptzeilen.
+function basisZutaten(variante, p, basis) {
+  const g = bowlGroesse(p);
+  return (bowlBasisOderDefault(basis).varianten?.[variante]?.zutaten || [])
+    .filter(b => (b.name || "").trim())
+    .map(b => normalisiereZutat({
+      name: b.name.trim(), lieferant: b.lieferant || "Transgourmet",
+      menge_g: +(b.menge?.[g] ?? 0) || 0, preis_pro_g: +b.preis_pro_g || 0,
+      ausbeute_prozent: b.ausbeute_prozent ?? null, basis: true,
+    }));
+}
+
+// „Julius Caesar Normal“ → „Julius Caesar Kartoffel Normal“ (Größe bleibt
+// hinten, wie in der Kasse: „Julius Caesar Kartoffel (normal)“).
+function variantenName(name, v) {
+  if (!v.nameZusatz) return name;
+  const m = String(name || "").match(/^(.*?)(\s+(?:Normal|Klein))$/i);
+  return m ? `${m[1]} ${v.nameZusatz}${m[2]}` : `${name} ${v.nameZusatz}`;
+}
+
+// Eine Variante als eigenständiges Produkt — berechne() rechnet sie wie
+// jedes andere. Genau so landet sie in produkte_aufgeloest.
+function bowlVariante(p, variante, basis) {
+  const v = BOWL_VARIANTE[variante] || BOWL_VARIANTE.salat;
+  const { varianten, vk_varianten, ...rest } = p;
+  const zutaten = (p.zutaten || []).map(z => {
+    const { menge_je_variante, ...zr } = z;
+    return mitMenge(zr, zutatMengeVariante(z, variante, p, basis));
+  }).concat(basisZutaten(variante, p, basis));
+  const vk = (vk_varianten && vk_varianten[variante]) || {};
+  return {
+    ...rest,
+    id: p.id + v.idSuffix,
+    name: variantenName(p.name, v),
+    untergruppe: v.untergruppe,
+    groesse: bowlGroesse(p),
+    vk_in_brutto:  +(vk.vk_in_brutto  ?? p.vk_in_brutto)  || 0,
+    vk_out_brutto: +(vk.vk_out_brutto ?? p.vk_out_brutto) || 0,
+    zutaten,
+    variante,
+    basis_produkt_id: p.id,
+  };
+}
+
+// Alle Produkte, Bowls mit wählbarer Basis je Variante einzeln. Das ist die
+// Sicht der Kasse und der Bestell-App — und der Inhalt von produkte_aufgeloest.
+function aufgeloesteProdukte(produkte, basis) {
+  const aus = [];
+  for (const p of produkte || []) {
+    if (basisWaehlbar(p, basis)) {
+      for (const k of bowlVarianten(p, basis)) aus.push(bowlVariante(p, k, basis));
+    } else {
+      aus.push(p);
+    }
+  }
+  return aus;
+}
+
+// Vollständiges Dokument, wie es nach Supabase bzw. in den Export geht.
+function dokumentZumSpeichern({ mix, produkte, bowlBasis, artikel, geloescht, bonVorlagen, importMappings }) {
+  return {
+    mix, produkte,
+    bowl_basis: bowlBasis,
+    // abgeleitet, bei jedem Speichern neu geschrieben - nie von Hand pflegen
+    produkte_aufgeloest: aufgeloesteProdukte(produkte, bowlBasis),
+    artikel, geloescht, bon_vorlagen: bonVorlagen, import_mappings: importMappings,
+  };
+}
+
+// Datenpflege-Befunde für den Bowls-Tab: Ei noch in Gramm, Varianten-
+// Duplikate aus dem Import vom 03.09.2026 (eigene Produkte je Basis).
+const EI_MUSTER = /^(ei|eier)\b/i;
+const EI_GEWICHT_G = 50; // ein Ei = 50 g (bisherige Rezeptur, so rechnet auch der Bestellvorschlag)
+function pflegeBefunde(produkte, basis) {
+  const eier = [];
+  for (const p of produkte || []) {
+    (p.zutaten || []).forEach((z, i) => {
+      if (EI_MUSTER.test((z.name || "").trim()) && !istStueck(z)) eier.push({ produkt: p, index: i, zutat: z });
+    });
+  }
+  const duplikate = (produkte || []).filter(p => {
+    if (p.gruppe !== "Bowls") return false;
+    const v = BOWL_VARIANTEN.find(x => x.idSuffix && String(p.id).endsWith(x.idSuffix));
+    if (!v) return false;
+    const basisId = String(p.id).slice(0, -v.idSuffix.length);
+    const original = (produkte || []).find(x => x.id === basisId);
+    return !!original && basisWaehlbar(original, basis);
+  });
+  return { eier, duplikate };
 }
 
 // ============================================================
@@ -517,24 +827,21 @@ function EditNum({ value, onChange, step = "0.01", min = "0", suffix, width = "w
   );
 }
 
-function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, onDelete, displayName, indent }) {
+// readOnly: abgeleitete Zeilen (Bowl-Variante in der Kassen-Sicht) zeigen nur;
+// bearbeitet wird das Grundrezept unter „Alle“ bzw. im Bearbeiten-Dialog.
+function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, onDelete, displayName, indent, readOnly, hinweis }) {
   const aIn  = ampelFarbe(calc.we_in,  gruppe);
   const aOut = ampelFarbe(calc.we_out, gruppe);
+  const editierbar = !readOnly && typeof onUpdate === "function";
 
   const updateZutat = (idx, field, value) => {
     const zutaten = p.zutaten.map((z, i) => {
       if (i !== idx) return z;
-      const next = { ...z };
-      if (field === "menge_g") {
-        next.menge_g = Math.max(0, +value || 0);
-      } else if (field === "preis_pro_kg") {
-        next.preis_pro_g = Math.max(0, +value || 0) / 1000;
-      }
-      next.cost = zutatKosten(next);
-      return next;
+      return field === "menge" ? mitMenge(z, value) : mitPreis(z, value);
     });
     onUpdate({ zutaten });
   };
+  const hatBasis = (p.zutaten || []).some(z => z.basis);
 
   return (
     <>
@@ -544,12 +851,13 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
             {expanded ? <ChevronDown size={14} className="text-gray-400" /> : <ChevronRight size={14} className="text-gray-400" />}
             <span className={`${indent ? "text-gray-700" : "font-medium text-gray-800"}`}>{displayName || p.name}</span>
             {p.untergruppe && <span className="text-xs text-gray-400">({p.untergruppe})</span>}
+            {hinweis && <span className="text-[10px] uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1">{hinweis}</span>}
             <span className="ml-2 inline-flex gap-0.5">
               <button onClick={(e) => { e.stopPropagation(); onEdit && onEdit(p); }}
                 className="text-gray-300 hover:text-emerald-600 p-1" title="Bearbeiten">
                 <Pencil size={12} />
               </button>
-              <button onClick={(e) => { e.stopPropagation(); if (confirm(`Rezept "${p.name}" wirklich löschen?`)) onDelete && onDelete(p.id); }}
+              <button onClick={(e) => { e.stopPropagation(); if (confirm(`Rezept "${p.name}" wirklich löschen?`)) onDelete && onDelete(p.basis_produkt_id || p.id); }}
                 className="text-gray-300 hover:text-red-600 p-1" title="Löschen">
                 <Trash2 size={12} />
               </button>
@@ -578,7 +886,9 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
         <tr className="bg-gray-50/50">
           <td colSpan={8} className="px-6 py-3">
             <div className="text-xs text-gray-600 mb-2 font-medium uppercase tracking-wide flex items-center gap-2">
-              Zutaten <span className="text-gray-400 normal-case font-normal">— Mengen und Preise sind editierbar</span>
+              Zutaten <span className="text-gray-400 normal-case font-normal">
+                {editierbar ? "— Mengen und Preise sind editierbar" : "— abgeleitet aus dem Grundrezept; bearbeiten unter „Alle“ oder über den Stift"}
+              </span>
             </div>
             <table className="w-full text-xs">
               <thead className="text-gray-500">
@@ -591,16 +901,30 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                 </tr>
               </thead>
               <tbody>
-                {p.zutaten.map((z, i) => (
-                  <tr key={i} className="border-t border-gray-100">
-                    <td className="px-2 py-1 text-gray-700">{z.name}</td>
-                    <td className="px-2 py-1 text-right">
-                      <EditNum value={z.menge_g} step="1" suffix="g" width="w-16"
-                        onChange={v => updateZutat(i, "menge_g", v)} />
+                {p.zutaten.map((z, i) => {
+                  const e = EINHEIT[zutatEinheit(z)];
+                  const ohneGewicht = istStueck(z) && !(+z.gramm_je_stueck > 0);
+                  return (
+                  <tr key={i} className={`border-t border-gray-100 ${z.basis ? "text-gray-500 bg-emerald-50/30" : ""}`}>
+                    <td className="px-2 py-1 text-gray-700">
+                      {z.name}
+                      {z.basis && <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1">Basis</span>}
+                      {ohneGewicht && (
+                        <span className="ml-1.5 text-[10px] text-amber-700"
+                          title="g/Stück fehlt — ohne Gramm-Äquivalent fehlt die Zutat im Bestellvorschlag. Pflege im Bearbeiten-Dialog oder im Tab Einkaufspreise.">
+                          ⚠ g/Stk fehlt
+                        </span>
+                      )}
                     </td>
-                    <td className="px-2 py-1 text-right">
-                      <EditNum value={+(z.preis_pro_g * 1000).toFixed(2)} step="0.01" suffix="€/kg" width="w-20"
-                        onChange={v => updateZutat(i, "preis_pro_kg", v)} />
+                    <td className="px-2 py-1 text-right tabular-nums">
+                      {editierbar && !z.basis
+                        ? <EditNum value={zutatMenge(z)} step="1" suffix={e.menge} width="w-16" onChange={v => updateZutat(i, "menge", v)} />
+                        : <span>{fmtMenge(zutatMenge(z))} <span className="text-gray-500">{e.menge}</span></span>}
+                    </td>
+                    <td className="px-2 py-1 text-right tabular-nums">
+                      {editierbar && !z.basis
+                        ? <EditNum value={+zutatPreisAnzeige(z).toFixed(2)} step="0.01" suffix={e.preis} width="w-20" onChange={v => updateZutat(i, "preis", v)} />
+                        : <span>{fmtNum2(zutatPreisAnzeige(z))} <span className="text-gray-500">{e.preis}</span></span>}
                     </td>
                     <td className="px-2 py-1 text-right tabular-nums"
                         title={z.ausbeute_prozent && z.ausbeute_prozent < 100
@@ -609,7 +933,8 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                     </td>
                     <td className="px-2 py-1 text-gray-500">{z.lieferant}</td>
                   </tr>
-                ))}
+                  );
+                })}
                 <tr className="border-t border-gray-300 font-medium">
                   <td className="px-2 py-1">Material</td>
                   <td colSpan={2} />
@@ -619,8 +944,10 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                 <tr className="text-gray-600">
                   <td className="px-2 py-1">+ Verpackung</td>
                   <td colSpan={2} className="text-right">
-                    <EditNum value={+p.verpackung_eur.toFixed(2)} step="0.01" suffix="€" width="w-16"
-                      onChange={v => onUpdate({ verpackung_eur: Math.max(0, +v || 0) })} />
+                    {editierbar
+                      ? <EditNum value={+(p.verpackung_eur || 0).toFixed(2)} step="0.01" suffix="€" width="w-16"
+                          onChange={v => onUpdate({ verpackung_eur: Math.max(0, +v || 0) })} />
+                      : <span className="tabular-nums">{fmtEUR(p.verpackung_eur || 0)}</span>}
                   </td>
                   <td />
                   <td />
@@ -635,6 +962,13 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
                   <tr>
                     <td colSpan={5} className="px-2 pt-1 text-[11px] text-gray-400">
                       * inkl. Ausbeute — zentral gepflegt im Tab „Einkaufspreise".
+                    </td>
+                  </tr>
+                )}
+                {hatBasis && (
+                  <tr>
+                    <td colSpan={5} className="px-2 pt-1 text-[11px] text-gray-400">
+                      Basis-Zeilen kommen aus der zentralen Basis-Rezeptur (Bowls-Tab, oben) und gelten für alle Bowls mit wählbarer Basis.
                     </td>
                   </tr>
                 )}
@@ -712,7 +1046,451 @@ function SortenGruppeZeile({ sorte, gruppe, expanded, onToggle, expandedProdukt,
   );
 }
 
-function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppiert }) {
+// ============================================================
+//  BOWLS: eine Zeile je Bowl, darunter die Varianten Salat / Kartoffel / Reis
+// ============================================================
+function BowlZeile({ p, gruppe, basis, expanded, onToggle, onUpdate, onEdit, onDelete, canEdit }) {
+  const keys = bowlVarianten(p, basis) || ["salat"];
+  const varianten = keys.map(k => {
+    const vp = bowlVariante(p, k, basis);
+    return { key: k, def: BOWL_VARIANTE[k], vp, c: berechne(vp) };
+  });
+  const groesse = bowlGroesse(p);
+  const arr = (f) => varianten.map(f);
+  const weIn = arr(x => x.c.we_in), weOut = arr(x => x.c.we_out);
+  const worstIn = Math.max(...weIn), worstOut = Math.max(...weOut);
+  const aIn = ampelFarbe(worstIn, gruppe), aOut = ampelFarbe(worstOut, gruppe);
+  const editierbar = canEdit && typeof onUpdate === "function";
+
+  // Salat-Spalte = Menge des Rezepts; Kartoffel-/Reis-Spalte = Ausnahme nur
+  // für diese Bowl (leer = zurück zur Regel bzw. zur Rezeptmenge).
+  const updateZutat = (idx, field, value, variante) => {
+    if (!editierbar) return;
+    const zutaten = p.zutaten.map((z, i) => {
+      if (i !== idx) return z;
+      if (field === "preis") return mitPreis(z, value);
+      if (variante === "salat") return mitMenge(z, value);
+      const mjv = { ...(z.menge_je_variante || {}) };
+      if (value === "" || value == null) delete mjv[variante];
+      else mjv[variante] = Math.max(0, +value || 0);
+      const next = { ...z, menge_je_variante: mjv };
+      if (!Object.keys(mjv).length) delete next.menge_je_variante;
+      return next;
+    });
+    onUpdate({ zutaten });
+  };
+
+  // VK je Variante: Salat = VK des Rezepts; Kartoffel/Reis nur, wenn er
+  // abweicht (sonst gilt der VK des Rezepts).
+  const updateVk = (variante, wert) => {
+    if (!editierbar) return;
+    const v = Math.max(0, +wert || 0);
+    if (variante === "salat") { onUpdate({ vk_in_brutto: v, vk_out_brutto: v }); return; }
+    const vkv = { ...(p.vk_varianten || {}) };
+    if (v > 0 && Math.abs(v - (+p.vk_out_brutto || 0)) > 0.004) vkv[variante] = { vk_in_brutto: v, vk_out_brutto: v };
+    else delete vkv[variante];
+    onUpdate({ vk_varianten: Object.keys(vkv).length ? vkv : undefined });
+  };
+
+  const basisZeilen = varianten.filter(x => x.key !== "salat")
+    .flatMap(x => basisZutaten(x.key, p, basis).map(bz => ({ ...bz, _variante: x.key })));
+  const th = (text, right = true, key) => (
+    <th key={key} className={`${right ? "text-right" : "text-left"} px-2 py-1 font-medium`}>{text}</th>
+  );
+
+  return (
+    <>
+      <tr className="border-b border-gray-200 bg-emerald-50/40 hover:bg-emerald-50 cursor-pointer" onClick={onToggle}>
+        <td className="px-3 py-2.5">
+          <div className="flex items-center gap-2 flex-wrap">
+            {expanded ? <ChevronDown size={14} className="text-emerald-700" /> : <ChevronRight size={14} className="text-emerald-700" />}
+            <span className="font-semibold text-gray-800">{p.name}</span>
+            <span className="text-xs text-gray-400">({varianten.map(x => x.def.kurz).join(" · ")})</span>
+            <span className="ml-2 inline-flex gap-0.5">
+              <button onClick={(e) => { e.stopPropagation(); onEdit && onEdit(p); }}
+                className="text-gray-300 hover:text-emerald-600 p-1" title="Bearbeiten">
+                <Pencil size={12} />
+              </button>
+              <button onClick={(e) => { e.stopPropagation(); if (confirm(`Rezept "${p.name}" wirklich löschen?`)) onDelete && onDelete(p.id); }}
+                className="text-gray-300 hover:text-red-600 p-1" title="Löschen">
+                <Trash2 size={12} />
+              </button>
+            </span>
+          </div>
+        </td>
+        <td className="px-3 py-2.5 text-right tabular-nums text-gray-700">{fmtRange(arr(x => x.c.wareneinsatz), fmtEUR)}</td>
+        <td className="px-3 py-2.5 text-right tabular-nums text-gray-700">{fmtRange(arr(x => x.vp.vk_in_brutto), fmtEUR)}</td>
+        <td className="px-3 py-2.5 text-right tabular-nums text-gray-500 text-xs">{fmtRange(arr(x => x.c.vk_in_netto), fmtEUR)}</td>
+        <td className={`px-3 py-2.5 text-right tabular-nums font-semibold ${aIn.text}`}>
+          <span className="inline-flex items-center gap-1.5">
+            <AmpelDot quote={worstIn} gruppe={gruppe} />
+            {fmtRange(weIn, fmtPct)}
+          </span>
+        </td>
+        <td className="px-3 py-2.5 text-right tabular-nums text-gray-700">{fmtRange(arr(x => x.c.db_in), fmtEUR)}</td>
+        <td className={`px-3 py-2.5 text-right tabular-nums font-semibold ${aOut.text}`}>
+          <span className="inline-flex items-center gap-1.5">
+            <AmpelDot quote={worstOut} gruppe={gruppe} />
+            {fmtRange(weOut, fmtPct)}
+          </span>
+        </td>
+        <td className="px-3 py-2.5 text-right tabular-nums text-gray-700">{fmtRange(arr(x => x.c.db_out), fmtEUR)}</td>
+      </tr>
+      {expanded && (
+        <tr className="bg-gray-50/50">
+          <td colSpan={8} className="px-6 py-3">
+            <div className="space-y-4">
+              {/* Varianten-Kennzahlen: so, wie der Gast bestellt */}
+              <div>
+                <div className="text-xs text-gray-600 mb-2 font-medium uppercase tracking-wide">
+                  Varianten <span className="text-gray-400 normal-case font-normal">— so, wie der Gast bestellt · Größe {groesse === "klein" ? "Klein" : "Normal"}</span>
+                </div>
+                <table className="w-full text-xs">
+                  <thead className="text-gray-500">
+                    <tr>
+                      {th("Variante", false, "v")}{th("Material", true, "m")}{th("Verpackung", true, "p")}{th("WE OUT €", true, "w")}
+                      {th("VK brutto", true, "vk")}{th("WE % IN", true, "wi")}{th("DB IN €", true, "di")}{th("WE % OUT", true, "wo")}{th("DB OUT €", true, "do")}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {varianten.map(x => {
+                      const ai = ampelFarbe(x.c.we_in, gruppe), ao = ampelFarbe(x.c.we_out, gruppe);
+                      const eigenerVk = x.key !== "salat" && !!p.vk_varianten?.[x.key];
+                      return (
+                        <tr key={x.key} className="border-t border-gray-100">
+                          <td className="px-2 py-1 font-medium text-gray-700">
+                            {x.def.label} <span className="text-gray-400 font-normal font-mono text-[10px]">{x.vp.id}</span>
+                          </td>
+                          <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(x.c.material)}</td>
+                          <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(p.verpackung_eur || 0)}</td>
+                          <td className="px-2 py-1 text-right tabular-nums font-medium">{fmtEUR(x.c.wareneinsatz)}</td>
+                          <td className="px-2 py-1 text-right tabular-nums">
+                            {editierbar
+                              ? <EditNum value={+(x.vp.vk_out_brutto || 0).toFixed(2)} step="0.05" suffix="€" width="w-16" onChange={v => updateVk(x.key, v)} />
+                              : fmtEUR(x.vp.vk_out_brutto)}
+                            {eigenerVk && <span className="ml-1 text-[10px] text-emerald-700" title="eigener VK dieser Variante">✎</span>}
+                          </td>
+                          <td className={`px-2 py-1 text-right tabular-nums font-semibold ${ai.text}`}>
+                            <span className="inline-flex items-center gap-1"><AmpelDot quote={x.c.we_in} gruppe={gruppe} />{fmtPct(x.c.we_in)}</span>
+                          </td>
+                          <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(x.c.db_in)}</td>
+                          <td className={`px-2 py-1 text-right tabular-nums font-semibold ${ao.text}`}>
+                            <span className="inline-flex items-center gap-1"><AmpelDot quote={x.c.we_out} gruppe={gruppe} />{fmtPct(x.c.we_out)}</span>
+                          </td>
+                          <td className="px-2 py-1 text-right tabular-nums">{fmtEUR(x.c.db_out)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Zutaten mit einer Mengen- und Kostenspalte je Variante */}
+              <div>
+                <div className="text-xs text-gray-600 mb-2 font-medium uppercase tracking-wide">
+                  Zutaten <span className="text-gray-400 normal-case font-normal">— Menge je Variante · Kartoffel/Reis grau = abgeleitet (Rezeptmenge bzw. Salatmix-Regel), eingetragen = Ausnahme dieser Bowl</span>
+                </div>
+                <table className="w-full text-xs">
+                  <thead className="text-gray-500">
+                    <tr>
+                      {th("Zutat", false, "z")}
+                      {varianten.map(x => th(`Menge ${x.def.kurz}`, true, `m_${x.key}`))}
+                      {th("Preis", true, "p")}
+                      {varianten.map(x => th(`Kosten ${x.def.kurz}`, true, `k_${x.key}`))}
+                      {th("Lieferant", false, "l")}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {p.zutaten.map((z, i) => {
+                      const e = EINHEIT[zutatEinheit(z)];
+                      const salat = istSalatZutat(z, basis);
+                      const ohneGewicht = istStueck(z) && !(+z.gramm_je_stueck > 0);
+                      return (
+                        <tr key={i} className="border-t border-gray-100">
+                          <td className="px-2 py-1 text-gray-700">
+                            {z.name}
+                            {salat && <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1" title="Salatmix-Regel: in Kartoffel- und Reisbowl weniger — zentral in der Basis-Rezeptur">Regel</span>}
+                            {ohneGewicht && <span className="ml-1.5 text-[10px] text-amber-700" title="g/Stück fehlt — ohne Gramm-Äquivalent fehlt die Zutat im Bestellvorschlag.">⚠ g/Stk fehlt</span>}
+                          </td>
+                          {varianten.map(x => {
+                            const menge = zutatMengeVariante(z, x.key, p, basis);
+                            const ausnahme = z.menge_je_variante?.[x.key] != null;
+                            const abgeleitet = x.key !== "salat" && !ausnahme;
+                            return (
+                              <td key={x.key} className={`px-2 py-1 text-right tabular-nums ${abgeleitet ? "text-gray-400" : ""}`}>
+                                {editierbar ? (
+                                  <span className="inline-flex items-center gap-0.5">
+                                    <EditNum value={menge} step="1" suffix={e.menge} width="w-14" onChange={v => updateZutat(i, "menge", v, x.key)} />
+                                    {ausnahme && (
+                                      <button onClick={ev => { ev.stopPropagation(); updateZutat(i, "menge", "", x.key); }}
+                                        title="Ausnahme löschen — zurück zur Regel" className="text-gray-300 hover:text-emerald-700">
+                                        <RotateCcw size={10} />
+                                      </button>
+                                    )}
+                                  </span>
+                                ) : <span>{fmtMenge(menge)} {e.menge}</span>}
+                              </td>
+                            );
+                          })}
+                          <td className="px-2 py-1 text-right tabular-nums">
+                            {editierbar
+                              ? <EditNum value={+zutatPreisAnzeige(z).toFixed(2)} step="0.01" suffix={e.preis} width="w-20" onChange={v => updateZutat(i, "preis", v)} />
+                              : <span>{fmtNum2(zutatPreisAnzeige(z))} {e.preis}</span>}
+                          </td>
+                          {varianten.map(x => (
+                            <td key={x.key} className="px-2 py-1 text-right tabular-nums">
+                              {fmtEUR(zutatKosten(mitMenge(z, zutatMengeVariante(z, x.key, p, basis))))}
+                            </td>
+                          ))}
+                          <td className="px-2 py-1 text-gray-500">{z.lieferant}</td>
+                        </tr>
+                      );
+                    })}
+                    {basisZeilen.map((bz, i) => (
+                      <tr key={`b${i}`} className="border-t border-gray-100 text-gray-500 bg-emerald-50/30">
+                        <td className="px-2 py-1">
+                          {bz.name}
+                          <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1">Basis</span>
+                        </td>
+                        {varianten.map(x => (
+                          <td key={x.key} className="px-2 py-1 text-right tabular-nums">{x.key === bz._variante ? `${fmtMenge(bz.menge_g)} g` : "—"}</td>
+                        ))}
+                        <td className="px-2 py-1 text-right tabular-nums">{fmtNum2(bz.preis_pro_g * 1000)} €/kg</td>
+                        {varianten.map(x => (
+                          <td key={x.key} className="px-2 py-1 text-right tabular-nums">{x.key === bz._variante ? fmtEUR(bz.cost) : "—"}</td>
+                        ))}
+                        <td className="px-2 py-1">{bz.lieferant}</td>
+                      </tr>
+                    ))}
+                    <tr className="border-t border-gray-300 font-medium">
+                      <td className="px-2 py-1">Material</td>
+                      {varianten.map(x => <td key={x.key} />)}
+                      <td />
+                      {varianten.map(x => <td key={x.key} className="px-2 py-1 text-right tabular-nums">{fmtEUR(x.c.material)}</td>)}
+                      <td />
+                    </tr>
+                    <tr className="text-gray-600">
+                      <td className="px-2 py-1">+ Verpackung</td>
+                      {varianten.map(x => <td key={x.key} />)}
+                      <td className="px-2 py-1 text-right">
+                        {editierbar
+                          ? <EditNum value={+(p.verpackung_eur || 0).toFixed(2)} step="0.01" suffix="€" width="w-16" onChange={v => onUpdate({ verpackung_eur: Math.max(0, +v || 0) })} />
+                          : <span className="tabular-nums">{fmtEUR(p.verpackung_eur || 0)}</span>}
+                      </td>
+                      {varianten.map(x => <td key={x.key} className="px-2 py-1 text-right tabular-nums">{fmtEUR(p.verpackung_eur || 0)}</td>)}
+                      <td />
+                    </tr>
+                    <tr className="font-semibold text-gray-800">
+                      <td className="px-2 py-1">= Wareneinsatz außer Haus</td>
+                      {varianten.map(x => <td key={x.key} />)}
+                      <td />
+                      {varianten.map(x => <td key={x.key} className="px-2 py-1 text-right tabular-nums">{fmtEUR(x.c.wareneinsatz)}</td>)}
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
+                <p className="text-[11px] text-gray-400 mt-1">
+                  Basis-Zeilen kommen aus der zentralen Basis-Rezeptur (oben im Tab) und gelten für alle Bowls mit wählbarer Basis.
+                  Salatmix folgt der Regel dort; eine eingetragene Kartoffel-/Reis-Menge ist eine Ausnahme nur für diese Bowl.
+                  Beim Speichern entstehen daraus die Kassenartikel <span className="font-mono">{p.id}</span>, <span className="font-mono">{p.id}_kartoffel</span>, <span className="font-mono">{p.id}_reis</span>.
+                </p>
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+// Zentrale Basis-Rezeptur: einmal pflegen, gilt für alle Bowls mit wählbarer Basis.
+function BowlBasisPanel({ basis, onChange, canEdit, anzahlBowls }) {
+  const [offen, setOffen] = useState(false);
+  const b = bowlBasisOderDefault(basis);
+  const editierbar = canEdit && typeof onChange === "function";
+  const set = (patch) => editierbar && onChange({ ...b, ...patch, version: 1 });
+
+  const setSalatMenge = (groesse, variante, wert) => {
+    const menge = { ...(b.salat?.menge || {}) };
+    menge[groesse] = { ...(menge[groesse] || {}), [variante]: Math.max(0, +wert || 0) };
+    set({ salat: { ...(b.salat || {}), menge } });
+  };
+  const setSalatZutaten = (text) =>
+    set({ salat: { ...(b.salat || {}), zutaten: text.split(",").map(s => s.trim()).filter(Boolean) } });
+  const zeilen = (variante) => b.varianten?.[variante]?.zutaten || [];
+  const setZeilen = (variante, zutaten) =>
+    set({ varianten: { ...(b.varianten || {}), [variante]: { ...(b.varianten?.[variante] || {}), zutaten } } });
+  const setZeile = (variante, idx, patch) =>
+    setZeilen(variante, zeilen(variante).map((z, i) => (i === idx ? { ...z, ...patch } : z)));
+  const setZeileMenge = (variante, idx, groesse, wert) =>
+    setZeile(variante, idx, { menge: { ...(zeilen(variante)[idx]?.menge || {}), [groesse]: Math.max(0, +wert || 0) } });
+  const addZeile = (variante) =>
+    setZeilen(variante, [...zeilen(variante), { name: "", lieferant: "Transgourmet", preis_pro_g: 0, menge: { normal: 0, klein: 0 } }]);
+  const removeZeile = (variante, idx) => setZeilen(variante, zeilen(variante).filter((_, i) => i !== idx));
+  const kosten = (variante, groesse) =>
+    zeilen(variante).reduce((s, z) => s + (+(z.menge?.[groesse]) || 0) * (+z.preis_pro_g || 0), 0);
+  const inputCls = "border border-gray-200 rounded px-1.5 py-1 text-xs bg-white";
+
+  return (
+    <div className="bg-white rounded-xl border border-emerald-200 overflow-hidden">
+      <button onClick={() => setOffen(o => !o)} className="w-full flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-left hover:bg-emerald-50/50">
+        <span className="flex items-center gap-2">
+          {offen ? <ChevronDown size={14} className="text-emerald-700" /> : <ChevronRight size={14} className="text-emerald-700" />}
+          <span className="text-sm font-semibold text-gray-800">Basis-Rezeptur: Salat / Kartoffel / Reis</span>
+          <span className="text-xs text-gray-400">· gilt für {anzahlBowls} Bowls mit wählbarer Basis</span>
+        </span>
+        <span className="text-xs text-gray-500 tabular-nums">
+          Kartoffelbasis {fmtEUR(kosten("kartoffel", "normal"))} / {fmtEUR(kosten("kartoffel", "klein"))} ·
+          Reisbasis {fmtEUR(kosten("reis", "normal"))} / {fmtEUR(kosten("reis", "klein"))} <span className="text-gray-400">(Normal / Klein)</span>
+        </span>
+      </button>
+      {offen && (
+        <div className="px-4 pb-4 space-y-4 text-xs">
+          <p className="text-gray-500">
+            Eine Bowl ist ein Rezept. In der Kasse gibt es sie als Salat-, Kartoffel- und Reisbowl: gleiche Zutaten, nur der Salatmix
+            schrumpft in Kartoffel- und Reisbowl, und die Basis kommt dazu. Was hier steht, gilt für alle Bowls mit wählbarer Basis —
+            einmal pflegen statt in jeder Bowl. Änderungen wirken sofort auf alle Varianten; zum Sichern oben „Speichern“.
+          </p>
+
+          <div className="border border-gray-100 rounded-lg p-3">
+            <div className="font-medium text-gray-700 mb-2">Salatmix in Kartoffel- und Reisbowl</div>
+            <div className="flex flex-wrap gap-4 items-end">
+              <label className="flex flex-col text-gray-600">
+                Zutat(en), kommagetrennt
+                {editierbar
+                  ? <input value={(b.salat?.zutaten || []).join(", ")} onChange={e => setSalatZutaten(e.target.value)} className={`${inputCls} mt-1 w-48`} />
+                  : <span className="mt-1 text-gray-800">{(b.salat?.zutaten || []).join(", ")}</span>}
+              </label>
+              {["kartoffel", "reis"].map(v => ["normal", "klein"].map(g => (
+                <label key={v + g} className="flex flex-col text-gray-600">
+                  {BOWL_VARIANTE[v].label} · {g === "klein" ? "Klein" : "Normal"}
+                  <span className="mt-1">
+                    {editierbar
+                      ? <EditNum value={+(b.salat?.menge?.[g]?.[v] ?? 0)} step="5" suffix="g" width="w-14" onChange={val => setSalatMenge(g, v, val)} />
+                      : <span className="text-gray-800 tabular-nums">{fmtMenge(b.salat?.menge?.[g]?.[v] ?? 0)} g</span>}
+                  </span>
+                </label>
+              )))}
+            </div>
+            <p className="text-gray-400 mt-2">Die Salatbowl behält die Salatmix-Menge des Rezepts (Normal 100 g). Die Klein-Werte sind eine Vorgabe — bitte bestätigen.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {["kartoffel", "reis"].map(v => (
+              <div key={v} className="border border-gray-100 rounded-lg p-3">
+                <div className="font-medium text-gray-700 mb-2">{BOWL_VARIANTE[v].label}: Basis kommt dazu</div>
+                <table className="w-full">
+                  <thead className="text-gray-500">
+                    <tr>
+                      <th className="text-left px-1 py-1 font-medium">Zutat</th>
+                      <th className="text-right px-1 py-1 font-medium">Normal</th>
+                      <th className="text-right px-1 py-1 font-medium">Klein</th>
+                      <th className="text-right px-1 py-1 font-medium">Preis</th>
+                      <th className="text-right px-1 py-1 font-medium">Kosten N / K</th>
+                      {editierbar && <th className="w-6" />}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {zeilen(v).map((z, i) => (
+                      <tr key={i} className="border-t border-gray-100">
+                        <td className="px-1 py-1">
+                          {editierbar
+                            ? <input value={z.name || ""} onChange={e => setZeile(v, i, { name: e.target.value })} className={`${inputCls} w-full`} placeholder="Zutat wie in der Preisliste" />
+                            : <span className="text-gray-800">{z.name}</span>}
+                        </td>
+                        <td className="px-1 py-1 text-right tabular-nums">
+                          {editierbar
+                            ? <EditNum value={+(z.menge?.normal || 0)} step="5" suffix="g" width="w-14" onChange={val => setZeileMenge(v, i, "normal", val)} />
+                            : `${fmtMenge(z.menge?.normal)} g`}
+                        </td>
+                        <td className="px-1 py-1 text-right tabular-nums">
+                          {editierbar
+                            ? <EditNum value={+(z.menge?.klein || 0)} step="5" suffix="g" width="w-14" onChange={val => setZeileMenge(v, i, "klein", val)} />
+                            : `${fmtMenge(z.menge?.klein)} g`}
+                        </td>
+                        <td className="px-1 py-1 text-right tabular-nums">
+                          {editierbar
+                            ? <EditNum value={+((z.preis_pro_g || 0) * 1000).toFixed(2)} step="0.01" suffix="€/kg" width="w-16" onChange={val => setZeile(v, i, { preis_pro_g: Math.max(0, +val || 0) / 1000 })} />
+                            : `${fmtNum2((z.preis_pro_g || 0) * 1000)} €/kg`}
+                        </td>
+                        <td className="px-1 py-1 text-right tabular-nums text-gray-600">
+                          {fmtEUR((+(z.menge?.normal) || 0) * (+z.preis_pro_g || 0))} / {fmtEUR((+(z.menge?.klein) || 0) * (+z.preis_pro_g || 0))}
+                        </td>
+                        {editierbar && (
+                          <td className="px-1 py-1 text-center">
+                            <button onClick={() => removeZeile(v, i)} className="text-gray-300 hover:text-red-600" title="Zeile entfernen"><Trash2 size={12} /></button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                    <tr className="border-t border-gray-300 font-medium">
+                      <td className="px-1 py-1">Basis gesamt</td>
+                      <td colSpan={3} />
+                      <td className="px-1 py-1 text-right tabular-nums">{fmtEUR(kosten(v, "normal"))} / {fmtEUR(kosten(v, "klein"))}</td>
+                      {editierbar && <td />}
+                    </tr>
+                  </tbody>
+                </table>
+                {editierbar && (
+                  <button onClick={() => addZeile(v)} className="mt-2 flex items-center gap-1 text-emerald-700 hover:text-emerald-900 font-medium">
+                    <Plus size={12} /> Zutat
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-gray-400">
+            Vorgabe der Mengen: Rezeptur-Entscheidung 03./05.09.2026 (Kartoffeln gegart 230 g, Basissauce 40 g, Röstzwiebeln 5 g, Reis 150 g;
+            Klein zwei Drittel). Preise: CALKU-Rezepte Quark Kartoffel Bowl / Korean Glaze Bowl bzw. TG-Preisliste — „Preise aus Liste ziehen“ im
+            Tab Einkaufspreise füllt fehlende Preise auch hier.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Was die Daten noch nicht sauber abbilden - mit Knopf zum Umstellen.
+function DatenpflegeHinweis({ befunde, canEdit, onEiUmstellen, onDuplikateEntfernen }) {
+  const { eier, duplikate } = befunde || { eier: [], duplikate: [] };
+  if (!eier.length && !duplikate.length) return null;
+  const namen = (arr, f) => { const n = [...new Set(arr.map(f))]; return n.slice(0, 4).join(", ") + (n.length > 4 ? " …" : ""); };
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 space-y-3">
+      <div className="flex items-center gap-2 font-semibold"><AlertTriangle size={16} className="text-amber-700" /> Datenpflege</div>
+      {eier.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs leading-relaxed max-w-3xl">
+            <strong>Ei steht noch in Gramm</strong> in {eier.length} Rezeptzeile{eier.length === 1 ? "" : "n"} ({namen(eier, x => x.produkt.name)}).
+            Ein Ei ist ein Stück mit Stückpreis. Die Umstellung setzt die Einheit auf Stück, den Stückpreis aus der Preisliste
+            (Eier: 8,45 € je 30 = 0,28 €/Stk) und 50 g je Ei als Gramm-Äquivalent für Bestellvorschlag und Bons.
+          </span>
+          {canEdit && (
+            <button onClick={onEiUmstellen} className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
+              Ei auf Stück umstellen
+            </button>
+          )}
+        </div>
+      )}
+      {duplikate.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs leading-relaxed max-w-3xl">
+            <strong>{duplikate.length} Varianten-Duplikate</strong> aus dem Import vom 03.09.2026 ({namen(duplikate, p => p.name)}):
+            Kartoffel- und Reisvarianten entstehen jetzt aus dem Grundrezept, die eigenen Produkte dafür sind doppelt und würden im
+            Bestellvorschlag mit derselben id kollidieren.
+          </span>
+          {canEdit && (
+            <button onClick={() => onDuplikateEntfernen(duplikate.map(p => p.id))} className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
+              Duplikate entfernen
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppiert, bowlBasis, bowlModus, canEdit = true, produkteById }) {
   const [expanded, setExpanded] = useState(null);
   const [expandedSorte, setExpandedSorte] = useState(null);
 
@@ -727,7 +1505,7 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr className="text-gray-600">
-              <th className="text-left  px-3 py-2 font-medium">{gruppiert ? "Sorte / Größe" : "Produkt"}</th>
+              <th className="text-left  px-3 py-2 font-medium">{gruppiert ? "Sorte / Größe" : bowlModus ? "Bowl (Salat · Kartoffel · Reis)" : "Produkt"}</th>
               <th className="text-right px-3 py-2 font-medium">Wareneinsatz OUT €</th>
               <th className="text-right px-3 py-2 font-medium">VK IN brutto</th>
               <th className="text-right px-3 py-2 font-medium">netto</th>
@@ -758,6 +1536,25 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
             ))}
 
             {!gruppiert && produkte.map(p => {
+              if (bowlModus && basisWaehlbar(p, bowlBasis)) {
+                return (
+                  <BowlZeile
+                    key={p.id}
+                    p={p}
+                    gruppe={gruppe}
+                    basis={bowlBasis}
+                    expanded={expanded === p.id}
+                    onToggle={() => setExpanded(expanded === p.id ? null : p.id)}
+                    onUpdate={(updates) => onUpdate(p.id, updates)}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    canEdit={canEdit}
+                  />
+                );
+              }
+              // Kassen-Sicht: abgeleitete Variante (basis_produkt_id) - nur
+              // zeigen, bearbeiten ueber das Grundrezept.
+              const virtuell = !!p.basis_produkt_id;
               const calc = berechne(p);
               return (
                 <ProduktZeile
@@ -767,8 +1564,10 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
                   gruppe={gruppe}
                   expanded={expanded === p.id}
                   onToggle={() => setExpanded(expanded === p.id ? null : p.id)}
-                  onUpdate={(updates) => onUpdate(p.id, updates)}
-                  onEdit={onEdit}
+                  onUpdate={virtuell ? null : (updates) => onUpdate(p.id, updates)}
+                  readOnly={virtuell}
+                  hinweis={virtuell ? "Variante" : null}
+                  onEdit={virtuell ? (vp) => onEdit && onEdit((produkteById && produkteById[vp.basis_produkt_id]) || vp) : onEdit}
                   onDelete={onDelete}
                 />
               );
@@ -780,17 +1579,27 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
   );
 }
 
-function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }) {
+function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
+                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen }) {
   const [subFilter, setSubFilter] = useState("Alle");
   const subgroups = SUBGROUPS_BY_GRUPPE[gruppe] || null;
+  const istBowls = gruppe === "Bowls";
+
+  // Bowls: die Kassen-Sicht (je Variante ein Produkt) fuer Unterfilter und
+  // Kennzahlen; unter "Alle" steht jede Bowl einmal mit ihren Varianten.
+  const aufgeloest = useMemo(() => (istBowls ? aufgeloesteProdukte(produkte, bowlBasis) : produkte),
+                             [produkte, bowlBasis, istBowls]);
+  const produkteById = useMemo(() => Object.fromEntries(produkte.map(p => [p.id, p])), [produkte]);
+  const untergruppe = (p) => (istBowls ? bowlUntergruppe(p, bowlBasis) : untergruppeVon(p));
 
   const gefiltert = useMemo(() => {
     if (!subgroups || subFilter === "Alle") return produkte;
-    return produkte.filter(p => untergruppeVon(p) === subFilter);
-  }, [produkte, subgroups, subFilter]);
+    return aufgeloest.filter(p => untergruppe(p) === subFilter);
+  }, [produkte, aufgeloest, subgroups, subFilter, bowlBasis]);
 
+  const statsBasis = (!subgroups || subFilter === "Alle") ? aufgeloest : gefiltert;
   const stats = useMemo(() => {
-    const calced = gefiltert.map(p => ({ p, c: berechne(p) }));
+    const calced = statsBasis.map(p => ({ p, c: berechne(p) }));
     const n = calced.length;
     if (n === 0) return { n: 0, weOut: 0, dbOut: 0, ueberSchwelle: 0 };
     // Steuerungsgroesse ist das Ausser-Haus-Geschaeft (7 % MwSt.). Die
@@ -800,16 +1609,17 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
     const schwelle = SCHWELLWERTE[gruppe].rot;
     const ueberSchwelle = calced.filter(x => x.c.we_out > schwelle).length;
     return { n, weOut, dbOut, ueberSchwelle };
-  }, [gefiltert, gruppe]);
+  }, [statsBasis, gruppe]);
 
   const stufeWeOut = stats.weOut > SCHWELLWERTE[gruppe].rot ? "rot" : "gruen";
+  const anzahlBasisBowls = istBowls ? produkte.filter(p => basisWaehlbar(p, bowlBasis)).length : 0;
 
   return (
     <div className="space-y-4">
       {subgroups && (
         <div className="flex flex-wrap gap-1 bg-gray-100 rounded-lg p-1 w-fit">
           {["Alle", ...subgroups].map(s => {
-            const anzahl = s === "Alle" ? produkte.length : produkte.filter(p => untergruppeVon(p) === s).length;
+            const anzahl = s === "Alle" ? produkte.length : aufgeloest.filter(p => untergruppe(p) === s).length;
             return (
               <button key={s} onClick={() => setSubFilter(s)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
@@ -820,8 +1630,17 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
         </div>
       )}
 
+      {istBowls && (
+        <DatenpflegeHinweis befunde={befunde} canEdit={canEdit}
+          onEiUmstellen={onEiUmstellen} onDuplikateEntfernen={onDuplikateEntfernen} />
+      )}
+      {istBowls && (
+        <BowlBasisPanel basis={bowlBasis} onChange={onBowlBasis} canEdit={canEdit} anzahlBowls={anzahlBasisBowls} />
+      )}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <KPICard title="Produkte" value={fmtNum(stats.n)} sub={gruppe} stufe="info" />
+        <KPICard title={istBowls ? "Kassenartikel" : "Produkte"} value={fmtNum(stats.n)}
+                 sub={istBowls ? `${produkte.length} Bowls · je Variante gezählt` : gruppe} stufe="info" />
         <KPICard title="Ø Wareneinsatz OUT" value={fmtPct(stats.weOut)}
                  sub={`Schwellwert: ${SCHWELLWERTE[gruppe].rot} % · 7 % MwSt.`} stufe={stufeWeOut} />
         <KPICard title="Ø Deckungsbeitrag OUT" value={fmtEUR(stats.dbOut)} sub="pro Produkt, netto (7 % MwSt.)" stufe="info" />
@@ -831,7 +1650,8 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu }
       </div>
 
       <ProduktTabelle produkte={gefiltert} gruppe={gruppe} onUpdate={onUpdate} onEdit={onEdit} onDelete={onDelete}
-        gruppiert={GRUPPIERBARE.has(gruppe)} />
+        gruppiert={GRUPPIERBARE.has(gruppe)}
+        bowlBasis={bowlBasis} bowlModus={istBowls && subFilter === "Alle"} canEdit={canEdit} produkteById={produkteById} />
 
       <div className="flex justify-end">
         <button onClick={() => onNeu && onNeu(gruppe)}
@@ -1209,7 +2029,7 @@ function leeresProdukt(gruppe, kampagne = null, start = null, ende = null) {
   };
 }
 
-function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete }) {
+function ProduktEditModal({ open, produkt, priceList, bowlBasis, onClose, onSave, onDelete }) {
   const [form, setForm] = useState(produkt);
 
   // Form-State bei Wechsel des Produkts neu initialisieren
@@ -1225,38 +2045,57 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
   const priceEntries = Object.values(priceList || {});
   const setF = (patch) => setForm({ ...form, ...patch });
 
-  const updateZutat = (idx, patch) => {
-    const zutaten = form.zutaten.map((z, i) => i === idx ? { ...z, ...patch } : z);
-    setForm({ ...form, zutaten });
+  // Ganze Zeile ersetzen (nicht mischen) - Einheitswechsel raeumt Felder ab.
+  const replaceZutat = (idx, zeile) => {
+    setForm({ ...form, zutaten: form.zutaten.map((z, i) => (i === idx ? zeile : z)) });
   };
 
   const handleNameChange = (idx, name) => {
     // Wenn der eingegebene Name exakt einer Preisliste-Zutat entspricht, übernehme Preis automatisch
     const treffer = priceList[name.toLowerCase()];
-    const update = { name };
-    if (treffer && treffer.price_per_gram_ml != null) {
-      update.preis_pro_g = treffer.price_per_gram_ml;
-      update.lieferant = "Transgourmet";
-      // Artikel-Eigenschaften aus der Preisliste mitnehmen (zentral gepflegt);
-      // Stueckgewicht rechnerisch aus Stueckpreis / Preis pro Gramm
-      update.ausbeute_prozent = treffer.ausbeute_prozent ?? null;
-      update.gramm_je_stueck = stueckgewicht(treffer);
+    let next = { ...form.zutaten[idx], name };
+    if (treffer) {
+      next.lieferant = "Transgourmet";
+      // Artikel-Eigenschaften aus der Preisliste mitnehmen (zentral gepflegt)
+      next.ausbeute_prozent = treffer.ausbeute_prozent ?? null;
+      if (istStueckArtikel(treffer)) {
+        // Stück-Artikel (Eier, Wraps): die Zeile rechnet in Stück mit Stückpreis
+        next = mitEinheit(next, "stk", treffer);
+        next.gramm_je_stueck = stueckgewicht(treffer) || next.gramm_je_stueck || null;
+        const sp = stueckpreis(treffer);
+        if (sp != null) next.preis_je_stueck = sp;
+      } else {
+        if (istStueck(next)) next = mitEinheit(next, "g", treffer);
+        next.gramm_je_stueck = null;
+        if (treffer.price_per_gram_ml != null) next.preis_pro_g = treffer.price_per_gram_ml;
+      }
     }
-    const z = form.zutaten[idx];
-    update.cost = zutatKosten({ ...z, ...update });
-    updateZutat(idx, update);
+    replaceZutat(idx, normalisiereZutat(next));
   };
 
-  const handleMengeChange = (idx, menge) => {
+  const handleMengeChange = (idx, menge) => replaceZutat(idx, mitMenge(form.zutaten[idx], menge));
+  const handlePreisChange = (idx, preis) => replaceZutat(idx, mitPreis(form.zutaten[idx], preis));
+  const handleEinheitChange = (idx, einheit) => {
     const z = form.zutaten[idx];
-    const m = Math.max(0, +menge || 0);
-    updateZutat(idx, { menge_g: m, cost: zutatKosten({ ...z, menge_g: m }) });
+    replaceZutat(idx, mitEinheit(z, einheit, priceList[(z.name || "").toLowerCase()]));
   };
+  const handleGewichtChange = (idx, g) =>
+    replaceZutat(idx, normalisiereZutat({ ...form.zutaten[idx], gramm_je_stueck: Math.max(0, +g || 0) || null }));
 
-  const handlePreisChange = (idx, preisProKg) => {
-    const z = form.zutaten[idx];
-    const proG = Math.max(0, +preisProKg || 0) / 1000;
-    updateZutat(idx, { preis_pro_g: proG, cost: zutatKosten({ ...z, preis_pro_g: proG }) });
+  // Bowls: angebotene Basen und Groesse
+  const varianten = form.gruppe === "Bowls" ? (bowlVarianten(form, bowlBasis) || []) : [];
+  const toggleVariante = (key) => {
+    let neu = varianten.includes(key) ? varianten.filter(k => k !== key) : [...varianten, key];
+    if (!neu.length) return;                                                   // mindestens eine
+    neu = BOWL_VARIANTEN.map(v => v.key).filter(k => neu.includes(k));         // feste Reihenfolge
+    const einzel = neu.length === 1 ? BOWL_VARIANTE[neu[0]] : null;
+    setF({ varianten: neu, untergruppe: einzel ? einzel.untergruppe : null });
+  };
+  const setVkVariante = (key, wert) => {
+    const vkv = { ...(form.vk_varianten || {}) };
+    const v = Math.max(0, +wert || 0);
+    if (wert === "" || v <= 0) delete vkv[key]; else vkv[key] = { vk_in_brutto: v, vk_out_brutto: v };
+    setF({ vk_varianten: Object.keys(vkv).length ? vkv : undefined });
   };
 
   const addZutat = () => {
@@ -1278,7 +2117,7 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
 
   const handleSave = () => {
     if (!form.name.trim()) { alert("Bitte einen Produktnamen eingeben."); return; }
-    onSave(form);
+    onSave({ ...form, zutaten: (form.zutaten || []).map(normalisiereZutat) });
     onClose();
   };
 
@@ -1320,7 +2159,49 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
             </label>
           </div>
 
-          {SUBGROUPS_BY_GRUPPE[form.gruppe] && (
+          {form.gruppe === "Bowls" ? (
+            <div className="bg-emerald-50/60 border border-emerald-100 rounded-lg p-3 space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <label className="text-xs font-medium text-gray-600 flex flex-col">
+                  Größe
+                  <select value={bowlGroesse(form)} onChange={e => setF({ groesse: e.target.value })}
+                    className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white">
+                    {BOWL_GROESSEN.map(([k, l]) => <option key={k} value={k}>{l}</option>)}
+                  </select>
+                  <span className="text-[11px] text-gray-400 mt-1 font-normal">Bestimmt die Basismengen (Kartoffeln 230 g normal / 155 g klein usw.).</span>
+                </label>
+                <div className="md:col-span-2 text-xs font-medium text-gray-600">
+                  Angeboten als
+                  <div className="mt-1 flex flex-wrap gap-2">
+                    {BOWL_VARIANTEN.map(v => (
+                      <label key={v.key} className="inline-flex items-center gap-1.5 font-normal text-gray-700 bg-white border border-gray-200 rounded px-2 py-1.5 cursor-pointer">
+                        <input type="checkbox" checked={varianten.includes(v.key)} onChange={() => toggleVariante(v.key)} /> {v.label}
+                      </label>
+                    ))}
+                  </div>
+                  <span className="block text-[11px] text-gray-400 mt-1 font-normal">
+                    {varianten.length > 1
+                      ? "Basis wählbar: das Rezept unten ist die Salatbowl. Kartoffel- und Reisbowl entstehen daraus mit der zentralen Basis-Rezeptur (Bowls-Tab) — nichts doppelt pflegen."
+                      : "Eine Variante: das Rezept unten ist komplett, inklusive Basis."}
+                  </span>
+                </div>
+              </div>
+              {varianten.length > 1 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end">
+                  <span className="text-xs text-gray-600 md:col-span-2">VK je Variante (brutto, optional) — leer = wie der VK des Rezepts</span>
+                  {varianten.filter(k => k !== "salat").map(k => (
+                    <label key={k} className="text-xs font-medium text-gray-600 flex flex-col">
+                      {BOWL_VARIANTE[k].label}
+                      <input type="number" step="0.05" min="0" placeholder={form.vk_out_brutto ? String(form.vk_out_brutto) : "wie oben"}
+                        value={form.vk_varianten?.[k]?.vk_out_brutto ?? ""}
+                        onChange={e => setVkVariante(k, e.target.value)}
+                        className="mt-1 border border-gray-200 rounded px-3 py-2 text-sm bg-white tabular-nums" />
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : SUBGROUPS_BY_GRUPPE[form.gruppe] && (
             <label className="text-xs font-medium text-gray-600 flex flex-col">
               Untergruppe
               <select value={form.untergruppe || DEFAULT_UNTERGRUPPE[form.gruppe] || ""} onChange={e => setF({ untergruppe: e.target.value || null })}
@@ -1399,7 +2280,9 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
             <datalist id="zutat-liste">
               {priceEntries.map(p => (
                 <option key={p.ingredient_name} value={p.ingredient_name}>
-                  {`${(p.price_per_gram_ml * 1000).toFixed(2)} €/kg`}
+                  {istStueckArtikel(p) && stueckpreis(p) != null
+                    ? `${fmtNum2(stueckpreis(p))} €/Stk`
+                    : `${((p.price_per_gram_ml || 0) * 1000).toFixed(2)} €/kg`}
                 </option>
               ))}
             </datalist>
@@ -1408,33 +2291,55 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
                 <thead className="bg-gray-50 text-gray-600">
                   <tr>
                     <th className="text-left px-2 py-1.5 font-medium">Zutat (aus Preisliste wählen)</th>
-                    <th className="text-right px-2 py-1.5 font-medium w-20">Menge (g)</th>
-                    <th className="text-right px-2 py-1.5 font-medium w-24">Preis (€/kg)</th>
+                    <th className="text-right px-2 py-1.5 font-medium w-20">Menge</th>
+                    <th className="text-left px-2 py-1.5 font-medium w-16">Einheit</th>
+                    <th className="text-right px-2 py-1.5 font-medium w-32">Preis</th>
+                    <th className="text-right px-2 py-1.5 font-medium w-20" title="Gramm je Stück — Gramm-Äquivalent für Bestellvorschlag und Bons">g/Stk</th>
                     <th className="text-right px-2 py-1.5 font-medium w-20">Kosten</th>
                     <th className="w-10"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {form.zutaten.length === 0 && (
-                    <tr><td colSpan={5} className="px-2 py-4 text-center text-gray-400">Noch keine Zutaten. Klick auf „Zutat hinzufügen".</td></tr>
+                    <tr><td colSpan={7} className="px-2 py-4 text-center text-gray-400">Noch keine Zutaten. Klick auf „Zutat hinzufügen".</td></tr>
                   )}
-                  {form.zutaten.map((z, i) => (
+                  {form.zutaten.map((z, i) => {
+                    const e = EINHEIT[zutatEinheit(z)];
+                    const stk = istStueck(z);
+                    return (
                     <tr key={i} className="border-t border-gray-100">
                       <td className="px-2 py-1.5">
                         <input list="zutat-liste" type="text" value={z.name}
-                          onChange={e => handleNameChange(i, e.target.value)}
+                          onChange={ev => handleNameChange(i, ev.target.value)}
                           placeholder="Tippen oder aus Liste wählen…"
                           className="w-full border border-gray-200 rounded px-2 py-1 text-xs bg-white" />
                       </td>
                       <td className="px-2 py-1.5 text-right">
-                        <input type="number" step="1" min="0" value={z.menge_g}
-                          onChange={e => handleMengeChange(i, e.target.value)}
+                        <input type="number" step="1" min="0" value={zutatMenge(z)}
+                          onChange={ev => handleMengeChange(i, ev.target.value)}
                           className="w-16 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
                       </td>
+                      <td className="px-2 py-1.5">
+                        <select value={zutatEinheit(z)} onChange={ev => handleEinheitChange(i, ev.target.value)}
+                          className="border border-gray-200 rounded px-1 py-1 text-xs bg-white" title="g, ml oder Stück (Ei, Wrap: Stück mit Stückpreis)">
+                          {EINHEITEN.map(u => <option key={u.key} value={u.key}>{u.menge}</option>)}
+                        </select>
+                      </td>
                       <td className="px-2 py-1.5 text-right">
-                        <input type="number" step="0.01" min="0" value={+(z.preis_pro_g * 1000).toFixed(2)}
-                          onChange={e => handlePreisChange(i, e.target.value)}
-                          className="w-20 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+                        <span className="inline-flex items-center gap-1">
+                          <input type="number" step="0.01" min="0" value={+zutatPreisAnzeige(z).toFixed(2)}
+                            onChange={ev => handlePreisChange(i, ev.target.value)}
+                            className="w-20 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+                          <span className="text-gray-400 w-9 text-left">{e.preis}</span>
+                        </span>
+                      </td>
+                      <td className="px-2 py-1.5 text-right">
+                        {stk ? (
+                          <input type="number" step="1" min="0" value={z.gramm_je_stueck || ""} placeholder="g"
+                            onChange={ev => handleGewichtChange(i, ev.target.value)}
+                            title="Gramm je Stück — ohne diesen Wert fehlt die Zutat im Bestellvorschlag (Gramm-Äquivalent)"
+                            className={`w-16 border rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white ${(+z.gramm_je_stueck > 0) ? "border-gray-200" : "border-amber-400"}`} />
+                        ) : <span className="text-gray-300">—</span>}
                       </td>
                       <td className="px-2 py-1.5 text-right tabular-nums text-gray-700"
                           title={z.ausbeute_prozent && z.ausbeute_prozent < 100
@@ -1448,7 +2353,8 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -1456,7 +2362,8 @@ function ProduktEditModal({ open, produkt, priceList, onClose, onSave, onDelete 
               Tipp: Beim Wählen einer Zutat aus der Liste wird der Preis automatisch übernommen. Du kannst Preis und Menge danach noch anpassen.
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Ausbeute und g/Stück werden zentral im Tab „Einkaufspreise" gepflegt und wirken hier automatisch (Kosten mit * sind inkl. Ausbeute).
+              Stück-Zutaten (Ei, Wrap): Einheit „Stk“ und Preis je Stück. „g/Stk“ ist das Gramm-Äquivalent für Bestellvorschlag und Bons (Ei: 50 g).
+              Ausbeute wird zentral im Tab „Einkaufspreise" gepflegt und wirkt hier automatisch (Kosten mit * sind inkl. Ausbeute).
             </p>
           </div>
 
@@ -2175,6 +3082,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       preisProGramm:  z.price_per_gram_ml ?? null,
       ausbeute:       z.ausbeute_prozent ?? null,
       preisbasis:     z.preisbasis ?? null,
+      gewichtJeStueck: z.gewicht_je_stueck_g ?? null,
       untergruppe:    kategorisiereZutat(z.ingredient_name),
     }));
   }, [priceList]);
@@ -2197,9 +3105,11 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         {(() => {
           const art = { unit: z.einheit, package_size: z.packGroesse,
                         package_price: z.packPreis, price_per_gram_ml: z.preisProGramm,
-                        preisbasis: z.preisbasis };
+                        preisbasis: z.preisbasis, gewicht_je_stueck_g: z.gewichtJeStueck };
           const basis = z.preisbasis || preisbasisAuto(art);
           const gewicht = stueckgewicht({ ...art, preisbasis: basis });
+          const jeStueck = stueckpreis({ ...art, preisbasis: basis });
+          const fmt0 = (v) => new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(v);
           return (
             <div className="flex flex-col items-end gap-0.5">
               {canEdit ? (
@@ -2209,10 +3119,18 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
                   {PREISBASEN.map(([wert, label]) => <option key={wert} value={wert}>{label}</option>)}
                 </select>
               ) : <span className="text-xs">{(PREISBASEN.find(p => p[0] === basis) || ["", "—"])[1]}</span>}
-              {basis === "stueck" && gewicht && (
-                <span className="text-[10px] text-gray-400 tabular-nums"
-                  title="Rechnerisch aus Stückpreis ÷ Preis pro Gramm — keine Handeingabe nötig">
-                  ≈ {new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(gewicht)} g/Stück
+              {basis === "stueck" && (
+                <span className="text-[10px] text-gray-400 tabular-nums inline-flex items-center gap-1">
+                  {canEdit ? (
+                    <input type="number" min="0" step="1"
+                      key={`g_${z.name}_${z.gewichtJeStueck ?? ""}`}
+                      defaultValue={z.gewichtJeStueck ?? ""}
+                      placeholder={gewicht ? `≈ ${fmt0(gewicht)}` : "?"}
+                      onBlur={e => { const v = +e.target.value; onUpdateArtikel?.(z.name, { gewicht_je_stueck_g: v > 0 ? v : null }); }}
+                      title="Gramm je Stück — leer = rechnerisch aus Stückpreis ÷ Preis pro Gramm. Pflegen, wo die Liste keinen Grammpreis kennt (Eier: 50 g)."
+                      className="w-14 border border-gray-200 rounded px-1 py-0.5 text-[10px] text-right bg-white" />
+                  ) : (gewicht ? `≈ ${fmt0(gewicht)}` : "—")}
+                  g/Stück{jeStueck != null && <span> · {fmtNum2(jeStueck)} €/Stk</span>}
                 </span>
               )}
             </div>
@@ -2865,7 +3783,16 @@ export default function KalkulationsApp() {
   // Spaltenliste) -> {name, preis, einheit, artNr, semantik}. Damit fragt der
   // Import-Dialog dieselbe TG-Exportform kein zweites Mal.
   const [importMappings, setImportMappings] = useState({});
+  // Zentrale Basis-Rezeptur der Bowls (Salat / Kartoffel / Reis); persistiert
+  // im Dokument als bowl_basis, Vorgabe bis zur ersten Pflege.
+  const [bowlBasis, setBowlBasis] = useState(DEFAULT_BOWL_BASIS);
   const jsonRef = useRef(null);
+
+  // Alles, was gespeichert wird - Cloud wie Export - kommt aus dieser einen Stelle.
+  const dokument = () => dokumentZumSpeichern({
+    mix, produkte, bowlBasis, artikel: manuelleArtikel, geloescht: geloeschteArtikel,
+    bonVorlagen, importMappings,
+  });
 
   // ---- Cloud / Auth (Supabase) ----
   const [session, setSession] = useState(null);
@@ -2908,11 +3835,12 @@ export default function KalkulationsApp() {
           }
           if (row.data.bon_vorlagen) setBonVorlagen(row.data.bon_vorlagen);
           if (row.data.import_mappings) setImportMappings(row.data.import_mappings);
+          if (row.data.bowl_basis?.varianten) setBowlBasis(row.data.bowl_basis);
           setCloudInfo({ updated_at: row.updated_at, updated_by: row.updated_by });
         } else if (isWriter(session.user?.email) && !seededRef.current) {
           // Erstbefüllung: aktuellen Stand (Susanne) in die Cloud schreiben
           seededRef.current = true;
-          await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen, import_mappings: importMappings });
+          await saveKalkulation(dokument());
           setCloudMsg("Startdaten in die Cloud übertragen.");
         }
       } catch (e) {
@@ -2933,6 +3861,7 @@ export default function KalkulationsApp() {
       }
       if (data.bon_vorlagen) setBonVorlagen(data.bon_vorlagen);
       if (data.import_mappings) setImportMappings(data.import_mappings);
+      if (data.bowl_basis?.varianten) setBowlBasis(data.bowl_basis);
       setCloudInfo({ updated_at: at, updated_by: by });
     });
     return () => { active = false; try { supabase.removeChannel(ch); } catch (_) {} };
@@ -2942,7 +3871,7 @@ export default function KalkulationsApp() {
     if (!writer) return;
     try {
       setCloudMsg("Speichere …");
-      await saveKalkulation({ mix, produkte, artikel: manuelleArtikel, geloescht: geloeschteArtikel, bon_vorlagen: bonVorlagen, import_mappings: importMappings });
+      await saveKalkulation(dokument());
       setCloudMsg("✓ Gespeichert — für alle sichtbar");
       setTimeout(() => setCloudMsg(""), 3000);
     } catch (e) {
@@ -2963,6 +3892,7 @@ export default function KalkulationsApp() {
           setProdukte(db.produkte);
           if (db.mix) setMix(db.mix);
           if (db.bon_vorlagen) setBonVorlagen(db.bon_vorlagen);
+          if (db.bowl_basis?.varianten) setBowlBasis(db.bowl_basis);
           alert(`${db.produkte.length} Produkte aus App-Export geladen.`);
           return;
         }
@@ -3019,14 +3949,16 @@ export default function KalkulationsApp() {
             const z = { lieferant: "Transgourmet", ...roh };
             const treffer = priceList[(z.name || "").toLowerCase()];
             if (treffer) {
-              if (!(z.preis_pro_g > 0) && treffer.price_per_gram_ml != null) {
+              if (istStueck(z)) {
+                // Stück-Zeile ({einheit:"stk", menge_stk, preis_je_stueck}): Stückpreis aus dem Artikel
+                if (!(z.preis_je_stueck > 0) && stueckpreis(treffer) != null) z.preis_je_stueck = stueckpreis(treffer);
+              } else if (!(z.preis_pro_g > 0) && treffer.price_per_gram_ml != null) {
                 z.preis_pro_g = treffer.price_per_gram_ml;
               }
               z.ausbeute_prozent = treffer.ausbeute_prozent ?? z.ausbeute_prozent ?? null;
-              z.gramm_je_stueck = stueckgewicht(treffer);
+              z.gramm_je_stueck = stueckgewicht(treffer) || z.gramm_je_stueck || null;
             }
-            z.cost = zutatKosten(z);
-            return z;
+            return normalisiereZutat(z);
           });
           angereichert.push({ verpackung_eur: 0, vk_in_brutto: 0, vk_out_brutto: 0,
             kampagne_start: null, kampagne_ende: null, untergruppe: null,
@@ -3052,6 +3984,9 @@ export default function KalkulationsApp() {
               stand: new Date().toISOString().slice(0, 10) },
       mix,
       produkte,
+      bowl_basis: bowlBasis,
+      // Kassen-Sicht: je Bowl-Variante ein Produkt (<id>, <id>_kartoffel, <id>_reis)
+      produkte_aufgeloest: aufgeloesteProdukte(produkte, bowlBasis),
       // kompletter Artikelstamm inkl. Ausbeute/Preisbasis - Quelle fuer die
       // Bestell-App (igorder); dort werden die Zutatenwerte daraus gelesen
       artikel: Object.values(priceList),
@@ -3085,10 +4020,15 @@ export default function KalkulationsApp() {
         ...p,
         zutaten: (p.zutaten || []).map(z => {
           const neu = patches[(z.name || "").toLowerCase()];
-          if (!neu || !(+neu.price_per_gram_ml > 0) || neu.price_per_gram_ml === z.preis_pro_g) return z;
-          const next = { ...z, preis_pro_g: neu.price_per_gram_ml };
-          next.cost = zutatKosten(next);
-          return next;
+          if (!neu) return z;
+          if (istStueck(z)) {
+            // Stück-Zeile: nur der Stückpreis des Artikels zählt, nicht der Grammpreis
+            const sp = stueckpreis(neu);
+            if (sp == null || Math.abs(sp - (+z.preis_je_stueck || 0)) < 1e-9) return z;
+            return normalisiereZutat({ ...z, preis_je_stueck: sp });
+          }
+          if (!(+neu.price_per_gram_ml > 0) || neu.price_per_gram_ml === z.preis_pro_g) return z;
+          return normalisiereZutat({ ...z, preis_pro_g: neu.price_per_gram_ml });
         }),
       })));
     }
@@ -3113,9 +4053,8 @@ export default function KalkulationsApp() {
       ...p,
       zutaten: (p.zutaten || []).map(z => {
         const neuerProG = map[z.name.toLowerCase()];
-        return neuerProG != null
-          ? { ...z, preis_pro_g: neuerProG,
-              cost: zutatKosten({ ...z, preis_pro_g: neuerProG }) }
+        return neuerProG != null && !istStueck(z)
+          ? normalisiereZutat({ ...z, preis_pro_g: neuerProG })
           : z;
       }),
     })));
@@ -3155,8 +4094,8 @@ export default function KalkulationsApp() {
     const alt = priceList[key];
     if (!alt) return;
     const neu = { ...alt, ...patch };
-    // Stueckgewicht ist IMMER rechnerisch (Stueckpreis / Preis pro Gramm),
-    // nie Handeingabe - haengt von Preisbasis und Preisen ab
+    // Stueckgewicht: gepflegtes gewicht_je_stueck_g, sonst rechnerisch
+    // (Stueckpreis / Preis pro Gramm) - haengt von Preisbasis und Preisen ab
     neu.gramm_je_stueck = stueckgewicht(neu);
     setPriceList(prev => ({ ...prev, [key]: neu }));
     setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), neu]);
@@ -3165,11 +4104,10 @@ export default function KalkulationsApp() {
       ...p,
       zutaten: (p.zutaten || []).map(z => {
         if ((z.name || "").toLowerCase() !== key) return z;
-        const next = { ...z,
+        // Stueck-Zeilen behalten ihr Gewicht, wenn der Artikel keins liefert
+        return normalisiereZutat({ ...z,
           ausbeute_prozent: neu.ausbeute_prozent ?? null,
-          gramm_je_stueck: neu.gramm_je_stueck ?? null };
-        next.cost = zutatKosten(next);
-        return next;
+          gramm_je_stueck: neu.gramm_je_stueck ?? (istStueck(z) ? z.gramm_je_stueck : null) ?? null });
       }),
     })));
     setCloudMsg(`„${name}" aktualisiert — Rezepturen neu gerechnet. Zum Sichern oben „Speichern".`);
@@ -3233,13 +4171,11 @@ export default function KalkulationsApp() {
       ...p,
       zutaten: (p.zutaten || []).map(z => {
         const f = map[(z.name || "").toLowerCase()];
-        if (!f) return z;
+        if (!f || istStueck(z)) return z;
         const abweichung = Math.abs((z.preis_pro_g || 0) - f.alt) / f.alt;
         if (abweichung > 0.02) { uebersprungen++; return z; }
         zeilen++;
-        const next = { ...z, preis_pro_g: f.netto, ausbeute_prozent: f.ausbeute };
-        next.cost = zutatKosten(next);
-        return next;
+        return normalisiereZutat({ ...z, preis_pro_g: f.netto, ausbeute_prozent: f.ausbeute });
       }),
     })));
     setCloudMsg(`✓ ${funde.length} Artikel bereinigt, ${zeilen} Rezeptzeilen umgestellt`
@@ -3255,22 +4191,82 @@ export default function KalkulationsApp() {
     const next = produkte.map(p => ({
       ...p,
       zutaten: (p.zutaten || []).map(z => {
-        if ((z.preis_pro_g || 0) > 0) return z;
+        if (istStueck(z) || (z.preis_pro_g || 0) > 0) return z;
         const proG = findPreisProG(z.name, plIndex);
         if (proG > 0) {
           count++;
-          return { ...z, preis_pro_g: proG,
-                   cost: +zutatKosten({ ...z, preis_pro_g: proG }).toFixed(4) };
+          return normalisiereZutat({ ...z, preis_pro_g: proG });
         }
         return z;
       }),
     }));
     if (count > 0) setProdukte(next);
-    setCloudMsg(count > 0
-      ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen — prüfen & „Speichern".`
+    // Basiszutaten der Bowls ohne Preis ebenso aus der Liste fuellen
+    let basisCount = 0;
+    const b = bowlBasisOderDefault(bowlBasis);
+    const basisNeu = { ...b, varianten: Object.fromEntries(Object.entries(b.varianten || {}).map(([k, v]) => [k, {
+      ...v,
+      zutaten: (v.zutaten || []).map(z => {
+        if ((+z.preis_pro_g || 0) > 0) return z;
+        const proG = findPreisProG(z.name, plIndex);
+        if (proG > 0) { basisCount++; return { ...z, preis_pro_g: proG }; }
+        return z;
+      }),
+    }])) };
+    if (basisCount > 0) setBowlBasis(basisNeu);
+    setCloudMsg(count + basisCount > 0
+      ? `✓ ${count} Zutatenpreise aus der Preisliste übernommen${basisCount ? ` (+ ${basisCount} in der Bowl-Basis)` : ""} — prüfen & „Speichern".`
       : "Keine weiteren Preise aus der Liste zuordenbar.");
-    return count;
+    return count + basisCount;
   };
+
+  // Datenpflege: Ei von Gramm auf Stück. Stückpreis aus dem Artikel „Eier“
+  // (8,45 € je 30 = 0,28 €), 50 g je Ei als Gramm-Äquivalent - so rechnet
+  // auch der Bestellvorschlag (Eimer 60 St = 3.000 g).
+  const handleEiAufStueck = () => {
+    if (!writer) return;
+    const artikel = priceList["eier"]
+      || Object.values(priceList).find(a => EI_MUSTER.test(a.ingredient_name || ""));
+    const sp = artikel ? stueckpreis({ ...artikel, preisbasis: "stueck" }) : null;
+    let zeilen = 0;
+    const next = produkte.map(p => {
+      let geaendert = false;
+      const zutaten = (p.zutaten || []).map(z => {
+        if (!EI_MUSTER.test((z.name || "").trim()) || istStueck(z)) return z;
+        geaendert = true; zeilen++;
+        const mengeG = +z.menge_g || 0;
+        // 50 g = 1 Ei (bisherige Rezeptur); kleine Zahlen waren schon als Stück gemeint
+        const stk = mengeG >= 20 ? Math.max(1, Math.round(mengeG / EI_GEWICHT_G)) : Math.max(1, Math.round(mengeG) || 1);
+        const preisAlt = +z.preis_pro_g || 0;
+        const preis = sp ?? (mengeG >= 20 ? preisAlt * EI_GEWICHT_G : preisAlt * 1000);
+        return normalisiereZutat({ ...z, einheit: "stk", menge_stk: stk, preis_je_stueck: preis, gramm_je_stueck: EI_GEWICHT_G });
+      });
+      return geaendert ? { ...p, zutaten } : p;
+    });
+    if (!zeilen) { setCloudMsg("Keine Ei-Zeile in Gramm gefunden."); return; }
+    setProdukte(next);
+    if (artikel) {
+      const key = (artikel.ingredient_name || "").toLowerCase();
+      const neu = { ...artikel, preisbasis: "stueck", gewicht_je_stueck_g: +artikel.gewicht_je_stueck_g || EI_GEWICHT_G };
+      neu.gramm_je_stueck = stueckgewicht(neu);
+      setPriceList(prev => ({ ...prev, [key]: neu }));
+      setManuelleArtikel(prev => [...prev.filter(a => (a.ingredient_name || "").toLowerCase() !== key), neu]);
+    }
+    setCloudMsg(`✓ Ei in ${zeilen} Rezeptzeile${zeilen === 1 ? "" : "n"} auf Stück umgestellt`
+      + (sp != null ? ` (${fmtEUR(sp)} je Ei aus der Preisliste)` : "") + ` — prüfen und oben „Speichern".`);
+  };
+
+  // Datenpflege: eigene Kartoffel-/Reis-Produkte (Import 03.09.2026) entfernen -
+  // die Varianten entstehen jetzt aus dem Grundrezept.
+  const handleDuplikateEntfernen = (ids) => {
+    if (!writer || !ids?.length) return;
+    if (!confirm(`${ids.length} Varianten-Duplikate löschen? Kartoffel- und Reisvarianten entstehen ab jetzt aus dem Grundrezept.`)) return;
+    const weg = new Set(ids);
+    setProdukte(prev => prev.filter(p => !weg.has(p.id)));
+    setCloudMsg(`✓ ${ids.length} Duplikate entfernt — oben „Speichern".`);
+  };
+
+  const befunde = useMemo(() => pflegeBefunde(produkte, bowlBasis), [produkte, bowlBasis]);
 
   const handleProduktSave = (produkt) => {
     setProdukte(prev => {
@@ -3328,15 +4324,18 @@ export default function KalkulationsApp() {
     });
   };
 
+  // Kassen-Sicht fuer verdichtete Kennzahlen: Bowls je Variante gezaehlt
+  const produkteAufgeloest = useMemo(() => aufgeloesteProdukte(produkte, bowlBasis), [produkte, bowlBasis]);
+
   // System-Soll-WE (für globalen KPI im Header)
   const sollWeGlobal = useMemo(() => {
     return WARENGRUPPEN.reduce((s, g) => {
-      const ps = produkte.filter(p => p.gruppe === g);
+      const ps = produkteAufgeloest.filter(p => p.gruppe === g);
       if (ps.length === 0) return s;
       const avg = ps.reduce((x, p) => x + berechne(p).we_out, 0) / ps.length;
       return s + avg * (mix[g] || 0) / 100;
     }, 0);
-  }, [produkte, mix]);
+  }, [produkteAufgeloest, mix]);
 
   const produkteImTab = useMemo(() => {
     if (aktiverTab === "Kampagnen")  return produkte.filter(p => p.gruppe === "Kampagnen");
@@ -3554,7 +4553,7 @@ export default function KalkulationsApp() {
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-6 py-6">
-        {aktiverTab === "SystemWE"       && <SystemWeTab produkte={produkte} mix={mix} setMix={setMix} />}
+        {aktiverTab === "SystemWE"       && <SystemWeTab produkte={produkteAufgeloest} mix={mix} setMix={setMix} />}
         {aktiverTab === "Naehrwerte"     && <NaehrwerteTab produkte={naehrwerteJson.produkte} />}
         {aktiverTab === "Einkaufspreise" && (
           <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
@@ -3576,7 +4575,9 @@ export default function KalkulationsApp() {
             onUpdate={handleProduktUpdate}
             onEdit={setEditProdukt}
             onDelete={handleProduktDelete}
-            onNeu={handleProduktNeu} />
+            onNeu={handleProduktNeu}
+            bowlBasis={bowlBasis} onBowlBasis={writer ? setBowlBasis : null} canEdit={writer}
+            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen} />
         )}
       </main>
 
@@ -3589,6 +4590,7 @@ export default function KalkulationsApp() {
         open={editProdukt !== null}
         produkt={editProdukt}
         priceList={priceList}
+        bowlBasis={bowlBasis}
         onClose={() => setEditProdukt(null)}
         onSave={handleProduktSave}
         onDelete={handleProduktDelete}

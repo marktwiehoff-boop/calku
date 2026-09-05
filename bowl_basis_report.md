@@ -1,5 +1,15 @@
 # Bowl-Basis (Kartoffel / Reis) — Rezeptvarianten für CALKU
 
+> **Überholt seit 05.09.2026.** Die Varianten werden nicht mehr als eigene
+> Produkte importiert. CALKU führt jede Bowl als EIN Rezept mit den drei
+> Basen Salat / Kartoffel / Reis (Bowls-Tab: „Basis-Rezeptur“, Spalten je
+> Variante) und schreibt beim Speichern `produkte_aufgeloest` mit den ids
+> `<id>`, `<id>_kartoffel`, `<id>_reis` — dieselben ids wie unten, deshalb
+> bleibt der BigQuery-Plan („Danach“) gültig. Salatmix ist in Kartoffel- und
+> Reisbowl 50 g (nicht 100 g wie in den Tabellen unten). `import_bowl_basis.json`
+> **nicht mehr importieren**; falls schon geschehen, bietet der Bowls-Tab
+> „Duplikate entfernen“ an.
+
 Erzeugt am 2026-09-03 mit `bowl_basis_generator.py` aus dem Schnappschuss `stand_2026-08-02b.json` (Stand 2026-08-02). Importdatei: `import_bowl_basis.json`.
 
 ## Warum
