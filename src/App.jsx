@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import Papa from "papaparse";
 import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
+import { artikelPreisAendern, istPreisPatch } from "./artikelpreis.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -3083,9 +3084,82 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       ausbeute:       z.ausbeute_prozent ?? null,
       preisbasis:     z.preisbasis ?? null,
       gewichtJeStueck: z.gewicht_je_stueck_g ?? null,
+      preisManuellAm: z.preis_manuell_am ?? null,
       untergruppe:    kategorisiereZutat(z.ingredient_name),
     }));
   }, [priceList]);
+
+  // Einheit, Packungsgroesse, Packungspreis und Kilopreis sind HIER aenderbar
+  // (Eigenschaft des Artikels). Jede Aenderung geht ueber onUpdateArtikel und
+  // wird sofort in alle Rezepturen gestempelt. Eingaben gelten beim Verlassen
+  // des Feldes oder mit Enter.
+  const EINHEIT_OPTIONEN = ["kg", "g", "l", "ml", "Stück"];
+  const commitOnEnter = (e) => { if (e.key === "Enter") e.currentTarget.blur(); };
+  const preisZellen = (z) => {
+    const proKg = z.preisProGramm != null ? z.preisProGramm * 1000 : null;
+    const manuell = z.preisManuellAm ? `von Hand geändert am ${fmtDate(z.preisManuellAm)}` : null;
+    if (!canEdit) {
+      return (
+        <>
+          <td className="px-3 py-2 text-gray-500 text-xs">{z.einheit || "—"}</td>
+          <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
+          <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
+          <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs" title={manuell || undefined}>
+            {fmtPreisProG(z.preisProGramm)}{manuell && <span className="ml-1 text-emerald-700">✎</span>}
+          </td>
+        </>
+      );
+    }
+    const einheiten = !z.einheit || EINHEIT_OPTIONEN.includes(z.einheit) ? EINHEIT_OPTIONEN : [z.einheit, ...EINHEIT_OPTIONEN];
+    const cls = "border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white focus:border-emerald-500 outline-none";
+    const anders = (v, alt) => v > 0 && Math.abs(v - (+alt || 0)) > 1e-9;
+    return (
+      <>
+        <td className="px-3 py-2">
+          <select value={z.einheit || ""} onChange={e => onUpdateArtikel?.(z.name, { unit: e.target.value })}
+            className="border border-gray-200 rounded px-1 py-1 text-xs bg-white" title="Einheit der Packung">
+            {!z.einheit && <option value="">—</option>}
+            {einheiten.map(u => <option key={u} value={u}>{u}</option>)}
+          </select>
+        </td>
+        <td className="px-3 py-2 text-right">
+          <input type="number" min="0" step="any" key={`ps_${z.name}_${z.packGroesse ?? ""}`}
+            defaultValue={z.packGroesse ?? ""} placeholder="Größe" onKeyDown={commitOnEnter}
+            onBlur={e => { const v = +e.target.value; if (anders(v, z.packGroesse)) onUpdateArtikel?.(z.name, { package_size: v }); }}
+            title="Packungsgröße in der Einheit links — der Preis je Gramm wird daraus neu gerechnet"
+            className={`w-20 ${cls}`} />
+        </td>
+        <td className="px-3 py-2 text-right">
+          <span className="inline-flex items-center gap-1">
+            <input type="number" min="0" step="0.01" key={`pp_${z.name}_${z.packPreis ?? ""}`}
+              defaultValue={z.packPreis ?? ""} placeholder="Preis" onKeyDown={commitOnEnter}
+              onBlur={e => { const v = +e.target.value; if (anders(v, z.packPreis)) onUpdateArtikel?.(z.name, { package_price: v }); }}
+              title="Einkaufspreis je Packung — der Preis je Gramm wird daraus neu gerechnet"
+              className={`w-20 ${cls} font-medium`} />
+            <span className="text-xs text-gray-500">€</span>
+          </span>
+        </td>
+        <td className="px-3 py-2 text-right">
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="inline-flex items-center gap-1">
+              <input type="number" min="0" step="0.01" key={`pk_${z.name}_${proKg ?? ""}`}
+                defaultValue={proKg != null ? +proKg.toFixed(2) : ""} placeholder="€/kg" onKeyDown={commitOnEnter}
+                onBlur={e => { const v = +e.target.value; if (v > 0 && Math.abs(v - (proKg || 0)) > 0.004) onUpdateArtikel?.(z.name, { price_per_gram_ml: v / 1000 }); }}
+                title="Kilopreis direkt setzen — der Packungspreis wird passend gezogen, alle Rezepturen mit dieser Zutat rechnen neu"
+                className={`w-20 ${cls}`} />
+              <span className="text-xs text-gray-500">€/kg</span>
+            </span>
+            <span className="text-[10px] text-gray-400 tabular-nums" title={manuell || undefined}>
+              {z.preisProGramm != null
+                ? `${new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(z.preisProGramm)} €/g`
+                : "kein Grammpreis"}
+              {manuell && <span className="ml-1 text-emerald-700">✎ von Hand</span>}
+            </span>
+          </div>
+        </td>
+      </>
+    );
+  };
 
   // Ausbeute und g/Stück werden HIER zentral gepflegt (Eigenschaft des
   // Artikels, nicht der Rezeptzeile) und wirken sofort auf alle Rezepturen.
@@ -3211,10 +3285,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             <tr key={`${z.name}_${i}`} className="border-b border-gray-100 hover:bg-gray-50">
               <td className="px-3 py-2 text-gray-800">{z.name}</td>
               <td className="px-3 py-2 text-gray-500 text-xs tabular-nums">{z.art || "—"}</td>
-              <td className="px-3 py-2 text-gray-500 text-xs">{z.einheit || "—"}</td>
-              <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
-              <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
-              <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+              {preisZellen(z)}
               {ausbeuteZellen(z)}
               {canEdit && (
                 <td className="px-2 py-2 text-center">
@@ -3257,10 +3328,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         <tr key={`${z.name}_${i}`} className="border-b border-gray-100 hover:bg-gray-50">
           <td className="px-3 py-2 text-gray-800">{z.name}</td>
           <td className="px-3 py-2 text-gray-500 text-xs tabular-nums">{z.art || "—"}</td>
-          <td className="px-3 py-2 text-gray-500 text-xs">{z.einheit || "—"}</td>
-          <td className="px-3 py-2 text-right tabular-nums">{z.packGroesse != null ? `${new Intl.NumberFormat("de-DE").format(z.packGroesse)} ${z.einheit || ""}` : "—"}</td>
-          <td className="px-3 py-2 text-right tabular-nums font-medium">{fmtPreis(z.packPreis)}</td>
-          <td className="px-3 py-2 text-right tabular-nums text-gray-600 text-xs">{fmtPreisProG(z.preisProGramm)}</td>
+          {preisZellen(z)}
           {ausbeuteZellen(z)}
           {canEdit && (
             <td className="px-2 py-2 text-center">
@@ -3295,7 +3363,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       {canEdit && (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-gray-600">
-            <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen.
+            <span className="font-medium text-gray-800">Eigene Preise pflegen</span> — Einheit, Packungsgröße, Packungspreis und Kilopreis direkt in der Tabelle ändern (Feld verlassen oder Enter), neuen Einkaufsartikel anlegen oder Frischpress-Preise setzen. Jede Preisänderung rechnet sofort alle Rezepturen mit dieser Zutat neu.
             <span className="block text-xs text-amber-600 mt-1">
               Ausbeute %: Wie viel der eingekauften Ware im Produkt ankommt (geschälte Ananas ≈ 60). Bei Presswaren ist es die Auspressquote in ml je Gramm Einkauf: 40 heißt, aus 1 kg Möhren werden 400 ml Saft — so wird aus dem Kilopreis der Milliliterpreis. Wirkt sofort auf alle Rezepturen mit dieser Zutat; der Preis muss dann der reine Einkaufspreis sein, sonst wird der Verschnitt doppelt gerechnet.
             </span>
@@ -4085,32 +4153,77 @@ export default function KalkulationsApp() {
     setCloudMsg(`„${name}" aus der Preisliste entfernt — zum Sichern oben „Speichern".`);
   };
 
-  // Artikel-Eigenschaften (Ausbeute, g/Stück) zentral pflegen. Die Werte sind
-  // Eigenschaften des ARTIKELS, nicht der Rezeptzeile — sie werden hier gesetzt
-  // und sofort in alle Rezepturen gestempelt, die die Zutat verwenden.
-  // Persistenz wie handleAddArtikel: über manuelleArtikel in die Cloud.
+  // Artikel-Eigenschaften zentral pflegen (Tab Einkaufspreise): Ausbeute,
+  // Preisbasis, g/Stück - und seit 09/2026 auch Einheit, Packungsgröße,
+  // Packungspreis und Kilopreis (Logik in artikelpreis.js, getestet). Die
+  // Werte sind Eigenschaften des ARTIKELS, nicht der Rezeptzeile: sie werden
+  // hier gesetzt und sofort in alle Rezepturen und die Bowl-Basis gestempelt,
+  // die die Zutat verwenden. Persistenz wie handleAddArtikel über
+  // manuelleArtikel in die Cloud.
   const handleArtikelFelder = (name, patch) => {
     const key = (name || "").toLowerCase();
     const alt = priceList[key];
     if (!alt) return;
-    const neu = { ...alt, ...patch };
+    let neu = { ...alt, ...patch };
+    let preisInfo = null;
+    if (istPreisPatch(patch)) {
+      preisInfo = artikelPreisAendern(alt, patch);
+      neu = { ...neu, ...preisInfo.artikel };
+    }
     // Stueckgewicht: gepflegtes gewicht_je_stueck_g, sonst rechnerisch
     // (Stueckpreis / Preis pro Gramm) - haengt von Preisbasis und Preisen ab
     neu.gramm_je_stueck = stueckgewicht(neu);
+    const preisNeu = !!preisInfo && preisInfo.geaendert;
+    const proG = +neu.price_per_gram_ml || 0;
+    const jeStueck = stueckpreis(neu);
+
     setPriceList(prev => ({ ...prev, [key]: neu }));
     setManuelleArtikel(prev => [...prev.filter(a => a.ingredient_name.toLowerCase() !== key), neu]);
     setGeloeschteArtikel(prev => prev.filter(k => k !== key));
-    setProdukte(prev => prev.map(p => ({
-      ...p,
-      zutaten: (p.zutaten || []).map(z => {
+
+    let zeilen = 0;
+    setProdukte(produkte.map(p => {
+      let betroffen = false;
+      const zutaten = (p.zutaten || []).map(z => {
         if ((z.name || "").toLowerCase() !== key) return z;
+        betroffen = true;
         // Stueck-Zeilen behalten ihr Gewicht, wenn der Artikel keins liefert
-        return normalisiereZutat({ ...z,
+        const n = { ...z,
           ausbeute_prozent: neu.ausbeute_prozent ?? null,
-          gramm_je_stueck: neu.gramm_je_stueck ?? (istStueck(z) ? z.gramm_je_stueck : null) ?? null });
-      }),
-    })));
-    setCloudMsg(`„${name}" aktualisiert — Rezepturen neu gerechnet. Zum Sichern oben „Speichern".`);
+          gramm_je_stueck: neu.gramm_je_stueck ?? (istStueck(z) ? z.gramm_je_stueck : null) ?? null };
+        if (preisNeu) {
+          zeilen++;
+          if (istStueck(n)) { if (jeStueck != null) n.preis_je_stueck = jeStueck; }
+          else if (proG > 0) n.preis_pro_g = proG;
+        }
+        return normalisiereZutat(n);
+      });
+      return betroffen ? { ...p, zutaten } : p;
+    }));
+
+    if (preisNeu && proG > 0) {
+      // Basiszutaten der Bowls mit demselben Namen ziehen mit
+      const b = bowlBasisOderDefault(bowlBasis);
+      let treffer = 0;
+      const varianten = Object.fromEntries(Object.entries(b.varianten || {}).map(([k, v]) => [k, {
+        ...v,
+        zutaten: (v.zutaten || []).map(z => {
+          if ((z.name || "").trim().toLowerCase() !== key) return z;
+          treffer++;
+          return { ...z, preis_pro_g: proG };
+        }),
+      }]));
+      if (treffer) setBowlBasis({ ...b, varianten });
+    }
+
+    if (preisNeu) {
+      const preisText = jeStueck != null
+        ? `${fmtNum2(jeStueck)} €/Stk`
+        : `${fmtNum2(preisInfo.proGAlt * 1000)} → ${fmtNum2(preisInfo.proGNeu * 1000)} €/kg`;
+      setCloudMsg(`„${name}": ${preisText}, ${zeilen} Rezeptzeile${zeilen === 1 ? "" : "n"} neu gerechnet — zum Sichern oben „Speichern".`);
+    } else {
+      setCloudMsg(`„${name}" aktualisiert — Rezepturen neu gerechnet. Zum Sichern oben „Speichern".`);
+    }
   };
 
   // Alt-Ausbeuten aus der Excel-Aera herausloesen: Manche Frischartikel tragen
