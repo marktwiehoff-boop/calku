@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "quelle": "Live-Stand CALKU 06.09.2026 12:02 UTC + Artikel von Mark (06.09.)",
+    "erzeugt": "2026-09-06",
+    "hinweis": "Ersetzt die beiden Wilde-Ziege-Rezepte: Zutatennamen = Artikelnamen der Preisliste, Preise aus der Preisliste. Mengen, VK, Verpackung unveraendert."
+  },
+  "entfernen": [
+    "bowl_normal_wilde_ziege",
+    "bowl_klein_wilde_ziege"
+  ],
+  "produkte": [
+    {
+      "id": "bowl_normal_wilde_ziege",
+      "name": "Wilde Ziege Normal",
+      "gruppe": "Bowls",
+      "zutaten": [
+        {
+          "cost": 0.59,
+          "name": "Salatmix",
+          "menge_g": 100,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0059
+        },
+        {
+          "cost": 0.07,
+          "name": "Balsamico Dressing",
+          "menge_g": 20,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0035
+        },
+        {
+          "cost": 0.1575,
+          "name": "Kirschtomaten",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00315
+        },
+        {
+          "cost": 0.05,
+          "name": "Pink Onions",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005
+        },
+        {
+          "cost": 0.15,
+          "name": "TK Grillgemüse",
+          "menge_g": 40,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00375
+        },
+        {
+          "cost": 0.475,
+          "name": "Veganer Hirtenkäse",
+          "menge_g": 50,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0095
+        },
+        {
+          "cost": 0.09,
+          "name": "Walnüsse",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.009
+        },
+        {
+          "cost": 0.012,
+          "name": "Balsamico Creme",
+          "menge_g": 2,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.006
+        }
+      ],
+      "untergruppe": null,
+      "vk_in_brutto": 12.95,
+      "kampagne_ende": null,
+      "vk_out_brutto": 12.95,
+      "kampagne_start": null,
+      "verpackung_eur": 0.25
+    },
+    {
+      "id": "bowl_klein_wilde_ziege",
+      "name": "Wilde Ziege Klein",
+      "gruppe": "Bowls",
+      "zutaten": [
+        {
+          "cost": 0.354,
+          "name": "Salatmix",
+          "menge_g": 60,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0059
+        },
+        {
+          "cost": 0.035,
+          "name": "Balsamico Dressing",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0035
+        },
+        {
+          "cost": 0.07875,
+          "name": "Kirschtomaten",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00315
+        },
+        {
+          "cost": 0.05,
+          "name": "Pink Onions",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.005
+        },
+        {
+          "cost": 0.09375,
+          "name": "TK Grillgemüse",
+          "menge_g": 25,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.00375
+        },
+        {
+          "cost": 0.285,
+          "name": "Veganer Hirtenkäse",
+          "menge_g": 30,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.0095
+        },
+        {
+          "cost": 0.09,
+          "name": "Walnüsse",
+          "menge_g": 10,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.009
+        },
+        {
+          "cost": 0.012,
+          "name": "Balsamico Creme",
+          "menge_g": 2,
+          "lieferant": "Transgourmet",
+          "preis_pro_g": 0.006
+        }
+      ],
+      "untergruppe": null,
+      "vk_in_brutto": 8.95,
+      "kampagne_ende": null,
+      "vk_out_brutto": 8.95,
+      "kampagne_start": null,
+      "verpackung_eur": 0.25
+    }
+  ]
+}
