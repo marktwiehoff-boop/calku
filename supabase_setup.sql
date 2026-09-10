@@ -22,8 +22,9 @@ create policy "kalk_read_company"
   to authenticated
   using ( (auth.jwt() ->> 'email') ilike '%@mein-immergruen.de' );
 
--- 4) SCHREIBEN: nur die beiden Schreibberechtigten (Mark + Susanne)
---    -> Hier weitere Writer ergänzen, falls nötig.
+-- 4) SCHREIBEN: die Schreibberechtigten (Mark + Susanne; Pascal seit 10.09.2026, E11.9)
+--    -> Weitere Writer hier UND in src/supabase.js (WRITER_EMAILS) ergänzen; Muster:
+--       supabase_writer_2026-09-10.sql
 drop policy if exists "kalk_insert_writers" on public.kalkulation_state;
 create policy "kalk_insert_writers"
   on public.kalkulation_state
@@ -31,7 +32,8 @@ create policy "kalk_insert_writers"
   to authenticated
   with check ( lower(auth.jwt() ->> 'email') in (
     'mark.twiehoff@mein-immergruen.de',
-    'susanne.sedlaczek@mein-immergruen.de'
+    'susanne.sedlaczek@mein-immergruen.de',
+    'pascal.hammesfahr@mein-immergruen.de'
   ) );
 
 drop policy if exists "kalk_update_writers" on public.kalkulation_state;
@@ -41,11 +43,13 @@ create policy "kalk_update_writers"
   to authenticated
   using ( lower(auth.jwt() ->> 'email') in (
     'mark.twiehoff@mein-immergruen.de',
-    'susanne.sedlaczek@mein-immergruen.de'
+    'susanne.sedlaczek@mein-immergruen.de',
+    'pascal.hammesfahr@mein-immergruen.de'
   ) )
   with check ( lower(auth.jwt() ->> 'email') in (
     'mark.twiehoff@mein-immergruen.de',
-    'susanne.sedlaczek@mein-immergruen.de'
+    'susanne.sedlaczek@mein-immergruen.de',
+    'pascal.hammesfahr@mein-immergruen.de'
   ) );
 
 -- 5) Live-Sync (Realtime) für die Tabelle aktivieren

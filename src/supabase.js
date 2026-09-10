@@ -12,10 +12,12 @@ const ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const cloudEnabled = Boolean(URL && ANON);
 export const supabase = cloudEnabled ? createClient(URL, ANON) : null;
 
-// Wer darf schreiben? (zusätzlich serverseitig per RLS erzwungen)
+// Wer darf schreiben? (zusätzlich serverseitig per RLS erzwungen — supabase_writer_2026-09-10.sql)
+// Pascal Hammesfahr seit 10.09.2026 (E11.9): pflegt den Zutatenstamm für IG Store.
 export const WRITER_EMAILS = [
   "mark.twiehoff@mein-immergruen.de",
   "susanne.sedlaczek@mein-immergruen.de",
+  "pascal.hammesfahr@mein-immergruen.de",
 ];
 export const ALLOWED_DOMAIN = "mein-immergruen.de";
 const ROW_ID = "main";
