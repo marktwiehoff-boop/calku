@@ -28,6 +28,11 @@ import inventurJson from "./data/inventur.json";
 import logoWeiss from "./assets/logo-weiss.png";
 import BonsTab from "./BonsTab.jsx";
 import { bonStatus } from "./bon.js";
+import ZutatenTab from "./ZutatenTab.jsx";
+import {
+  findeZutat, verknuepfeProdukte, importiereZutaten, zutatAusRezeptzeilen,
+  sortiereStamm as sortiereZutatenstamm,
+} from "./zutaten.js";
 
 // ============================================================
 //  FORMATTER (de-DE)
@@ -449,10 +454,13 @@ const STUECK_EINHEITEN = new Set(["stück", "stueck", "stk", "stk.", "st", "st."
 
 function preisbasisAuto(a) {
   const einheit = String((a && a.unit) || "").toLowerCase();
-  if (einheit === "ml" || einheit === "l") return "ml100";
+  if (einheit === "ml" || einheit === "l" || einheit === "liter") return "ml100";
   if (einheit === "g" || einheit === "kg" || einheit === "kiste") return "gramm";
   if (STUECK_EINHEITEN.has(einheit)) return "stueck";
-  if ((+(a && a.package_size) || 0) <= 5) return "stueck";
+  // Ohne Einheit und kleine Zahl = Handelsware in Flaschen (Cola, Vio). Mit Einheit gilt die
+  // Einheit - die alte „package_size <= 5 -> Stueck"-Regel machte H-Milch (Liter/1) zur
+  // Stueckware (E11.8, 10.09.2026).
+  if (!einheit && (+(a && a.package_size) || 0) <= 5) return "stueck";
   return "gramm";
 }
 
@@ -638,12 +646,15 @@ function aufgeloesteProdukte(produkte, basis) {
 }
 
 // Vollständiges Dokument, wie es nach Supabase bzw. in den Export geht.
-function dokumentZumSpeichern({ mix, produkte, bowlBasis, artikel, geloescht, bonVorlagen, importMappings }) {
+function dokumentZumSpeichern({ mix, produkte, bowlBasis, artikel, geloescht, bonVorlagen, importMappings, zutaten = [] }) {
   return {
     mix, produkte,
     bowl_basis: bowlBasis,
-    // abgeleitet, bei jedem Speichern neu geschrieben - nie von Hand pflegen
-    produkte_aufgeloest: aufgeloesteProdukte(produkte, bowlBasis),
+    // abgeleitet, bei jedem Speichern neu geschrieben - nie von Hand pflegen; auch die
+    // Basiszeilen der Bowl-Varianten bekommen hier ihre zutat_id (Stufe 1, E11.2)
+    produkte_aufgeloest: verknuepfeProdukte(aufgeloesteProdukte(produkte, bowlBasis), zutaten).produkte,
+    // Zutatenstamm (E11, Stufe 1): eine Zeile je Zutat, Rezeptzeilen verweisen per zutat_id
+    zutaten,
     artikel, geloescht, bon_vorlagen: bonVorlagen, import_mappings: importMappings,
   };
 }
@@ -2030,7 +2041,7 @@ function leeresProdukt(gruppe, kampagne = null, start = null, ende = null) {
   };
 }
 
-function ProduktEditModal({ open, produkt, priceList, bowlBasis, onClose, onSave, onDelete }) {
+function ProduktEditModal({ open, produkt, priceList, bowlBasis, zutaten = [], onNeueZutat, onClose, onSave, onDelete }) {
   const [form, setForm] = useState(produkt);
 
   // Form-State bei Wechsel des Produkts neu initialisieren
@@ -2070,6 +2081,21 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, onClose, onSave
         next.gramm_je_stueck = null;
         if (treffer.price_per_gram_ml != null) next.preis_pro_g = treffer.price_per_gram_ml;
       }
+    }
+    // Zutatenstamm (Stufe 1): Name oder Alias trifft eine Zutat -> Referenz setzen, Stammwerte
+    // (Stueck, Stueckgewicht, Ausbeute) uebernehmen, wo die Preisliste nichts geliefert hat.
+    const stammTreffer = findeZutat(zutaten, { name });
+    if (stammTreffer) {
+      next.zutat_id = stammTreffer.id;
+      if (!treffer) {
+        if (stammTreffer.einheit === "stk" && stammTreffer.stueck_gramm > 0 && !istStueck(next)) {
+          next = mitEinheit(next, "stk", null);
+          next.gramm_je_stueck = stammTreffer.stueck_gramm;
+        }
+        if (stammTreffer.ausbeute_prozent != null) next.ausbeute_prozent = stammTreffer.ausbeute_prozent;
+      }
+    } else {
+      delete next.zutat_id;
     }
     replaceZutat(idx, normalisiereZutat(next));
   };
@@ -2279,7 +2305,13 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, onClose, onSave
               </button>
             </div>
             <datalist id="zutat-liste">
-              {priceEntries.map(p => (
+              {/* Zutatenstamm zuerst (Stufe 1), dann Artikel der Preisliste, die keine Zutat treffen */}
+              {zutaten.map(z => (
+                <option key={`z-${z.id}`} value={z.name}>
+                  {`Stamm${z.arbeitseinheit?.name ? ` · ${z.arbeitseinheit.name}` : ""}${z.artikel_nr ? ` · TG ${z.artikel_nr}` : ""}`}
+                </option>
+              ))}
+              {priceEntries.filter(p => !findeZutat(zutaten, { name: p.ingredient_name })).map(p => (
                 <option key={p.ingredient_name} value={p.ingredient_name}>
                   {istStueckArtikel(p) && stueckpreis(p) != null
                     ? `${fmtNum2(stueckpreis(p))} €/Stk`
@@ -2314,6 +2346,15 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, onClose, onSave
                           onChange={ev => handleNameChange(i, ev.target.value)}
                           placeholder="Tippen oder aus Liste wählen…"
                           className="w-full border border-gray-200 rounded px-2 py-1 text-xs bg-white" />
+                        {zutaten.length > 0 && (z.zutat_id
+                          ? <span className="text-[10px] text-green-700">✓ Stamm</span>
+                          : (z.name || "").trim() && onNeueZutat && (
+                            <button type="button" className="text-[10px] text-amber-700 hover:underline"
+                              title="Diesen Namen als Zutat im Stamm anlegen (Tab Zutaten)"
+                              onClick={() => { const id = onNeueZutat(z.name); if (id) replaceZutat(i, { ...z, zutat_id: id }); }}>
+                              nicht im Stamm — anlegen
+                            </button>
+                          ))}
                       </td>
                       <td className="px-2 py-1.5 text-right">
                         <input type="number" step="1" min="0" value={zutatMenge(z)}
@@ -3854,12 +3895,14 @@ export default function KalkulationsApp() {
   // Zentrale Basis-Rezeptur der Bowls (Salat / Kartoffel / Reis); persistiert
   // im Dokument als bowl_basis, Vorgabe bis zur ersten Pflege.
   const [bowlBasis, setBowlBasis] = useState(DEFAULT_BOWL_BASIS);
+  // Zutatenstamm (E11, Stufe 1): persistiert als `zutaten`, Rezeptzeilen verweisen per zutat_id.
+  const [zutaten, setZutaten] = useState([]);
   const jsonRef = useRef(null);
 
   // Alles, was gespeichert wird - Cloud wie Export - kommt aus dieser einen Stelle.
   const dokument = () => dokumentZumSpeichern({
     mix, produkte, bowlBasis, artikel: manuelleArtikel, geloescht: geloeschteArtikel,
-    bonVorlagen, importMappings,
+    bonVorlagen, importMappings, zutaten,
   });
 
   // ---- Cloud / Auth (Supabase) ----
@@ -3904,6 +3947,7 @@ export default function KalkulationsApp() {
           if (row.data.bon_vorlagen) setBonVorlagen(row.data.bon_vorlagen);
           if (row.data.import_mappings) setImportMappings(row.data.import_mappings);
           if (row.data.bowl_basis?.varianten) setBowlBasis(row.data.bowl_basis);
+          setZutaten(Array.isArray(row.data.zutaten) ? row.data.zutaten : []);
           setCloudInfo({ updated_at: row.updated_at, updated_by: row.updated_by });
         } else if (isWriter(session.user?.email) && !seededRef.current) {
           // Erstbefüllung: aktuellen Stand (Susanne) in die Cloud schreiben
@@ -3930,6 +3974,7 @@ export default function KalkulationsApp() {
       if (data.bon_vorlagen) setBonVorlagen(data.bon_vorlagen);
       if (data.import_mappings) setImportMappings(data.import_mappings);
       if (data.bowl_basis?.varianten) setBowlBasis(data.bowl_basis);
+      if (Array.isArray(data.zutaten)) setZutaten(data.zutaten);
       setCloudInfo({ updated_at: at, updated_by: by });
     });
     return () => { active = false; try { supabase.removeChannel(ch); } catch (_) {} };
@@ -3961,6 +4006,7 @@ export default function KalkulationsApp() {
           if (db.mix) setMix(db.mix);
           if (db.bon_vorlagen) setBonVorlagen(db.bon_vorlagen);
           if (db.bowl_basis?.varianten) setBowlBasis(db.bowl_basis);
+          if (Array.isArray(db.zutaten)) setZutaten(db.zutaten);
           alert(`${db.produkte.length} Produkte aus App-Export geladen.`);
           return;
         }
@@ -4000,8 +4046,19 @@ export default function KalkulationsApp() {
         // Optional: 'entfernen' = Liste von Produkt-ids, die die Importdatei
         // ersetzt (z. B. Korrektur falsch angelegter Varianten)
         const zuEntfernen = new Set(Array.isArray(daten.entfernen) ? daten.entfernen : []);
-        if (!neue.length && !zuEntfernen.size) {
-          setCloudMsg("Importdatei enthält keine Produkte."); return;
+        // Optional (Stufe 1): 'zutaten' = Stammzeilen (Upsert je id), 'zutaten_entfernen' = ids
+        const zutatenImport = Array.isArray(daten.zutaten) ? daten.zutaten : [];
+        const zutatenWeg = Array.isArray(daten.zutaten_entfernen) ? daten.zutaten_entfernen : [];
+        if (!neue.length && !zuEntfernen.size && !zutatenImport.length && !zutatenWeg.length) {
+          setCloudMsg("Importdatei enthält weder Produkte noch Zutaten."); return;
+        }
+        let stamm = zutaten;
+        let stammText = "";
+        if (zutatenImport.length || zutatenWeg.length) {
+          const r = importiereZutaten(zutaten, zutatenImport, zutatenWeg);
+          stamm = r.zutaten;
+          setZutaten(stamm);
+          stammText = `, Zutaten: ${r.neu} neu, ${r.geaendert} geändert${r.entfernt ? `, ${r.entfernt} entfernt` : ""}`;
         }
         const basis = produkte.filter(p => !zuEntfernen.has(p.id));
         const entfernt = produkte.length - basis.length;
@@ -4032,12 +4089,14 @@ export default function KalkulationsApp() {
             kampagne_start: null, kampagne_ende: null, untergruppe: null,
             ...p, zutaten });
         }
-        if (angereichert.length || zuEntfernen.size) {
-          setProdukte(prev => [...prev.filter(p => !zuEntfernen.has(p.id)), ...angereichert]);
+        if (angereichert.length || zuEntfernen.size || stamm !== zutaten) {
+          // neue und alte Zeilen gegen den (ggf. gerade importierten) Stamm verknuepfen
+          setProdukte(prev => verknuepfeProdukte([...prev.filter(p => !zuEntfernen.has(p.id)), ...angereichert], stamm).produkte);
         }
         setCloudMsg(`✓ ${angereichert.length} Rezepte importiert`
           + (entfernt ? `, ${entfernt} alte Varianten entfernt` : "")
           + (uebersprungen ? `, ${uebersprungen} schon vorhanden` : "")
+          + stammText
           + ` — bitte prüfen und oben „Speichern".`);
       } catch (fehler) {
         setCloudMsg(`„${datei.name}“ ist keine gültige JSON-Importdatei (${fehler.message}).`);
@@ -4053,8 +4112,10 @@ export default function KalkulationsApp() {
       mix,
       produkte,
       bowl_basis: bowlBasis,
+      // Zutatenstamm (Stufe 1)
+      zutaten,
       // Kassen-Sicht: je Bowl-Variante ein Produkt (<id>, <id>_kartoffel, <id>_reis)
-      produkte_aufgeloest: aufgeloesteProdukte(produkte, bowlBasis),
+      produkte_aufgeloest: verknuepfeProdukte(aufgeloesteProdukte(produkte, bowlBasis), zutaten).produkte,
       // kompletter Artikelstamm inkl. Ausbeute/Preisbasis - Quelle fuer die
       // Bestell-App (igorder); dort werden die Zutatenwerte daraus gelesen
       artikel: Object.values(priceList),
@@ -4160,6 +4221,29 @@ export default function KalkulationsApp() {
   // hier gesetzt und sofort in alle Rezepturen und die Bowl-Basis gestempelt,
   // die die Zutat verwenden. Persistenz wie handleAddArtikel über
   // manuelleArtikel in die Cloud.
+  // Artikelstamm-Bereinigung (E11.8, Tab Zutaten): Etiketten-Patches (Einheit, Packungsgroesse,
+  // Preisbasis, Nettogewicht) in Preisliste und persistierte Artikel uebernehmen. Preise bleiben
+  // unveraendert, deshalb werden keine Rezeptzeilen angefasst.
+  const handleArtikelPatches = (patches) => {
+    if (!writer) return;
+    const eintraege = Object.entries(patches || {});
+    if (!eintraege.length) return;
+    const keys = new Set(eintraege.map(([k]) => k));
+    setPriceList(prev => ({ ...prev, ...patches }));
+    setManuelleArtikel(prev => [...prev.filter(a => !keys.has((a.ingredient_name || "").toLowerCase())), ...eintraege.map(([, a]) => a)]);
+    setGeloeschteArtikel(prev => prev.filter(k => !keys.has(k)));
+  };
+
+  // Aus dem Rezept-Editor: Namen als Zutat im Stamm anlegen (angereichert aus dem Artikel mit
+  // gleichem Namen). Gibt die id zurueck, damit die Zeile sofort verweist.
+  const handleNeueZutat = (name) => {
+    if (!writer || !(name || "").trim()) return null;
+    const z = zutatAusRezeptzeilen(name, [], priceList[(name || "").toLowerCase()] ?? null);
+    if (!z.id) return null;
+    setZutaten(prev => (prev.some(x => x.id === z.id) ? prev : sortiereZutatenstamm([...prev, z])));
+    return z.id;
+  };
+
   const handleArtikelFelder = (name, patch) => {
     const key = (name || "").toLowerCase();
     const alt = priceList[key];
@@ -4381,7 +4465,10 @@ export default function KalkulationsApp() {
 
   const befunde = useMemo(() => pflegeBefunde(produkte, bowlBasis), [produkte, bowlBasis]);
 
-  const handleProduktSave = (produkt) => {
+  const handleProduktSave = (roh) => {
+    // Rezeptzeilen gegen den Zutatenstamm verknuepfen (Stufe 1) - der Editor setzt zutat_id
+    // beim Tippen, hier faengt die Verknuepfung auch eingefuegte oder alte Zeilen.
+    const produkt = verknuepfeProdukte([roh], zutaten).produkte[0];
     setProdukte(prev => {
       const idx = prev.findIndex(p => p.id === produkt.id);
       if (idx === -1) return [...prev, produkt];
@@ -4461,6 +4548,7 @@ export default function KalkulationsApp() {
     { id: "SystemWE",       label: "System-Wareneinsatz" },
     { id: "Naehrwerte",     label: "Nährwerttabelle" },
     { id: "Einkaufspreise", label: "Einkaufspreise" },
+    { id: "Zutaten",        label: "Zutaten" },
     { id: "Produktionsbons", label: "Produktionsbons" },
     { id: "Inventur",       label: "Inventur" },
   ];
@@ -4653,6 +4741,7 @@ export default function KalkulationsApp() {
                   if (t.id === "SystemWE")       return null;
                   if (t.id === "Naehrwerte")     return <span className="ml-1.5 text-xs text-gray-400">({naehrwerteJson.produkte.length})</span>;
                   if (t.id === "Einkaufspreise") return <span className="ml-1.5 text-xs text-gray-400">({Object.keys(priceList).length})</span>;
+                  if (t.id === "Zutaten")        return <span className="ml-1.5 text-xs text-gray-400">({zutaten.length})</span>;
                   if (t.id === "Inventur")       return <span className="ml-1.5 text-xs text-gray-400">({inventurArtikelGesamt})</span>;
                   if (t.id === "Produktionsbons") return <span className="ml-1.5 text-xs text-gray-400">({bonsGepflegt}/{produkte.length})</span>;
                   const n = produkte.filter(p => p.gruppe === t.id).length;
@@ -4672,6 +4761,13 @@ export default function KalkulationsApp() {
           <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
             onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer}
+            onSpeichern={cloudEnabled ? (writer ? handleCloudSave : null) : handleJsonDownload}
+            speichernMsg={cloudMsg} />
+        )}
+        {aktiverTab === "Zutaten" && (
+          <ZutatenTab zutaten={zutaten} produkte={produkte} priceList={priceList} canEdit={writer}
+            onZutaten={setZutaten} onProdukte={setProdukte} onArtikelPatches={handleArtikelPatches}
+            normalisiere={normalisiereZutat}
             onSpeichern={cloudEnabled ? (writer ? handleCloudSave : null) : handleJsonDownload}
             speichernMsg={cloudMsg} />
         )}
@@ -4704,6 +4800,8 @@ export default function KalkulationsApp() {
         produkt={editProdukt}
         priceList={priceList}
         bowlBasis={bowlBasis}
+        zutaten={zutaten}
+        onNeueZutat={writer ? handleNeueZutat : null}
         onClose={() => setEditProdukt(null)}
         onSave={handleProduktSave}
         onDelete={handleProduktDelete}
