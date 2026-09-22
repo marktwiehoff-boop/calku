@@ -865,31 +865,21 @@ function ArtikelartBadge({ p, onUpdate, readOnly }) {
   );
 }
 
-// Datenpflege-Leiste: Produkte ohne Artikelart in der aktuellen Sicht, mit
-// Sammel-Kennzeichnung fuer alle offenen.
-function ArtikelartHinweis({ produkte, canEdit, onSetzen }) {
+// Datenpflege-Leiste: Produkte ohne Artikelart in der aktuellen Sicht.
+// Bewusst OHNE Sammel-Kennzeichnung (Mark, 22.09.2026): nicht alle Smoothies,
+// Juices oder Bowls sind Pflichtartikel - die Entscheidung faellt je Artikel,
+// im Rezeptdialog oder per Klick auf das Kennzeichen in der Zeile.
+function ArtikelartHinweis({ produkte }) {
   const offen = ohneArtikelart(produkte);
   if (!offen.length) return null;
   const namen = offen.slice(0, 5).map(p => p.name || "(ohne Name)").join(", ") + (offen.length > 5 ? " …" : "");
   return (
     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-xs leading-relaxed max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 font-semibold"><AlertTriangle size={14} className="text-amber-700" /> {offen.length} Artikel ohne Artikelart</span>
-          {" "}({namen}). Jeder Verkaufsartikel braucht die Kennzeichnung <strong>Pflichtartikel</strong> oder <strong>Zusatzartikel</strong> —
-          im Rezeptdialog oder per Klick auf das Kennzeichen in der Zeile.
-        </span>
-        {canEdit && typeof onSetzen === "function" && (
-          <span className="shrink-0 inline-flex gap-2">
-            {ARTIKELARTEN.map(a => (
-              <button key={a.key} onClick={() => onSetzen(offen.map(p => p.id), a.key)}
-                className="bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
-                Alle offenen: {a.label}
-              </button>
-            ))}
-          </span>
-        )}
-      </div>
+      <span className="text-xs leading-relaxed">
+        <span className="inline-flex items-center gap-1.5 font-semibold"><AlertTriangle size={14} className="text-amber-700" /> {offen.length} Artikel ohne Artikelart</span>
+        {" "}({namen}). Jeder Verkaufsartikel wird einzeln als <strong>Pflichtartikel</strong> oder <strong>Zusatzartikel</strong> gekennzeichnet —
+        im Rezeptdialog oder per Klick auf das Kennzeichen in der Zeile.
+      </span>
     </div>
   );
 }
@@ -1647,7 +1637,7 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
 }
 
 function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
-                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen, onArtikelart }) {
+                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen }) {
   const [subFilter, setSubFilter] = useState("Alle");
   const subgroups = SUBGROUPS_BY_GRUPPE[gruppe] || null;
   const istBowls = gruppe === "Bowls";
@@ -1697,7 +1687,7 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
         </div>
       )}
 
-      <ArtikelartHinweis produkte={produkte} canEdit={canEdit} onSetzen={onArtikelart} />
+      <ArtikelartHinweis produkte={produkte} />
 
       {istBowls && (
         <DatenpflegeHinweis befunde={befunde} canEdit={canEdit}
@@ -1795,8 +1785,7 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
 
   return (
     <div className="space-y-5">
-      <ArtikelartHinweis produkte={produkte} canEdit
-        onSetzen={(ids, art) => { const m = new Set(ids); setProdukte(prev => prev.map(x => (m.has(x.id) ? { ...x, artikelart: art } : x))); }} />
+      <ArtikelartHinweis produkte={produkte} />
 
       {kampagnen.length === 0 && (
         <div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-400 text-sm">
@@ -4245,12 +4234,6 @@ export default function KalkulationsApp() {
     setProdukte(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
   };
 
-  // Artikelart (Pflicht/Zusatz) fuer mehrere Produkte auf einmal setzen
-  const handleArtikelartSetzen = (ids, art) => {
-    const menge = new Set(ids);
-    setProdukte(prev => prev.map(p => (menge.has(p.id) ? { ...p, artikelart: art } : p)));
-  };
-
   // Frischpress-Preise: setzt für bestimmte Zutaten (z. B. Frischer Apfelsaft)
   // einen neuen Preis pro g und rechnet die Kosten aller betroffenen Rezepturen neu.
   // list: [{ name, proG }]
@@ -4871,8 +4854,7 @@ export default function KalkulationsApp() {
             onDelete={handleProduktDelete}
             onNeu={handleProduktNeu}
             bowlBasis={bowlBasis} onBowlBasis={writer ? setBowlBasis : null} canEdit={writer}
-            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen}
-            onArtikelart={handleArtikelartSetzen} />
+            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen} />
         )}
       </main>
 
