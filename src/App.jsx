@@ -11,6 +11,7 @@ import {
 import Papa from "papaparse";
 import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
 import { artikelPreisAendern, istPreisPatch } from "./artikelpreis.js";
+import { ARTIKELARTEN, ARTIKELART, artikelartVon, naechsteArtikelart, ohneArtikelart, normalisiereArtikelart } from "./artikelart.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
 import smoothiesV3 from "./data/smoothies_v3.json";
 import juicesV3 from "./data/juices_v3.json";
@@ -342,6 +343,7 @@ function normalizeRecipe(raw, priceList) {
     vk_out_brutto,
     kampagne_start: null,
     kampagne_ende: null,
+    artikelart: null, // Pflicht-/Zusatzartikel: wird in der App gekennzeichnet
   };
 }
 
@@ -841,6 +843,57 @@ function EditNum({ value, onChange, step = "0.01", min = "0", suffix, width = "w
 
 // readOnly: abgeleitete Zeilen (Bowl-Variante in der Kassen-Sicht) zeigen nur;
 // bearbeitet wird das Grundrezept unter „Alle“ bzw. im Bearbeiten-Dialog.
+// Kennzeichen Pflicht-/Zusatzartikel in der Produktzeile. Klick wechselt
+// (leer -> Pflicht -> Zusatz -> Pflicht), solange die Zeile editierbar ist.
+// Ohne Kennzeichen steht gestrichelt "Art?" - jeder Verkaufsartikel braucht eins.
+function ArtikelartBadge({ p, onUpdate, readOnly }) {
+  const art = artikelartVon(p);
+  const klickbar = !readOnly && typeof onUpdate === "function";
+  const cls = art === "pflicht" ? "text-emerald-800 bg-emerald-100 border-emerald-200"
+            : art === "zusatz" ? "text-sky-800 bg-sky-100 border-sky-200"
+            : "text-amber-800 bg-amber-50 border-amber-300 border-dashed";
+  const label = art ? ARTIKELART[art].kurz : "Art?";
+  const title = art
+    ? `${ARTIKELART[art].label}${klickbar ? " — klicken zum Wechseln" : ""}`
+    : "Artikelart fehlt: Pflichtartikel oder Zusatzartikel?" + (klickbar ? " Klicken setzt Pflichtartikel." : "");
+  const base = `text-[10px] uppercase tracking-wide border rounded px-1 ${cls}`;
+  if (!klickbar) return <span title={title} className={base}>{label}</span>;
+  return (
+    <button type="button" title={title}
+      onClick={(e) => { e.stopPropagation(); onUpdate({ artikelart: naechsteArtikelart(art) }); }}
+      className={`${base} hover:brightness-95`}>{label}</button>
+  );
+}
+
+// Datenpflege-Leiste: Produkte ohne Artikelart in der aktuellen Sicht, mit
+// Sammel-Kennzeichnung fuer alle offenen.
+function ArtikelartHinweis({ produkte, canEdit, onSetzen }) {
+  const offen = ohneArtikelart(produkte);
+  if (!offen.length) return null;
+  const namen = offen.slice(0, 5).map(p => p.name || "(ohne Name)").join(", ") + (offen.length > 5 ? " …" : "");
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="text-xs leading-relaxed max-w-3xl">
+          <span className="inline-flex items-center gap-1.5 font-semibold"><AlertTriangle size={14} className="text-amber-700" /> {offen.length} Artikel ohne Artikelart</span>
+          {" "}({namen}). Jeder Verkaufsartikel braucht die Kennzeichnung <strong>Pflichtartikel</strong> oder <strong>Zusatzartikel</strong> —
+          im Rezeptdialog oder per Klick auf das Kennzeichen in der Zeile.
+        </span>
+        {canEdit && typeof onSetzen === "function" && (
+          <span className="shrink-0 inline-flex gap-2">
+            {ARTIKELARTEN.map(a => (
+              <button key={a.key} onClick={() => onSetzen(offen.map(p => p.id), a.key)}
+                className="bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
+                Alle offenen: {a.label}
+              </button>
+            ))}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, onDelete, displayName, indent, readOnly, hinweis }) {
   const aIn  = ampelFarbe(calc.we_in,  gruppe);
   const aOut = ampelFarbe(calc.we_out, gruppe);
@@ -863,6 +916,7 @@ function ProduktZeile({ p, calc, gruppe, expanded, onToggle, onUpdate, onEdit, o
             {expanded ? <ChevronDown size={14} className="text-gray-400" /> : <ChevronRight size={14} className="text-gray-400" />}
             <span className={`${indent ? "text-gray-700" : "font-medium text-gray-800"}`}>{displayName || p.name}</span>
             {p.untergruppe && <span className="text-xs text-gray-400">({p.untergruppe})</span>}
+            <ArtikelartBadge p={p} onUpdate={onUpdate} readOnly={readOnly} />
             {hinweis && <span className="text-[10px] uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1">{hinweis}</span>}
             <span className="ml-2 inline-flex gap-0.5">
               <button onClick={(e) => { e.stopPropagation(); onEdit && onEdit(p); }}
@@ -1118,6 +1172,7 @@ function BowlZeile({ p, gruppe, basis, expanded, onToggle, onUpdate, onEdit, onD
             {expanded ? <ChevronDown size={14} className="text-emerald-700" /> : <ChevronRight size={14} className="text-emerald-700" />}
             <span className="font-semibold text-gray-800">{p.name}</span>
             <span className="text-xs text-gray-400">({varianten.map(x => x.def.kurz).join(" · ")})</span>
+            <ArtikelartBadge p={p} onUpdate={editierbar ? onUpdate : null} />
             <span className="ml-2 inline-flex gap-0.5">
               <button onClick={(e) => { e.stopPropagation(); onEdit && onEdit(p); }}
                 className="text-gray-300 hover:text-emerald-600 p-1" title="Bearbeiten">
@@ -1592,7 +1647,7 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
 }
 
 function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
-                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen }) {
+                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen, onArtikelart }) {
   const [subFilter, setSubFilter] = useState("Alle");
   const subgroups = SUBGROUPS_BY_GRUPPE[gruppe] || null;
   const istBowls = gruppe === "Bowls";
@@ -1641,6 +1696,8 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
           })}
         </div>
       )}
+
+      <ArtikelartHinweis produkte={produkte} canEdit={canEdit} onSetzen={onArtikelart} />
 
       {istBowls && (
         <DatenpflegeHinweis befunde={befunde} canEdit={canEdit}
@@ -1738,6 +1795,9 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
 
   return (
     <div className="space-y-5">
+      <ArtikelartHinweis produkte={produkte} canEdit
+        onSetzen={(ids, art) => { const m = new Set(ids); setProdukte(prev => prev.map(x => (m.has(x.id) ? { ...x, artikelart: art } : x))); }} />
+
       {kampagnen.length === 0 && (
         <div className="bg-white rounded-xl border border-gray-100 p-8 text-center text-gray-400 text-sm">
           Noch keine Kampagnen angelegt. Starte unten mit „Neue Kampagne anlegen".
@@ -1805,7 +1865,10 @@ function KampagnenTab({ produkte, setProdukte, onEdit, onDelete, onNeu, alleProd
                 return (
                   <div key={p.id} className="px-4 py-2.5 flex flex-wrap items-center gap-3 hover:bg-gray-50">
                     <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${a.dot}`} />
-                    <span className="flex-1 min-w-[150px] text-sm font-medium text-gray-800">{p.name || "(ohne Name)"}</span>
+                    <span className="flex-1 min-w-[150px] text-sm font-medium text-gray-800 inline-flex items-center gap-2">
+                      {p.name || "(ohne Name)"}
+                      <ArtikelartBadge p={p} onUpdate={(u) => setProdukte(prev => prev.map(x => (x.id === p.id ? { ...x, ...u } : x)))} />
+                    </span>
                     <span className="text-xs text-gray-500 tabular-nums">
                       WE {fmtEUR(c.wareneinsatz)} · VK {fmtEUR(p.vk_out_brutto)} · WE-Quote {fmtPct(c.we_out)} · DB {fmtEUR(c.db_out)}
                     </span>
@@ -2038,6 +2101,7 @@ function leeresProdukt(gruppe, kampagne = null, start = null, ende = null) {
     vk_out_brutto: 0,
     kampagne_start: start,
     kampagne_ende: ende,
+    artikelart: null,
   };
 }
 
@@ -2169,7 +2233,7 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, zutaten = [], o
 
         <div className="p-5 space-y-5">
           {/* Stammdaten */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <label className="text-xs font-medium text-gray-600 flex flex-col md:col-span-2">
               Produktname
               <input type="text" value={form.name} onChange={e => setF({ name: e.target.value })}
@@ -2183,6 +2247,15 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, zutaten = [], o
                 {WARENGRUPPEN.map(g => <option key={g} value={g}>{g}</option>)}
                 <option value="Archiv">Archiv</option>
               </select>
+            </label>
+            <label className="text-xs font-medium text-gray-600 flex flex-col">
+              Artikelart
+              <select value={artikelartVon(form) || ""} onChange={e => setF({ artikelart: e.target.value || null })}
+                className={`mt-1 border rounded px-3 py-2 text-sm bg-white ${artikelartVon(form) ? "border-gray-200" : "border-amber-400"}`}>
+                <option value="">— bitte wählen —</option>
+                {ARTIKELARTEN.map(a => <option key={a.key} value={a.key}>{a.label}</option>)}
+              </select>
+              <span className="text-[11px] text-gray-400 mt-1 font-normal">Pflichtartikel führt jede Filiale, Zusatzartikel ist optional.</span>
             </label>
           </div>
 
@@ -4087,7 +4160,7 @@ export default function KalkulationsApp() {
           });
           angereichert.push({ verpackung_eur: 0, vk_in_brutto: 0, vk_out_brutto: 0,
             kampagne_start: null, kampagne_ende: null, untergruppe: null,
-            ...p, zutaten });
+            ...p, zutaten, artikelart: normalisiereArtikelart(p.artikelart) });
         }
         if (angereichert.length || zuEntfernen.size || stamm !== zutaten) {
           // neue und alte Zeilen gegen den (ggf. gerade importierten) Stamm verknuepfen
@@ -4170,6 +4243,12 @@ export default function KalkulationsApp() {
 
   const handleProduktUpdate = (id, updates) => {
     setProdukte(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
+  };
+
+  // Artikelart (Pflicht/Zusatz) fuer mehrere Produkte auf einmal setzen
+  const handleArtikelartSetzen = (ids, art) => {
+    const menge = new Set(ids);
+    setProdukte(prev => prev.map(p => (menge.has(p.id) ? { ...p, artikelart: art } : p)));
   };
 
   // Frischpress-Preise: setzt für bestimmte Zutaten (z. B. Frischer Apfelsaft)
@@ -4537,6 +4616,9 @@ export default function KalkulationsApp() {
     }, 0);
   }, [produkteAufgeloest, mix]);
 
+  // Verkaufsartikel ohne Kennzeichnung Pflicht-/Zusatzartikel (Kopf-Kennzahl)
+  const ohneArtikelartAnzahl = useMemo(() => ohneArtikelart(produkte).length, [produkte]);
+
   const produkteImTab = useMemo(() => {
     if (aktiverTab === "Kampagnen")  return produkte.filter(p => p.gruppe === "Kampagnen");
     if (aktiverTab === "SystemWE")   return produkte;
@@ -4704,6 +4786,9 @@ export default function KalkulationsApp() {
             <div className="bg-white/10 backdrop-blur rounded-lg p-3">
               <div className="text-xs text-green-100 uppercase tracking-wide">Produkte gesamt</div>
               <div className="text-xl font-bold mt-1 tabular-nums">{fmtNum(produkte.length)}</div>
+              {ohneArtikelartAnzahl > 0 && (
+                <div className="text-[11px] text-amber-200 mt-0.5">{fmtNum(ohneArtikelartAnzahl)} ohne Artikelart (Pflicht/Zusatz)</div>
+              )}
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-3">
               <div className="text-xs text-green-100 uppercase tracking-wide">Soll-WE (Mix)</div>
@@ -4786,7 +4871,8 @@ export default function KalkulationsApp() {
             onDelete={handleProduktDelete}
             onNeu={handleProduktNeu}
             bowlBasis={bowlBasis} onBowlBasis={writer ? setBowlBasis : null} canEdit={writer}
-            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen} />
+            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen}
+            onArtikelart={handleArtikelartSetzen} />
         )}
       </main>
 
