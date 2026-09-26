@@ -43,8 +43,9 @@ export function artikelBefund(a) {
   const hinweise = [];
   let pruefen = false;
 
-  // Non-Food (BUNZL-Verpackung, Reinigung): kein Rezeptgewicht, nichts zu bereinigen.
-  if (a?.nonfood) return { patch, hinweise, pruefen, impl, nominal };
+  // Non-Food (Verpackung, Reinigung) und Artikel aus der Inventurliste (Handelsware, Lager-
+  // artikel): kein Rezeptgewicht, nichts zu bereinigen. Ihre Gebinde kommen sauber aus der Liste.
+  if (a?.nonfood || a?.inventurartikel) return { patch, hinweise, pruefen, impl, nominal };
 
   if (STUECK_EINHEITEN.has(unit)) {
     if (!a.preisbasis) patch.preisbasis = "stueck";

@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import Papa from "papaparse";
 import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur, LIEFERANTEN } from "./preisimport.js";
-import { bunzlUebernahme } from "./bunzlstamm.js";
+import { stammUebernahme } from "./inventurstamm.js";
 import { artikelPreisAendern, istPreisPatch } from "./artikelpreis.js";
 import { ARTIKELARTEN, ARTIKELART, artikelartVon, naechsteArtikelart, ohneArtikelart, normalisiereArtikelart } from "./artikelart.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
@@ -3140,6 +3140,120 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
+// Artikel aus der Inventurliste, die der Namens-Regel entgehen, landen nach ihrer Warengruppe
+// statt unter "Sonstiges".
+const WARENGRUPPE_ZU_UNTERGRUPPE = {
+  "Tiefkühlwaren": "Tiefkühl", "Frische (CF Gastro)": "Frische", "Kühlwaren": "Molkerei & Vegan",
+  "Dip & Saucen": "Saucen & Dressings", "Getränke": "Säfte & Getränke", "Säfte & Flüssigkeiten": "Säfte & Getränke",
+  "Konserven & Haltbares": "Trockenwaren & Toppings", "Öl": "Trockenwaren & Toppings", "Kampagnenprodukte": "Sirupe & Süßes",
+};
+const untergruppeMitWarengruppe = (untergruppe, warengruppe) =>
+  untergruppe === "Sonstiges" && WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] ? WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] : untergruppe;
+
+// Artikel der Inventurliste, die der Stamm noch nicht fuehrt (inventurstamm.js; Entscheidungen
+// 26.09.2026: BUNZL, dann Transgourmet). Erscheint nur, solange etwas zu tun ist. Moegliche
+// Dubletten (gleicher Kernname) legt der Sammelknopf NICHT an - die entscheidet man einzeln.
+function StammUebernahme({ priceList, onArtikelPatches }) {
+  const ergebnisse = useMemo(
+    () => LIEFERANTEN.map(l => ({ lieferant: l, ...stammUebernahme(inventurJson, priceList || {}, l) })),
+    [priceList]);
+  const [msg, setMsg] = useState("");
+  const offen = ergebnisse.filter(e => e.neu + e.verknuepft > 0 || e.pruefen.length > 0);
+  if (!offen.length && !msg) return null;
+
+  const eur = (v) => v == null ? "?" : new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(+v);
+  const packung = (a) => `${a?.package_size ?? "?"} ${a?.unit || ""} für ${eur(a?.package_price)}`.replace(/\s+/g, " ");
+  const alle = (e) => {
+    onArtikelPatches?.(e.patches);
+    setMsg(`✓ ${e.neu} ${e.lieferant}-Artikel angelegt${e.verknuepft ? `, ${e.verknuepft} vorhandene verknüpft` : ""} — zum Sichern oben „Speichern".`);
+  };
+  const einzeln = ({ key, artikel }, text) => {
+    onArtikelPatches?.({ [key]: artikel });
+    setMsg(`✓ ${text} — zum Sichern oben „Speichern".`);
+  };
+  const knopf = "rounded-lg px-3 py-1.5 text-xs font-medium border";
+
+  return (
+    <div className="space-y-3">
+      {offen.map(e => (
+        <div key={e.lieferant} className="bg-white rounded-xl border-2 border-emerald-200 p-4 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="text-sm text-gray-700">
+              <span className="font-semibold text-emerald-900">{e.lieferant}-Artikel aus der Inventurliste in den Stamm</span>
+              <span className="block text-xs text-gray-500 mt-0.5">
+                Inventurliste {inventurJson.stand}: {e.neu} neu
+                {e.verknuepft ? `, ${e.verknuepft} vorhandene werden verknüpft` : ""}
+                {e.pruefen.length ? `, ${e.pruefen.length} bitte unten einzeln entscheiden` : ""}.
+                Preis je Gebinde aus der Liste; danach aktualisiert „CSV-Preise" (Lieferant {e.lieferant}) sie über
+                die Artikelnummer, und IG-Inventur liest die Preise live.
+              </span>
+            </div>
+            {e.neu + e.verknuepft > 0 && (
+              <button onClick={() => alle(e)}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0">
+                <Plus size={14} /> {e.neu + e.verknuepft} {e.lieferant}-Artikel übernehmen
+              </button>
+            )}
+          </div>
+          {e.pruefen.length > 0 && (
+            <div className="border-t border-emerald-100 pt-3">
+              <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-2">
+                Mögliche Dubletten: Im Stamm gibt es schon einen Artikel mit gleichem Namen. „Nummer übernehmen"
+                nur, wenn es <b>derselbe Artikel mit gleicher Packung</b> ist (nicht frisch statt TK) — der nächste
+                Preisimport zieht sonst falsche Preise in die Rezepturen. Im Zweifel: „Eigener Artikel".
+              </p>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-left text-gray-500">
+                    <th className="py-1 pr-2 font-medium">Inventurliste</th>
+                    <th className="py-1 pr-2 font-medium">Schon im Stamm</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {e.pruefen.map(p => (
+                    <tr key={p.nummer} className="border-t border-gray-100 align-top">
+                      <td className="py-2 pr-2">
+                        <div className="font-medium text-gray-800">{p.bezeichnung}</div>
+                        <div className="text-gray-500">Nr. {p.nummer} · {packung(p.liste)}</div>
+                      </td>
+                      <td className="py-2 pr-2">
+                        <div className="font-medium text-gray-800">{p.calcu.ingredient_name}</div>
+                        <div className="text-gray-500">
+                          {p.platzhalter ? `ohne echte Nummer (${p.calcu.article_number || "leer"})` : `Nr. ${String(p.calcu.article_number).replace(/\.0$/, "")}`}
+                          {" · "}{packung(p.calcu)}
+                        </div>
+                      </td>
+                      <td className="py-2 text-right whitespace-nowrap">
+                        {p.verknuepfung && (
+                          <button onClick={() => einzeln(p.verknuepfung, `Nummer ${p.nummer} bei „${p.calcu.ingredient_name}" eingetragen`)}
+                            className={`${knopf} border-emerald-300 text-emerald-800 hover:bg-emerald-50 mr-1`}>
+                            Nummer übernehmen
+                          </button>
+                        )}
+                        <button onClick={() => einzeln(p.neuerArtikel, `„${p.neuerArtikel.artikel.ingredient_name}" angelegt`)}
+                          className={`${knopf} border-gray-300 text-gray-700 hover:bg-gray-50`}>
+                          Eigener Artikel
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      ))}
+      {msg && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
+          <span>{msg}</span>
+          <button onClick={() => setMsg("")} className="text-emerald-400 hover:text-emerald-700"><X size={14} /></button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onArtikelPatches, onSpeichern, speichernMsg, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
@@ -3209,19 +3323,12 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       gewichtJeStueck: z.gewicht_je_stueck_g ?? null,
       preisManuellAm: z.preis_manuell_am ?? null,
       lieferant:      z.lieferant ?? null,
-      // Non-Food (BUNZL) nach Warengruppe der Inventurliste, sonst nach Namen
-      untergruppe:    z.nonfood ? (z.warengruppe === "Reinigung" ? "Reinigung & Hygiene" : "Verpackung") : kategorisiereZutat(z.ingredient_name),
+      // Non-Food (BUNZL, TG-Reinigung/Handschuhe) nach Warengruppe der Inventurliste, sonst nach Namen
+      untergruppe:    z.nonfood
+        ? (["Reinigung", "Reinigungsmittel", "Diverses"].includes(z.warengruppe) ? "Reinigung & Hygiene" : "Verpackung")
+        : untergruppeMitWarengruppe(kategorisiereZutat(z.ingredient_name), z.warengruppe),
     }));
   }, [priceList]);
-
-  // BUNZL-Artikel aus der Inventurliste in den Stamm (Entscheidung 26.09.2026, bunzlstamm.js).
-  // Der Knopf erscheint nur, solange etwas zu tun ist.
-  const bunzl = useMemo(() => bunzlUebernahme(inventurJson, priceList || {}), [priceList]);
-  const [bunzlMsg, setBunzlMsg] = useState("");
-  const bunzlUebernehmen = () => {
-    onArtikelPatches?.(bunzl.patches);
-    setBunzlMsg(`✓ ${bunzl.neu} BUNZL-Artikel angelegt${bunzl.verknuepft ? `, ${bunzl.verknuepft} vorhandene verknüpft` : ""} — zum Sichern oben „Speichern".`);
-  };
 
   // Einheit, Packungsgroesse, Packungspreis und Kilopreis sind HIER aenderbar
   // (Eigenschaft des Artikels). Jede Aenderung geht ueber onUpdateArtikel und
@@ -3530,28 +3637,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         </div>
       )}
 
-      {canEdit && (bunzl.neu > 0 || bunzl.verknuepft > 0) && (
-        <div className="bg-white rounded-xl border-2 border-emerald-200 p-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="text-sm text-gray-700">
-            <span className="font-semibold text-emerald-900">BUNZL-Artikel in den Stamm übernehmen</span>
-            <span className="block text-xs text-gray-500 mt-0.5">
-              Aus der Inventurliste {inventurJson.stand}: {bunzl.neu} neu (Verpackung und Reinigung, Preis je Karton)
-              {bunzl.verknuepft ? `, ${bunzl.verknuepft} schon vorhanden und werden nur verknüpft` : ""}. Danach aktualisiert
-              eine BUNZL-Preisliste sie über „Preise importieren" (Lieferant BUNZL), und IG-Inventur liest die Preise live.
-            </span>
-          </div>
-          <button onClick={bunzlUebernehmen}
-            className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0">
-            <Plus size={14} /> {bunzl.neu + bunzl.verknuepft} BUNZL-Artikel übernehmen
-          </button>
-        </div>
-      )}
-      {canEdit && bunzlMsg && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
-          <span>{bunzlMsg}</span>
-          <button onClick={() => setBunzlMsg("")} className="text-emerald-400 hover:text-emerald-700"><X size={14} /></button>
-        </div>
-      )}
+      {canEdit && <StammUebernahme priceList={priceList} onArtikelPatches={onArtikelPatches} />}
 
       {canEdit && abgleichMsg && (
         <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
