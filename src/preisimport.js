@@ -21,6 +21,30 @@ export function normalisiereNummer(wert) {
   return s.toLowerCase();
 }
 
+/** Nummer fuer den Abgleich mit einer Lieferantenliste: wie normalisiereNummer, aber ohne das
+ *  Lieferanten-Praefix der Handpflege ("Bunzl 68352" -> "68352"). Der Stamm selbst behaelt
+ *  seine Nummer - der Zutatenstamm verknuepft ueber sie (zutaten.js, artikelNummer). */
+export function abgleichNummer(wert) {
+  return normalisiereNummer(String(wert ?? "").trim().replace(/^bunzl\s*/i, ""));
+}
+
+export const LIEFERANTEN = ["Transgourmet", "BUNZL"];
+
+/** "bunzl" -> "BUNZL", "TRANSGOURMET"/"TG" -> "Transgourmet", sonst unveraendert. */
+export function normalisiereLieferant(wert) {
+  const s = String(wert ?? "").trim();
+  if (/^bunzl$/i.test(s)) return "BUNZL";
+  if (/^(tg|transgourmet)$/i.test(s)) return "Transgourmet";
+  return s;
+}
+
+/** Lieferant eines Stammartikels: Feld `lieferant`; sonst das Praefix der Handpflege
+ *  ("Bunzl 68352"); sonst Transgourmet - daher stammt der Stamm (Excel-Erbe, TG-Importe). */
+export function lieferantVon(artikel) {
+  if (artikel?.lieferant) return normalisiereLieferant(artikel.lieferant);
+  return /^\s*bunzl\b/i.test(String(artikel?.article_number ?? "")) ? "BUNZL" : "Transgourmet";
+}
+
 /** Preisfelder eines Artikels proportional auf den neuen Gebindepreis ziehen. */
 function skaliere(artikel, neuerGebindepreis) {
   const alt = +artikel.package_price || 0;
@@ -51,17 +75,22 @@ function skaliere(artikel, neuerGebindepreis) {
  * @param semantik   "gebinde" (TG-Artikelliste, Kundenpreis je VE - Standard)
  *                   | "grundpreis" (EUR je kg/l, alte Listenform)
  * @param heute      Date fuer den Pruefstempel
+ * @param lieferant  Lieferant der Liste ("Transgourmet" | "BUNZL"): gematcht und als veraltet
+ *                   gemeldet werden nur Stammartikel dieses Lieferanten - sonst stuenden bei
+ *                   jedem TG-Upload alle BUNZL-Artikel auf der Nachpflegeliste (und umgekehrt).
  * @returns { patches: {key: neuerArtikel}, geaendert, unveraendert,
  *            ohneMatch: [zeile], pruefen: [name], veraltet: [artikel] }
  */
-export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde", heute = new Date() }) {
+export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde", heute = new Date(), lieferant = "Transgourmet" }) {
+  const vomLieferanten = (a) => lieferantVon(a) === normalisiereLieferant(lieferant);
   const stempel = `${heute.toISOString().slice(0, 10)} 00:00:00`;
 
   // Indexe ueber den Stamm: Nummer -> key, Name -> key
   const jeNummer = {};
   const jeName = {};
   for (const [key, a] of Object.entries(priceList)) {
-    const nr = normalisiereNummer(a.article_number);
+    if (!vomLieferanten(a)) continue;
+    const nr = abgleichNummer(a.article_number);
     if (nr && !/^z\d+$/.test(nr)) jeNummer[nr] = key; // Z-Platzhalter nicht matchbar
     jeName[String(a.ingredient_name || "").trim().toLowerCase()] = key;
   }
@@ -74,7 +103,7 @@ export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde",
   let unveraendert = 0;
 
   for (const zeile of zeilen) {
-    const nr = normalisiereNummer(zeile.artNr);
+    const nr = abgleichNummer(zeile.artNr);
     if (nr) nummernInCsv.add(nr);
     const key = (nr && jeNummer[nr]) || jeName[String(zeile.name || "").trim().toLowerCase()];
     if (!key) {
@@ -106,7 +135,8 @@ export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde",
   const veraltet = [];
   if (nummernInCsv.size > 0) {
     for (const a of Object.values(priceList)) {
-      const nr = normalisiereNummer(a.article_number);
+      if (!vomLieferanten(a)) continue;
+      const nr = abgleichNummer(a.article_number);
       if (!nr || /^z\d+$/.test(nr)) continue; // Platzhalter melden wir nicht
       if (!nummernInCsv.has(nr)) veraltet.push(a);
     }

@@ -9,7 +9,8 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
-import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
+import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur, LIEFERANTEN } from "./preisimport.js";
+import { bunzlUebernahme } from "./bunzlstamm.js";
 import { artikelPreisAendern, istPreisPatch } from "./artikelpreis.js";
 import { ARTIKELARTEN, ARTIKELART, artikelartVon, naechsteArtikelart, ohneArtikelart, normalisiereArtikelart } from "./artikelart.js";
 import rezeptdatenbankJson from "./data/rezeptdatenbank.json";
@@ -2526,6 +2527,9 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
   // Kundenpreis) fuehrt den Preis JE GEBINDE - die alte Annahme "EUR pro kg"
   // haette dort selbst bei Treffern falsche Preise geschrieben.
   const [semantik, setSemantik] = useState("gebinde");
+  // Lieferant der Liste: gematcht und als veraltet gemeldet werden nur dessen Stammartikel
+  // (seit 26.09.2026 fuehrt der Stamm auch BUNZL - Verpackung und Reinigung).
+  const [lieferant, setLieferant] = useState("Transgourmet");
   const [ergebnis, setErgebnis] = useState(null);
   const fileRef = useRef(null);
 
@@ -2554,6 +2558,7 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
             einheit: gemerkt.einheit || "", artNr: gemerkt.artNr || "",
           });
           if (gemerkt.semantik) setSemantik(gemerkt.semantik);
+          if (gemerkt.lieferant) setLieferant(gemerkt.lieferant);
           setAusGedaechtnis(true);
           return;
         }
@@ -2593,8 +2598,8 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
     // Die tatsaechlich benutzte Zuordnung merken - auch die von Hand
     // korrigierte. Beim naechsten Upload derselben Dateiform fragt der Dialog
     // dann nicht noch einmal.
-    if (signatur && onMappingMerken) onMappingMerken(signatur, mapping, semantik);
-    const bericht = onImport(aktualisierungen, semantik);
+    if (signatur && onMappingMerken) onMappingMerken(signatur, mapping, semantik, lieferant);
+    const bericht = onImport(aktualisierungen, semantik, lieferant);
     setPreview(null);
     setAusGedaechtnis(false);
     setErgebnis(bericht || null);
@@ -2610,11 +2615,22 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
       <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-auto">
         <div className="p-5 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <FileSpreadsheet className="text-emerald-600" size={20} /> Transgourmet-Preisliste importieren
+            <FileSpreadsheet className="text-emerald-600" size={20} /> {lieferant}-Preisliste importieren
           </h2>
           <button onClick={schliessen} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
         </div>
         <div className="p-5 space-y-4">
+          {!ergebnis && (
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+              <span className="font-medium">Lieferant der Liste:</span>
+              {LIEFERANTEN.map(l => (
+                <button key={l} type="button" onClick={() => setLieferant(l)}
+                  className={`px-3 py-1 rounded-full border text-sm ${lieferant === l ? "bg-green-700 border-green-700 text-white" : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"}`}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          )}
           {ergebnis ? (
             <>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -2665,8 +2681,11 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
           ) : !preview ? (
             <>
               <p className="text-sm text-gray-600">
-                Lade die aktuelle Transgourmet-Preisliste als CSV hoch (Export aus shop.transgourmet.de).
-                Die App erkennt die Spalten automatisch — du kannst sie danach bestätigen.
+                {lieferant === "BUNZL"
+                  ? "Lade die aktuelle BUNZL-Preisliste als CSV hoch (Preis je Karton/VE). Abgeglichen wird über die BUNZL-Artikelnummer."
+                  : "Lade die aktuelle Transgourmet-Preisliste als CSV hoch (Export aus shop.transgourmet.de)."}
+                {" "}Die App erkennt die Spalten automatisch — du kannst sie danach bestätigen.
+                Gematcht und als veraltet gemeldet werden nur Artikel dieses Lieferanten.
               </p>
               <input ref={fileRef} type="file" accept=".csv,.txt" onChange={onFile}
                 className="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg
@@ -3067,6 +3086,7 @@ const EINKAUF_UNTERGRUPPEN = [
   "Brot & Wraps",
   "Trockenwaren & Toppings",
   "Verpackung",
+  "Reinigung & Hygiene",
   "Sonstiges",
 ];
 
@@ -3120,7 +3140,7 @@ const FRISCH_ARTIKEL = [
 const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", netto: "" }, karotte: { preis: "", netto: "" } };
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onSpeichern, speichernMsg, canEdit = true }) {
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onArtikelPatches, onSpeichern, speichernMsg, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -3188,9 +3208,20 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       preisbasis:     z.preisbasis ?? null,
       gewichtJeStueck: z.gewicht_je_stueck_g ?? null,
       preisManuellAm: z.preis_manuell_am ?? null,
-      untergruppe:    kategorisiereZutat(z.ingredient_name),
+      lieferant:      z.lieferant ?? null,
+      // Non-Food (BUNZL) nach Warengruppe der Inventurliste, sonst nach Namen
+      untergruppe:    z.nonfood ? (z.warengruppe === "Reinigung" ? "Reinigung & Hygiene" : "Verpackung") : kategorisiereZutat(z.ingredient_name),
     }));
   }, [priceList]);
+
+  // BUNZL-Artikel aus der Inventurliste in den Stamm (Entscheidung 26.09.2026, bunzlstamm.js).
+  // Der Knopf erscheint nur, solange etwas zu tun ist.
+  const bunzl = useMemo(() => bunzlUebernahme(inventurJson, priceList || {}), [priceList]);
+  const [bunzlMsg, setBunzlMsg] = useState("");
+  const bunzlUebernehmen = () => {
+    onArtikelPatches?.(bunzl.patches);
+    setBunzlMsg(`✓ ${bunzl.neu} BUNZL-Artikel angelegt${bunzl.verknuepft ? `, ${bunzl.verknuepft} vorhandene verknüpft` : ""} — zum Sichern oben „Speichern".`);
+  };
 
   // Einheit, Packungsgroesse, Packungspreis und Kilopreis sind HIER aenderbar
   // (Eigenschaft des Artikels). Jede Aenderung geht ueber onUpdateArtikel und
@@ -3496,6 +3527,29 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               <Pencil size={14} /> Frischpress-Preise
             </button>
           </div>
+        </div>
+      )}
+
+      {canEdit && (bunzl.neu > 0 || bunzl.verknuepft > 0) && (
+        <div className="bg-white rounded-xl border-2 border-emerald-200 p-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="text-sm text-gray-700">
+            <span className="font-semibold text-emerald-900">BUNZL-Artikel in den Stamm übernehmen</span>
+            <span className="block text-xs text-gray-500 mt-0.5">
+              Aus der Inventurliste {inventurJson.stand}: {bunzl.neu} neu (Verpackung und Reinigung, Preis je Karton)
+              {bunzl.verknuepft ? `, ${bunzl.verknuepft} schon vorhanden und werden nur verknüpft` : ""}. Danach aktualisiert
+              eine BUNZL-Preisliste sie über „Preise importieren" (Lieferant BUNZL), und IG-Inventur liest die Preise live.
+            </span>
+          </div>
+          <button onClick={bunzlUebernehmen}
+            className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 shrink-0">
+            <Plus size={14} /> {bunzl.neu + bunzl.verknuepft} BUNZL-Artikel übernehmen
+          </button>
+        </div>
+      )}
+      {canEdit && bunzlMsg && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
+          <span>{bunzlMsg}</span>
+          <button onClick={() => setBunzlMsg("")} className="text-emerald-400 hover:text-emerald-700"><X size={14} /></button>
         </div>
       )}
 
@@ -4198,8 +4252,8 @@ export default function KalkulationsApp() {
   // Rezeptzeilen und liess den Stamm auf dem Ur-Import von 03/2025 stehen -
   // Susannes Wochen-Upload kam deshalb nie an. Logik in preisimport.js
   // (getestet); Persistenz wie handleArtikelFelder ueber manuelleArtikel.
-  const handlePriceImport = (aktualisierungen, semantik = "gebinde") => {
-    const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik });
+  const handlePriceImport = (aktualisierungen, semantik = "gebinde", lieferant = "Transgourmet") => {
+    const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik, lieferant });
     const patches = ergebnis.patches;
     if (Object.keys(patches).length > 0) {
       setPriceList(prev => ({ ...prev, ...patches }));
@@ -4225,7 +4279,7 @@ export default function KalkulationsApp() {
     }
     setLetzterImport({ datum: new Date(), anzahl: aktualisierungen.length,
                        veraendert: ergebnis.geaendert });
-    setCloudMsg(`Preisimport: ${ergebnis.geaendert} geändert, ${ergebnis.unveraendert} bestätigt, `
+    setCloudMsg(`Preisimport ${lieferant}: ${ergebnis.geaendert} geändert, ${ergebnis.unveraendert} bestätigt, `
       + `${ergebnis.ohneMatch.length} ohne Treffer — zum Sichern oben „Speichern".`);
     return ergebnis;
   };
@@ -4829,6 +4883,7 @@ export default function KalkulationsApp() {
           <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
             onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
             onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer}
+            onArtikelPatches={handleArtikelPatches}
             onSpeichern={cloudEnabled ? (writer ? handleCloudSave : null) : handleJsonDownload}
             speichernMsg={cloudMsg} />
         )}
@@ -4860,8 +4915,8 @@ export default function KalkulationsApp() {
 
       <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport}
         mappings={importMappings}
-        onMappingMerken={(signatur, mapping, semantik) =>
-          setImportMappings(prev => ({ ...prev, [signatur]: { ...mapping, semantik } }))} />
+        onMappingMerken={(signatur, mapping, semantik, lieferant) =>
+          setImportMappings(prev => ({ ...prev, [signatur]: { ...mapping, semantik, lieferant } }))} />
 
       <ProduktEditModal
         open={editProdukt !== null}
