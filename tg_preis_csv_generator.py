@@ -24,7 +24,7 @@ from datetime import date
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, r"C:\Users\Media\Apps\08_Tech_und_Tools\immergruen-bigquery-pipeline")
+sys.path.insert(0, r"C:\Projekte\immergruen-bigquery-pipeline")
 
 from openpyxl import load_workbook
 
