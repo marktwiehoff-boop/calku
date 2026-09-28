@@ -9,7 +9,8 @@ import {
   ResponsiveContainer, ReferenceLine, Cell
 } from "recharts";
 import Papa from "papaparse";
-import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur, LIEFERANTEN } from "./preisimport.js";
+import { verarbeitePreisimport, erkenneSpalten, spaltenSignatur, LIEFERANTEN, gebindeUebernehmen } from "./preisimport.js";
+import { gebindeBefunde } from "./gebinde.js";
 import { stammUebernahme } from "./inventurstamm.js";
 import { artikelPreisAendern, istPreisPatch } from "./artikelpreis.js";
 import { ARTIKELARTEN, ARTIKELART, artikelartVon, naechsteArtikelart, ohneArtikelart, normalisiereArtikelart } from "./artikelart.js";
@@ -666,11 +667,43 @@ function dokumentZumSpeichern({ mix, produkte, bowlBasis, artikel, geloescht, bo
 // Duplikate aus dem Import vom 03.09.2026 (eigene Produkte je Basis).
 const EI_MUSTER = /^(ei|eier)\b/i;
 const EI_GEWICHT_G = 50; // ein Ei = 50 g (bisherige Rezeptur, so rechnet auch der Bestellvorschlag)
-function pflegeBefunde(produkte, basis) {
+// Versteckte Stueck-Zeilen: Aus der Excel-Zeit stehen Stueckartikel (Oreo, Wraps, Becher) als
+// "1 g" in der Rezeptur, und ihr "Preis je Gramm" ist in Wahrheit der Stueckpreis. Erkennbar
+// daran, dass Grammpreis und Stueckpreis des Artikels gleich sind. (Ei hat eine eigene Umstellung.)
+function versteckteStueckzeile(z, artikel) {
+  if (!artikel || istStueck(z) || EI_MUSTER.test((z.name || "").trim())) return false;
+  if (!STUECK_EINHEITEN.has(String(artikel.unit || "").toLowerCase()) && artikel.preisbasis !== "stueck") return false;
+  const jeStueck = stueckpreis({ ...artikel, preisbasis: "stueck" });
+  const proG = +artikel.price_per_gram_ml || 0;
+  return jeStueck > 0 && proG > 0 && Math.abs(proG - jeStueck) / jeStueck < 0.05;
+}
+
+// Stueckzahlen je Groesse, wo sie nicht 1:1 aus der alten "Gramm"-Zahl folgen
+// (Mark Twiehoff, 28.09.2026: Cookie Monster 400 ml 1 Keks, 500 und 600 ml je 2 Kekse).
+const STUECK_VORGABEN = [
+  { artikel: /oreo/i, produkt: /cookie monster/i, jeMl: { 400: 1, 500: 2, 600: 2 } },
+];
+function stueckVorgabe(z, produkt) {
+  const v = STUECK_VORGABEN.find(x => x.artikel.test(z.name || "") && x.produkt.test(produkt.name || ""));
+  const ml = (String(produkt.name || "").match(/(\d{3})\s*ml/i) || [])[1];
+  return v && ml && v.jeMl[ml] != null ? v.jeMl[ml] : null;
+}
+
+// Gramm je Stueck eines Stueckartikels: gepflegt, sonst aus "(154g)" im Namen / Stueck je Packung
+function stueckGrammAusArtikel(a) {
+  if (+a?.gewicht_je_stueck_g > 0) return +a.gewicht_je_stueck_g;
+  const m = String(a?.ingredient_name || "").replace(",", ".").match(/(\d+(?:\.\d+)?)\s*g\b/i);
+  const n = +a?.package_size || 0;
+  return m && n > 1 ? Math.round((+m[1] / n) * 10) / 10 : null;
+}
+
+function pflegeBefunde(produkte, basis, priceList = {}) {
   const eier = [];
+  const stueck = [];
   for (const p of produkte || []) {
     (p.zutaten || []).forEach((z, i) => {
       if (EI_MUSTER.test((z.name || "").trim()) && !istStueck(z)) eier.push({ produkt: p, index: i, zutat: z });
+      else if (versteckteStueckzeile(z, priceList[(z.name || "").toLowerCase()])) stueck.push({ produkt: p, index: i, zutat: z });
     });
   }
   const duplikate = (produkte || []).filter(p => {
@@ -681,7 +714,7 @@ function pflegeBefunde(produkte, basis) {
     const original = (produkte || []).find(x => x.id === basisId);
     return !!original && basisWaehlbar(original, basis);
   });
-  return { eier, duplikate };
+  return { eier, stueck, duplikate };
 }
 
 // ============================================================
@@ -1509,9 +1542,9 @@ function BowlBasisPanel({ basis, onChange, canEdit, anzahlBowls }) {
 }
 
 // Was die Daten noch nicht sauber abbilden - mit Knopf zum Umstellen.
-function DatenpflegeHinweis({ befunde, canEdit, onEiUmstellen, onDuplikateEntfernen }) {
-  const { eier, duplikate } = befunde || { eier: [], duplikate: [] };
-  if (!eier.length && !duplikate.length) return null;
+function DatenpflegeHinweis({ befunde, canEdit, onEiUmstellen, onStueckUmstellen, onDuplikateEntfernen }) {
+  const { eier, stueck = [], duplikate } = befunde || { eier: [], stueck: [], duplikate: [] };
+  if (!eier.length && !stueck.length && !duplikate.length) return null;
   const namen = (arr, f) => { const n = [...new Set(arr.map(f))]; return n.slice(0, 4).join(", ") + (n.length > 4 ? " …" : ""); };
   return (
     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 space-y-3">
@@ -1526,6 +1559,20 @@ function DatenpflegeHinweis({ befunde, canEdit, onEiUmstellen, onDuplikateEntfer
           {canEdit && (
             <button onClick={onEiUmstellen} className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
               Ei auf Stück umstellen
+            </button>
+          )}
+        </div>
+      )}
+      {stueck.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs leading-relaxed max-w-3xl">
+            <strong>Stückware steht noch in Gramm</strong> in {stueck.length} Rezeptzeile{stueck.length === 1 ? "" : "n"} ({namen(stueck, x => `${x.zutat.name} · ${x.produkt.name}`)}).
+            Die Umstellung rechnet sie je Stück mit dem Stückpreis aus dem Artikel (Oreo: Packungspreis ÷ 14 Kekse).
+            Cookie Monster: 400 ml 1 Keks, 500 und 600 ml je 2 Kekse.
+          </span>
+          {canEdit && (
+            <button onClick={onStueckUmstellen} className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white rounded-lg px-3 py-2 text-xs font-medium">
+              Auf Stück umstellen
             </button>
           )}
         </div>
@@ -1638,7 +1685,7 @@ function ProduktTabelle({ produkte, gruppe, onUpdate, onEdit, onDelete, gruppier
 }
 
 function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
-                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onDuplikateEntfernen }) {
+                           bowlBasis, onBowlBasis, canEdit = true, befunde, onEiUmstellen, onStueckUmstellen, onDuplikateEntfernen }) {
   const [subFilter, setSubFilter] = useState("Alle");
   const subgroups = SUBGROUPS_BY_GRUPPE[gruppe] || null;
   const istBowls = gruppe === "Bowls";
@@ -1690,9 +1737,11 @@ function WarengruppenTab({ produkte, gruppe, onUpdate, onEdit, onDelete, onNeu,
 
       <ArtikelartHinweis produkte={produkte} />
 
-      {istBowls && (
-        <DatenpflegeHinweis befunde={befunde} canEdit={canEdit}
-          onEiUmstellen={onEiUmstellen} onDuplikateEntfernen={onDuplikateEntfernen} />
+      {/* Bowls: alle Befunde; andere Gruppen: Stueckware ihrer eigenen Rezepturen (Oreo im Smoothie) */}
+      {(istBowls || befunde?.stueck?.some(x => x.produkt.gruppe === gruppe)) && (
+        <DatenpflegeHinweis canEdit={canEdit}
+          befunde={istBowls ? befunde : { eier: [], duplikate: [], stueck: befunde.stueck.filter(x => x.produkt.gruppe === gruppe) }}
+          onEiUmstellen={onEiUmstellen} onStueckUmstellen={onStueckUmstellen} onDuplikateEntfernen={onDuplikateEntfernen} />
       )}
       {istBowls && (
         <BowlBasisPanel basis={bowlBasis} onChange={onBowlBasis} canEdit={canEdit} anzahlBowls={anzahlBasisBowls} />
@@ -2516,7 +2565,7 @@ function ProduktEditModal({ open, produkt, priceList, bowlBasis, zutaten = [], o
   );
 }
 
-function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }) {
+function ImportModal({ open, onClose, onImport, onGebinde, mappings = {}, onMappingMerken }) {
   const [preview, setPreview] = useState(null);
   const [mapping, setMapping] = useState({ name: "", preis: "", einheit: "", artNr: "" });
   // Signatur der gerade geladenen Dateiform + Hinweis, ob die Zuordnung aus
@@ -2531,6 +2580,9 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
   // (seit 26.09.2026 fuehrt der Stamm auch BUNZL - Verpackung und Reinigung).
   const [lieferant, setLieferant] = useState("Transgourmet");
   const [ergebnis, setErgebnis] = useState(null);
+  // Preisspruenge: je Artikel die getroffene Entscheidung (Text) bzw. die eingetippte Packungszahl
+  const [sprungErledigt, setSprungErledigt] = useState({});
+  const [sprungAnzahl, setSprungAnzahl] = useState({});
   const fileRef = useRef(null);
 
   if (!open) return null;
@@ -2607,6 +2659,7 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
 
   const schliessen = () => {
     setErgebnis(null); setPreview(null); setAusGedaechtnis(false); setSignatur("");
+    setSprungErledigt({}); setSprungAnzahl({});
     onClose();
   };
 
@@ -2646,6 +2699,57 @@ function ImportModal({ open, onClose, onImport, mappings = {}, onMappingMerken }
                   </div>
                 ))}
               </div>
+              {ergebnis.spruenge?.length > 0 && (
+                <div className="border-2 border-red-200 rounded-lg p-3 space-y-2">
+                  <p className="text-xs text-red-800">
+                    <b>{ergebnis.spruenge.length} Preissprünge — nicht übernommen.</b> Der neue Preis weicht um das
+                    Doppelte oder mehr ab. Meist führt die Liste ein anderes Gebinde als der Stamm (Karton statt
+                    Packung). Bitte je Artikel entscheiden:
+                  </p>
+                  <table className="w-full text-xs">
+                    <tbody>
+                      {ergebnis.spruenge.map(sp => {
+                        const erledigt = sprungErledigt[sp.key];
+                        const n = +(sprungAnzahl[sp.key] ?? sp.vorschlag ?? 0);
+                        const entscheide = (packungen, text) => {
+                          onGebinde?.(sp.key, packungen, sp.listenpreis);
+                          setSprungErledigt(e => ({ ...e, [sp.key]: text }));
+                        };
+                        return (
+                          <tr key={sp.key} className="border-t border-gray-100 align-top">
+                            <td className="py-2 pr-2">
+                              <div className="font-medium text-gray-800">{sp.name}</div>
+                              <div className="text-gray-500">
+                                bisher {fmtNum2(sp.altPreis)} € · Liste {fmtNum2(sp.listenpreis)} €
+                                {sp.packungen > 1 ? ` ÷ ${sp.packungen} = ${fmtNum2(sp.neuPreis)} €` : ""}
+                                {" "}(×{new Intl.NumberFormat("de-DE", { maximumFractionDigits: 1 }).format(sp.faktor)})
+                              </div>
+                            </td>
+                            <td className="py-2 text-right whitespace-nowrap">
+                              {erledigt ? <span className="text-emerald-700">✓ {erledigt}</span> : (
+                                <span className="inline-flex items-center gap-1">
+                                  <input type="number" min="1" step="1" value={n || ""}
+                                    onChange={e => setSprungAnzahl(a => ({ ...a, [sp.key]: e.target.value }))}
+                                    title="Wie viele Stamm-Packungen stecken im Gebinde der Liste?"
+                                    className="w-14 border border-gray-200 rounded px-1.5 py-1 text-right tabular-nums" />
+                                  <button disabled={!(n > 0)} onClick={() => entscheide(n, `${n} Packungen je Gebinde, ${fmtNum2(sp.listenpreis / n)} €`)}
+                                    className="px-2 py-1 rounded border border-emerald-300 text-emerald-800 hover:bg-emerald-50 disabled:opacity-40">
+                                    Packungen je Gebinde
+                                  </button>
+                                  <button onClick={() => entscheide(sp.packungen, `${fmtNum2(sp.neuPreis)} € übernommen`)}
+                                    className="px-2 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">
+                                    Preis so übernehmen
+                                  </button>
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
               {ergebnis.pruefen.length > 0 && (
                 <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2">
                   Ohne alten Gebindepreis übernommen, bitte prüfen: {ergebnis.pruefen.join(", ")}
@@ -3087,12 +3191,25 @@ const EINKAUF_UNTERGRUPPEN = [
   "Trockenwaren & Toppings",
   "Verpackung",
   "Reinigung & Hygiene",
-  "Sonstiges",
 ];
+// Kein Sammelbecken "Sonstiges" mehr (28.09.2026): Jeder Artikel gehoert in eine echte
+// Warengruppe. Was weder gepflegt noch erkennbar ist, steht als "Ohne Gruppe" ganz oben
+// und wird dort zugeordnet - neue Artikel lassen sich ohne Gruppe gar nicht anlegen.
+const OHNE_GRUPPE = "Ohne Gruppe";
+const GRUPPEN_ANZEIGE = [OHNE_GRUPPE, ...EINKAUF_UNTERGRUPPEN];
 
+// Warengruppe eines Stammartikels: gepflegtes Feld einkaufsgruppe, sonst Non-Food nach der
+// Warengruppe der Inventurliste, sonst Vorschlag aus dem Namen, sonst "Ohne Gruppe".
+function einkaufsgruppeVon(a) {
+  if (a?.einkaufsgruppe && EINKAUF_UNTERGRUPPEN.includes(a.einkaufsgruppe)) return a.einkaufsgruppe;
+  if (a?.nonfood) return ["Reinigung", "Reinigungsmittel", "Diverses"].includes(a.warengruppe) ? "Reinigung & Hygiene" : "Verpackung";
+  return untergruppeMitWarengruppe(kategorisiereZutat(a?.ingredient_name), a?.warengruppe);
+}
+
+// Vorschlag aus dem Namen - nur noch Startwert, gespeichert wird einkaufsgruppe.
 function kategorisiereZutat(name) {
   const n = (name || "").toLowerCase().trim();
-  if (!n) return "Sonstiges";
+  if (!n) return OHNE_GRUPPE;
 
   // Edge-Cases (überstimmen alle Patterns)
   if (n === "agavendicksaft") return "Sirupe & Süßes";
@@ -3102,7 +3219,7 @@ function kategorisiereZutat(name) {
   if (/becher|deckel|strohhalm|trinkhalm|löffel|gabel|messer|serviette|einwickelpapier|faltenbeutel|salatschale|aufwärmschälchen|tragetasche|^verpackung$/.test(n)) return "Verpackung";
 
   // Tiefkühl (TK-Marker, Sorbet, Eis, Crushed Ice, frostige Halbfertige)
-  if (/^tk\s|\stk\s|\stk$|tiefkühl|sorbet|joghurt\s?eis|ice cream|frappe weiß|frappepulver|crushed ice|crusheis|falafel tk|bulgur köfte/.test(n)) return "Tiefkühl";
+  if (/^tk\s|\stk\s|\stk$|tiefkühl|^acai|sorbet|joghurt\s?eis|ice cream|frappe weiß|frappepulver|crushed ice|crusheis|falafel tk|bulgur köfte/.test(n)) return "Tiefkühl";
 
   // Säfte & Getränke (Saft/Nektar/Schorle/Cola/Tee/Limonade/Wasser/Mischungen für Getränke)
   if (/saft\b|nektar|schorle|cola\b|fuze tea|pfanner|eistee|cold brew|kaffee frappe|lemonade|^getränke$|^wasser$|vio (still|medium)|monin cloudy|zitronenlimonade|frozen iced tea zutaten|^pfirsich mischung$|^maracuja mischung$|^hibiskus himbeere mischung$/.test(n)) return "Säfte & Getränke";
@@ -3114,21 +3231,21 @@ function kategorisiereZutat(name) {
   if (/sauce|dressing|vinaigrette|dip\b|aufstrich|püree|hummus|teriyaki|chipotle|sylter art|caesar/.test(n)) return "Saucen & Dressings";
 
   // Molkerei & Vegane Alternativen
-  if (/h-milch|hafermilch|kokosmilch|mandeldrink|^milch$|alpro|frischkäse|gran moravia|kräuterquark|violife/.test(n)) return "Molkerei & Vegan";
+  if (/h-milch|hafermilch|kokosmilch|kokosdrink|mandeldrink|^milch$|alpro|frischkäse|gran moravia|kräuterquark|violife/.test(n)) return "Molkerei & Vegan";
 
   // Proteine (Tofu, Chicken, Pulled, Eier, Pulver)
-  if (/sesam tofu|chicken flakes|pulled (beef|lachs)|hähnchen|^eier$|vanille (eiweiß|protein)|^protein\b|kollagen/.test(n)) return "Proteine";
+  if (/sesam tofu|chicken|pulled (beef|lachs)|hähnchen|^eier$|vanille (eiweiß|protein)|^protein\b|kollagen/.test(n)) return "Proteine";
 
   // Brot & Wraps
   if (/^wrap|tortilla|baguette|focaccia/.test(n)) return "Brot & Wraps";
 
   // Trockenwaren & Toppings (Reis, Quinoa, Hafer, Nüsse, Croutons, Pulver, Öl)
-  if (/jasminreis|reis gekocht|garkartoffel|quinoa|haferflocke|körnermix|sesamkörner|kräutercrouton|röstzwiebel|^erdnüsse$|oreo|pistazien topping|matcha pulver|spirulina|traubenkernöl|datteln/.test(n)) return "Trockenwaren & Toppings";
+  if (/jasminreis|reis gekocht|garkartoffel|quinoa|haferflocke|körnermix|sesamkörner|kräutercrouton|röstzwiebel|^erdnüsse$|oreo|cookie|keks|granola|chia|kokosraspel|pistazien topping|matcha pulver|spirulina|traubenkernöl|datteln/.test(n)) return "Trockenwaren & Toppings";
 
   // Frische (Obst, Gemüse, Kräuter)
-  if (/mixsalat|spinat|tomate|cherrytomate|gurke|möhre|möhren|rotkohl|rote bete|^mais|banane|orange|^zitrone|apfel|äpfel|jalapen|ingwer|^minze$|edamame/.test(n)) return "Frische";
+  if (/mixsalat|spinat|tomate|cherrytomate|gurke|möhre|möhren|rotkohl|rote bete|^mais|banane|orange|^zitrone|apfel|äpfel|jalapen|ingwer|^minze$|edamame|beere frisch|^heidelbeer|^erdbeer|^himbeer/.test(n)) return "Frische";
 
-  return "Sonstiges";
+  return OHNE_GRUPPE;
 }
 
 // Frisch gepresste Säfte: Preis hängt von der Auspressquote (Nettomenge) ab.
@@ -3141,14 +3258,14 @@ const FRISCH_INIT = { apfel: { preis: "", netto: "" }, orange: { preis: "", nett
 const parseDe = (s) => { const n = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isNaN(n) || n < 0 ? 0 : n; };
 
 // Artikel aus der Inventurliste, die der Namens-Regel entgehen, landen nach ihrer Warengruppe
-// statt unter "Sonstiges".
+// statt unter "Ohne Gruppe".
 const WARENGRUPPE_ZU_UNTERGRUPPE = {
   "Tiefkühlwaren": "Tiefkühl", "Frische (CF Gastro)": "Frische", "Kühlwaren": "Molkerei & Vegan",
   "Dip & Saucen": "Saucen & Dressings", "Getränke": "Säfte & Getränke", "Säfte & Flüssigkeiten": "Säfte & Getränke",
   "Konserven & Haltbares": "Trockenwaren & Toppings", "Öl": "Trockenwaren & Toppings", "Kampagnenprodukte": "Sirupe & Süßes",
 };
 const untergruppeMitWarengruppe = (untergruppe, warengruppe) =>
-  untergruppe === "Sonstiges" && WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] ? WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] : untergruppe;
+  untergruppe === OHNE_GRUPPE && WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] ? WARENGRUPPE_ZU_UNTERGRUPPE[warengruppe] : untergruppe;
 
 // Artikel der Inventurliste, die der Stamm noch nicht fuehrt (inventurstamm.js; Entscheidungen
 // 26.09.2026: BUNZL, dann Transgourmet). Erscheint nur, solange etwas zu tun ist. Moegliche
@@ -3254,7 +3371,140 @@ function StammUebernahme({ priceList, onArtikelPatches }) {
   );
 }
 
-function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onArtikelPatches, onSpeichern, speichernMsg, canEdit = true }) {
+// Gebinde-Check (28.09.2026): Stamm-Packung gegen das Gebinde der Inventurliste (gebinde.js).
+// Erscheint nur, solange es etwas zu entscheiden gibt.
+const eur = (v) => v == null ? "?" : new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 3 }).format(+v);
+const packungText = (a) => `${a?.package_size ?? "?"} ${a?.unit || ""} für ${eur(a?.package_price)}`.replace(/\s+/g, " ");
+
+function GebindeCheck({ priceList, onGebinde }) {
+  const befunde = useMemo(() => gebindeBefunde(inventurJson, priceList || {}), [priceList]);
+  const [anzahl, setAnzahl] = useState({});
+  const [offen, setOffen] = useState(false);
+  if (!befunde.length) return null;
+  const karton = befunde.filter(b => b.art === "kartonpreis").length;
+  const knopf = "rounded-lg px-3 py-1.5 text-xs font-medium border whitespace-nowrap";
+  const TEXT = {
+    kartonpreis: "Kartonpreis steht auf der Einzelpackung — Rezepturen zu teuer",
+    gebinde: "Packung kleiner als das Liefergebinde — der nächste Import würde falsch rechnen",
+    packung: "Packung im Stamm größer als das Liefergebinde — bitte Packungsgröße prüfen",
+  };
+  return (
+    <div className={`bg-white rounded-xl border-2 p-4 space-y-3 ${karton ? "border-red-200" : "border-amber-200"}`}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="text-sm text-gray-700">
+          <span className={`font-semibold ${karton ? "text-red-800" : "text-amber-900"}`}>
+            Gebinde-Check: {befunde.length} Artikel{karton ? `, davon ${karton} mit falschem Preis` : ""}
+          </span>
+          <span className="block text-xs text-gray-500 mt-0.5">
+            Die Lieferantenliste führt Preise je Gebinde (Karton, Kiste), der Stamm oft die Einzelpackung.
+            „Packungen je Gebinde“ festhalten — dann teilt jeder Import den Listenpreis richtig.
+            Abgleich mit der Inventurliste {inventurJson.stand}.
+          </span>
+        </div>
+        <button onClick={() => setOffen(o => !o)} className={`${knopf} border-gray-300 text-gray-700 hover:bg-gray-50`}>
+          {offen ? "Zuklappen" : "Ansehen"}
+        </button>
+      </div>
+      {offen && (
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="text-left text-gray-500">
+              <th className="py-1 pr-2 font-medium">Artikel im Stamm</th>
+              <th className="py-1 pr-2 font-medium">Liefergebinde</th>
+              <th className="py-1 pr-2 font-medium text-right">Packungen je Gebinde</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {befunde.map(b => {
+              const n = +(anzahl[b.key] ?? b.vorschlag ?? 0);
+              return (
+                <tr key={b.key} className="border-t border-gray-100 align-top">
+                  <td className="py-2 pr-2">
+                    <div className="font-medium text-gray-800">{b.name}</div>
+                    <div className="text-gray-500">{packungText(b.artikel)}</div>
+                    <div className={b.art === "kartonpreis" ? "text-red-700" : b.art === "packung" ? "text-gray-500" : "text-amber-700"}>{TEXT[b.art]}</div>
+                  </td>
+                  <td className="py-2 pr-2">
+                    <div className="text-gray-800">{b.liste.bezeichnung}</div>
+                    <div className="text-gray-500">
+                      {eur(b.liste.preis_ve)} je {b.liste.ve || "VE"}{+b.liste.stk_pro_ve > 1 ? ` (${b.liste.stk_pro_ve} × ${eur(b.liste.preis_stk)})` : ""}
+                    </div>
+                  </td>
+                  <td className="py-2 pr-2 text-right">
+                    {b.art !== "packung" && (
+                      <input type="number" min="1" step="1" value={n || ""}
+                        onChange={e => setAnzahl(a => ({ ...a, [b.key]: e.target.value }))}
+                        className="w-16 border border-gray-200 rounded px-1.5 py-1 text-xs text-right tabular-nums bg-white" />
+                    )}
+                    {b.art === "kartonpreis" && n > 0 && (
+                      <div className="text-gray-500 mt-1 whitespace-nowrap">neu: {eur(b.liste.preis_ve / n)} je Packung</div>
+                    )}
+                  </td>
+                  <td className="py-2 text-right whitespace-nowrap space-x-1">
+                    {b.art === "kartonpreis" && (
+                      <button disabled={!(n > 0)} onClick={() => onGebinde?.(b.key, n, b.liste.preis_ve)}
+                        className={`${knopf} border-red-300 text-red-800 hover:bg-red-50 disabled:opacity-40`}>Preis korrigieren</button>
+                    )}
+                    {b.art === "gebinde" && (
+                      <button disabled={!(n > 0)} onClick={() => onGebinde?.(b.key, n)}
+                        className={`${knopf} border-emerald-300 text-emerald-800 hover:bg-emerald-50 disabled:opacity-40`}>Gebinde festhalten</button>
+                    )}
+                    <button onClick={() => onGebinde?.(b.key, 1)}
+                      title="Stamm-Packung = Liefergebinde. Der Artikel verschwindet aus dieser Liste."
+                      className={`${knopf} border-gray-300 text-gray-600 hover:bg-gray-50`}>Passt so</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+// Warengruppen-Pflege: Artikel ohne gepflegte Gruppe. Der Vorschlag aus dem Namen wird mit einem
+// Klick festgeschrieben; was keinen Vorschlag hat, steht unter "Ohne Gruppe" und wird in der
+// Tabelle einzeln zugeordnet.
+function GruppenPflege({ zutaten, priceList, onArtikelPatches, onZeigen }) {
+  const [msg, setMsg] = useState("");
+  const mitVorschlag = zutaten.filter(z => !z.gruppeGepflegt && z.untergruppe !== OHNE_GRUPPE);
+  const ohne = zutaten.filter(z => z.untergruppe === OHNE_GRUPPE).length;
+  if (!mitVorschlag.length && !ohne && !msg) return null;
+  const festschreiben = () => {
+    const patches = {};
+    for (const z of mitVorschlag) {
+      const key = z.name.toLowerCase();
+      if (priceList[key]) patches[key] = { ...priceList[key], einkaufsgruppe: z.untergruppe };
+    }
+    onArtikelPatches?.(patches);
+    setMsg(`✓ ${Object.keys(patches).length} Warengruppen festgeschrieben — zum Sichern oben „Speichern".`);
+  };
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-3">
+      <span>
+        {ohne > 0 && <><b>{ohne} Artikel ohne Warengruppe</b> — bitte in der Tabelle zuordnen. </>}
+        {mitVorschlag.length > 0 && <>{mitVorschlag.length} Artikel tragen nur einen Vorschlag aus dem Namen (grau). </>}
+        {msg && <span className="text-emerald-800">{msg}</span>}
+      </span>
+      <span className="flex gap-2">
+        {ohne > 0 && (
+          <button onClick={onZeigen} className="rounded-lg px-3 py-1.5 font-medium border border-amber-400 bg-white hover:bg-amber-100">
+            Ohne Gruppe zeigen
+          </button>
+        )}
+        {mitVorschlag.length > 0 && (
+          <button onClick={festschreiben} className="rounded-lg px-3 py-1.5 font-medium bg-emerald-700 text-white hover:bg-emerald-800">
+            Vorschläge festschreiben
+          </button>
+        )}
+      </span>
+    </div>
+  );
+}
+
+function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArtikel, onGebinde, onPreisAbgleich, onDeleteArtikel, onUpdateArtikel, onAltAusbeute, onArtikelPatches, onSpeichern, speichernMsg, canEdit = true }) {
   const [suche, setSuche]       = useState("");
   const [gruppe, setGruppe]     = useState("Alle");
   const [sortBy, setSortBy]     = useState("name");
@@ -3263,7 +3513,8 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
   const [frisch, setFrisch]     = useState(FRISCH_INIT);
   const [frischMsg, setFrischMsg] = useState("");
   const [artikelOpen, setArtikelOpen] = useState(false);
-  const [neuArt, setNeuArt]     = useState({ name: "", artNr: "", einheit: "kg", preis: "", menge: "" });
+  const NEU_ART_LEER = { name: "", artNr: "", gruppe: "", einheit: "g", preis: "", menge: "", stueckGramm: "" };
+  const [neuArt, setNeuArt]     = useState(NEU_ART_LEER);
   const [artMsg, setArtMsg]     = useState("");
   const [abgleichMsg, setAbgleichMsg] = useState("");
 
@@ -3288,25 +3539,46 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     setFrischMsg(`✓ ${list.length} Artikel aktualisiert. Zum Sichern oben „Speichern".`);
   };
 
+  // Neuer Einkaufsartikel: Warengruppe ist Pflicht. Inhalt je Packung in g, ml oder Stück -
+  // bis 09/2026 stand "kg" in der Einheit und die Menge in Gramm, der Artikel war damit
+  // 1000-fach zu gross; Stück wurde trotzdem als €/kg gerechnet.
+  const neuArtRechnung = (() => {
+    const preis = parseDe(neuArt.preis), menge = parseDe(neuArt.menge), gramm = parseDe(neuArt.stueckGramm);
+    if (!(preis > 0 && menge > 0)) return null;
+    if (neuArt.einheit === "stk") {
+      const jeStueck = preis / menge;
+      return { jeStueck, proG: gramm > 0 ? jeStueck / gramm : null, text: `${fmtNum2(jeStueck)} €/Stk` };
+    }
+    const proG = preis / menge;
+    return { proG, text: `${fmtNum2(proG * 1000)} ${neuArt.einheit === "ml" ? "€/l" : "€/kg"}` };
+  })();
+
   const artikelSpeichern = () => {
     const name = neuArt.name.trim();
-    const preis = parseDe(neuArt.preis), menge = parseDe(neuArt.menge);
     if (!name) { setArtMsg("Bitte einen Artikelnamen eingeben."); return; }
-    if (preis <= 0 || menge <= 0) { setArtMsg("Bitte Einkaufspreis und Menge (> 0) eingeben."); return; }
-    const proG = preis / menge;
+    if (!neuArt.gruppe) { setArtMsg("Bitte eine Warengruppe wählen."); return; }
+    if (priceList?.[name.toLowerCase()]) { setArtMsg(`„${name}" gibt es schon — bitte in der Tabelle ändern.`); return; }
+    const r = neuArtRechnung;
+    if (!r) { setArtMsg("Bitte Einkaufspreis und Inhalt der Packung (> 0) eingeben."); return; }
+    const preis = parseDe(neuArt.preis), menge = parseDe(neuArt.menge);
+    const stueck = neuArt.einheit === "stk";
+    const gramm = parseDe(neuArt.stueckGramm);
     onAddArtikel?.({
       ingredient_name: name,
       article_number: neuArt.artNr.trim(),
-      unit: neuArt.einheit,
+      einkaufsgruppe: neuArt.gruppe,
+      unit: stueck ? "Stück" : neuArt.einheit,
+      preisbasis: stueck ? "stueck" : neuArt.einheit === "ml" ? "ml100" : "gramm",
       package_size: menge,
       package_price: preis,
-      net_weight: menge,
-      price_per_gram_ml: proG,
+      ...(stueck
+        ? { net_price_per_unit: +r.jeStueck.toFixed(6), ...(gramm > 0 ? { gewicht_je_stueck_g: gramm } : {}),
+            price_per_gram_ml: r.proG != null ? +r.proG.toFixed(10) : null }
+        : { net_weight: menge, price_per_gram_ml: +r.proG.toFixed(10) }),
       manuell: true,
     });
-    const proKg = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(proG * 1000);
-    setArtMsg(`✓ „${name}" angelegt (${proKg} €/kg). Sofort als Zutat nutzbar. Zum Sichern oben „Speichern".`);
-    setNeuArt({ name: "", artNr: "", einheit: "kg", preis: "", menge: "" });
+    setArtMsg(`✓ „${name}" angelegt (${r.text}, ${neuArt.gruppe}). Sofort als Zutat nutzbar. Zum Sichern oben „Speichern".`);
+    setNeuArt(NEU_ART_LEER);
   };
 
   const zutaten = useMemo(() => {
@@ -3323,10 +3595,8 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       gewichtJeStueck: z.gewicht_je_stueck_g ?? null,
       preisManuellAm: z.preis_manuell_am ?? null,
       lieferant:      z.lieferant ?? null,
-      // Non-Food (BUNZL, TG-Reinigung/Handschuhe) nach Warengruppe der Inventurliste, sonst nach Namen
-      untergruppe:    z.nonfood
-        ? (["Reinigung", "Reinigungsmittel", "Diverses"].includes(z.warengruppe) ? "Reinigung & Hygiene" : "Verpackung")
-        : untergruppeMitWarengruppe(kategorisiereZutat(z.ingredient_name), z.warengruppe),
+      untergruppe:    einkaufsgruppeVon(z),
+      gruppeGepflegt: !!z.einkaufsgruppe,
     }));
   }, [priceList]);
 
@@ -3402,6 +3672,24 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     );
   };
 
+  // Warengruppe je Artikel: Pflichtfeld, hier zuordnen oder ändern. Solange nur der
+  // Vorschlag aus dem Namen gilt, ist sie grau; "Ohne Gruppe" ist gelb markiert.
+  const gruppeZelle = (z) => {
+    const ohne = z.untergruppe === OHNE_GRUPPE;
+    if (!canEdit) return <td className="px-3 py-2 text-xs text-gray-500">{z.untergruppe}</td>;
+    return (
+      <td className="px-3 py-2">
+        <select value={ohne ? "" : z.untergruppe}
+          onChange={e => e.target.value && onUpdateArtikel?.(z.name, { einkaufsgruppe: e.target.value })}
+          title={z.gruppeGepflegt ? "Warengruppe (gepflegt)" : ohne ? "Bitte Warengruppe zuordnen" : "Vorschlag aus dem Namen — mit Auswahl festlegen"}
+          className={`border rounded px-1 py-1 text-xs bg-white max-w-[9.5rem] ${ohne ? "border-amber-400 text-amber-800 bg-amber-50" : z.gruppeGepflegt ? "border-gray-200 text-gray-800" : "border-gray-200 text-gray-400"}`}>
+          {ohne && <option value="">bitte wählen …</option>}
+          {EINKAUF_UNTERGRUPPEN.map(g => <option key={g} value={g}>{g}</option>)}
+        </select>
+      </td>
+    );
+  };
+
   // Ausbeute und g/Stück werden HIER zentral gepflegt (Eigenschaft des
   // Artikels, nicht der Rezeptzeile) und wirken sofort auf alle Rezepturen.
   const ausbeuteZellen = (z) => (
@@ -3457,7 +3745,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
 
   const gruppenZaehlung = useMemo(() => {
     const z = {};
-    for (const u of EINKAUF_UNTERGRUPPEN) z[u] = 0;
+    for (const u of GRUPPEN_ANZEIGE) z[u] = 0;
     for (const it of zutaten) z[it.untergruppe] = (z[it.untergruppe] || 0) + 1;
     return z;
   }, [zutaten]);
@@ -3472,7 +3760,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
 
     // Sortierung: erst nach Untergruppe (in fester Reihenfolge), dann nach Spalte
     const gruppenIdx = (g) => {
-      const i = EINKAUF_UNTERGRUPPEN.indexOf(g);
+      const i = GRUPPEN_ANZEIGE.indexOf(g);
       return i === -1 ? 999 : i;
     };
     arr.sort((a, b) => {
@@ -3518,7 +3806,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
       return (
         <tbody>
           {sichtbar.length === 0 && (
-            <tr><td colSpan={canEdit ? 9 : 8} className="px-3 py-8 text-center text-gray-400 text-sm">
+            <tr><td colSpan={canEdit ? 10 : 9} className="px-3 py-8 text-center text-gray-400 text-sm">
               Keine Treffer. Filter anpassen.
             </td></tr>
           )}
@@ -3526,6 +3814,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             <tr key={`${z.name}_${i}`} className="border-b border-gray-100 hover:bg-gray-50">
               <td className="px-3 py-2 text-gray-800">{z.name}</td>
               <td className="px-3 py-2 text-gray-500 text-xs tabular-nums">{z.art || "—"}</td>
+              {gruppeZelle(z)}
               {preisZellen(z)}
               {ausbeuteZellen(z)}
               {canEdit && (
@@ -3550,7 +3839,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         bloecke.push(
           <tbody key={aktuelleGruppe}>
             <tr className="bg-emerald-50">
-              <td colSpan={canEdit ? 9 : 8} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
+              <td colSpan={canEdit ? 10 : 9} className="px-3 py-2 text-xs font-semibold text-emerald-900 uppercase tracking-wide">
                 {aktuelleGruppe} <span className="text-emerald-600 font-normal">· {buffer.length}</span>
               </td>
             </tr>
@@ -3569,6 +3858,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
         <tr key={`${z.name}_${i}`} className="border-b border-gray-100 hover:bg-gray-50">
           <td className="px-3 py-2 text-gray-800">{z.name}</td>
           <td className="px-3 py-2 text-gray-500 text-xs tabular-nums">{z.art || "—"}</td>
+          {gruppeZelle(z)}
           {preisZellen(z)}
           {ausbeuteZellen(z)}
           {canEdit && (
@@ -3586,7 +3876,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
     if (bloecke.length === 0) {
       return (
         <tbody>
-          <tr><td colSpan={canEdit ? 9 : 8} className="px-3 py-8 text-center text-gray-400 text-sm">
+          <tr><td colSpan={canEdit ? 10 : 9} className="px-3 py-8 text-center text-gray-400 text-sm">
             Keine Treffer. Filter anpassen.
           </td></tr>
         </tbody>
@@ -3639,6 +3929,11 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
 
       {canEdit && <StammUebernahme priceList={priceList} onArtikelPatches={onArtikelPatches} />}
 
+      {canEdit && <GebindeCheck priceList={priceList} onGebinde={onGebinde} />}
+
+      {canEdit && <GruppenPflege zutaten={zutaten} priceList={priceList} onArtikelPatches={onArtikelPatches}
+        onZeigen={() => setGruppe(OHNE_GRUPPE)} />}
+
       {canEdit && abgleichMsg && (
         <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs text-emerald-800 flex items-center justify-between gap-2">
           <span>{abgleichMsg}</span>
@@ -3651,7 +3946,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-sm font-semibold text-emerald-900">Neuer Einkaufsartikel</h3>
-              <p className="text-xs text-gray-500 mt-0.5">Eigenen Artikel + Preis anlegen (z. B. für eine Kampagne). €/g = Einkaufspreis ÷ Menge. Sofort als Zutat verwendbar.</p>
+              <p className="text-xs text-gray-500 mt-0.5">Eigenen Artikel + Preis anlegen (z. B. für eine Kampagne). Stückware (Kekse, Eier, Wraps) als „Stück“ anlegen, dann rechnet die Rezeptur je Stück. Sofort als Zutat verwendbar.</p>
             </div>
             <button onClick={() => setArtikelOpen(false)} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
           </div>
@@ -3659,31 +3954,58 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             <label className="md:col-span-4 flex flex-col">
               <span className="text-[11px] text-gray-500 mb-0.5">Artikelname *</span>
               <input value={neuArt.name} onChange={e => setNeuArt(s => ({ ...s, name: e.target.value }))}
-                placeholder="z. B. Sommer-Sirup Pfirsich"
-                className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
+                onBlur={() => setNeuArt(s => {
+                  if (s.gruppe || !s.name.trim()) return s;
+                  const v = kategorisiereZutat(s.name);
+                  return v === OHNE_GRUPPE ? s : { ...s, gruppe: v };
+                })}
+                placeholder="z. B. Sommer-Sirup Pfirsich" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
+            </label>
+            <label className="md:col-span-3 flex flex-col">
+              <span className="text-[11px] text-gray-500 mb-0.5">Warengruppe *</span>
+              <select value={neuArt.gruppe} onChange={e => setNeuArt(s => ({ ...s, gruppe: e.target.value }))}
+                className={`border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none ${neuArt.gruppe ? "" : "text-gray-400"}`}>
+                <option value="">bitte wählen …</option>
+                {EINKAUF_UNTERGRUPPEN.map(g => <option key={g} value={g} className="text-gray-800">{g}</option>)}
+              </select>
             </label>
             <label className="md:col-span-2 flex flex-col">
               <span className="text-[11px] text-gray-500 mb-0.5">Artikel-Nr.</span>
               <input value={neuArt.artNr} onChange={e => setNeuArt(s => ({ ...s, artNr: e.target.value }))}
-                placeholder="optional" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white" />
+                placeholder="optional" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
             </label>
-            <label className="md:col-span-2 flex flex-col">
-              <span className="text-[11px] text-gray-500 mb-0.5">Einheit</span>
-              <select value={neuArt.einheit} onChange={e => setNeuArt(s => ({ ...s, einheit: e.target.value }))}
-                className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white">
-                <option value="kg">kg</option><option value="l">l</option><option value="Stk.">Stk.</option>
-              </select>
-            </label>
-            <label className="md:col-span-2 flex flex-col">
-              <span className="text-[11px] text-gray-500 mb-0.5">Einkaufspreis (€)</span>
+            <div className="md:col-span-3 flex flex-col">
+              <span className="text-[11px] text-gray-500 mb-0.5">Rechnet in</span>
+              <div className="flex rounded border border-gray-200 overflow-hidden text-sm">
+                {[["g", "Gramm"], ["ml", "Milliliter"], ["stk", "Stück"]].map(([k, l]) => (
+                  <button key={k} type="button" onClick={() => setNeuArt(s => ({ ...s, einheit: k }))}
+                    className={`flex-1 px-2 py-1.5 ${neuArt.einheit === k ? "bg-emerald-700 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}>{l}</button>
+                ))}
+              </div>
+            </div>
+            <label className="md:col-span-3 flex flex-col">
+              <span className="text-[11px] text-gray-500 mb-0.5">Einkaufspreis je Packung (€)</span>
               <input value={neuArt.preis} inputMode="decimal" onChange={e => setNeuArt(s => ({ ...s, preis: e.target.value }))}
-                placeholder="z. B. 8,90" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white" />
+                placeholder="z. B. 8,90" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
             </label>
-            <label className="md:col-span-2 flex flex-col">
-              <span className="text-[11px] text-gray-500 mb-0.5">für Menge (g/ml)</span>
+            <label className="md:col-span-3 flex flex-col">
+              <span className="text-[11px] text-gray-500 mb-0.5">
+                Inhalt je Packung ({neuArt.einheit === "stk" ? "Stück" : neuArt.einheit})
+              </span>
               <input value={neuArt.menge} inputMode="decimal" onChange={e => setNeuArt(s => ({ ...s, menge: e.target.value }))}
-                placeholder="z. B. 1000" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white" />
+                placeholder={neuArt.einheit === "stk" ? "z. B. 14 Kekse" : "z. B. 1000"} className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
             </label>
+            {neuArt.einheit === "stk" && (
+              <label className="md:col-span-3 flex flex-col">
+                <span className="text-[11px] text-gray-500 mb-0.5">Gramm je Stück (optional)</span>
+                <input value={neuArt.stueckGramm} inputMode="decimal" onChange={e => setNeuArt(s => ({ ...s, stueckGramm: e.target.value }))}
+                  placeholder="für Bestellvorschlag, z. B. 11" className="border border-gray-200 rounded px-2 py-1.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" />
+              </label>
+            )}
+            <div className="md:col-span-3 flex flex-col justify-end pb-1.5">
+              <span className="text-[11px] text-gray-500">Ergibt</span>
+              <span className="text-sm font-semibold text-emerald-800 tabular-nums">{neuArtRechnung ? neuArtRechnung.text : "—"}</span>
+            </div>
           </div>
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs text-emerald-700">{artMsg}</span>
@@ -3769,11 +4091,11 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             </div>
           </label>
           <label className="flex flex-col">
-            <span className="text-xs font-medium text-gray-600 mb-1">Untergruppe</span>
+            <span className="text-xs font-medium text-gray-600 mb-1">Warengruppe</span>
             <select value={gruppe} onChange={e => setGruppe(e.target.value)}
               className="border border-gray-200 rounded px-3 py-2 text-sm bg-white">
               <option value="Alle">Alle ({zutaten.length})</option>
-              {EINKAUF_UNTERGRUPPEN.map(g => (
+              {GRUPPEN_ANZEIGE.map(g => (
                 <option key={g} value={g} disabled={!gruppenZaehlung[g]}>
                   {g} ({gruppenZaehlung[g] || 0})
                 </option>
@@ -3791,10 +4113,12 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
             }`}>
             Alle
           </button>
-          {EINKAUF_UNTERGRUPPEN.filter(g => gruppenZaehlung[g] > 0).map(g => (
+          {GRUPPEN_ANZEIGE.filter(g => gruppenZaehlung[g] > 0).map(g => (
             <button key={g} onClick={() => setGruppe(g)}
               className={`px-2.5 py-1 rounded-full text-xs font-medium border transition ${
-                gruppe === g
+                g === OHNE_GRUPPE
+                  ? (gruppe === g ? "bg-amber-100 border-amber-400 text-amber-900" : "bg-amber-50 border-amber-300 text-amber-800 hover:border-amber-500")
+                  : gruppe === g
                   ? "bg-emerald-100 border-emerald-300 text-emerald-800"
                   : "bg-white border-gray-200 text-gray-500 hover:border-gray-400"
               }`}>
@@ -3816,6 +4140,7 @@ function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, onAddArti
               <tr>
                 {sortHeader("name",            "Zutat",              "left")}
                 {sortHeader("art",             "Artikel-Nr.",        "left")}
+                {sortHeader("untergruppe",     "Warengruppe",        "left")}
                 {sortHeader("einheit",         "Einheit",            "left")}
                 {sortHeader("packGroesse",     "Packungsgröße")}
                 {sortHeader("packPreis",       "Packungspreis")}
@@ -4338,9 +4663,9 @@ export default function KalkulationsApp() {
   // Rezeptzeilen und liess den Stamm auf dem Ur-Import von 03/2025 stehen -
   // Susannes Wochen-Upload kam deshalb nie an. Logik in preisimport.js
   // (getestet); Persistenz wie handleArtikelFelder ueber manuelleArtikel.
-  const handlePriceImport = (aktualisierungen, semantik = "gebinde", lieferant = "Transgourmet") => {
-    const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik, lieferant });
-    const patches = ergebnis.patches;
+  // Geaenderte Stammartikel (Preisimport, Gebinde-Entscheidungen) uebernehmen und ihren Preis
+  // in alle Rezeptzeilen stempeln: Stueck-Zeilen den Stueckpreis, Gramm-Zeilen den Grammpreis.
+  const artikelPreisPatches = (patches) => {
     if (Object.keys(patches).length > 0) {
       setPriceList(prev => ({ ...prev, ...patches }));
       setManuelleArtikel(prev => [
@@ -4363,11 +4688,33 @@ export default function KalkulationsApp() {
         }),
       })));
     }
+  };
+
+  const handlePriceImport = (aktualisierungen, semantik = "gebinde", lieferant = "Transgourmet") => {
+    const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik, lieferant });
+    artikelPreisPatches(ergebnis.patches);
     setLetzterImport({ datum: new Date(), anzahl: aktualisierungen.length,
                        veraendert: ergebnis.geaendert });
     setCloudMsg(`Preisimport ${lieferant}: ${ergebnis.geaendert} geändert, ${ergebnis.unveraendert} bestätigt, `
-      + `${ergebnis.ohneMatch.length} ohne Treffer — zum Sichern oben „Speichern".`);
+      + `${ergebnis.ohneMatch.length} ohne Treffer`
+      + (ergebnis.spruenge.length ? `, ${ergebnis.spruenge.length} Preissprünge zur Entscheidung` : "")
+      + ` — zum Sichern oben „Speichern".`);
     return ergebnis;
+  };
+
+  // Gebinde-Entscheidung (Preissprung im Import oder Gebinde-Check): packungen = Stamm-Packungen
+  // je Listen-Gebinde. listenpreis null = Preis bleibt, nur das Gebinde wird festgehalten.
+  const handleGebinde = (key, packungen, listenpreis = null) => {
+    const alt = priceList[key];
+    if (!alt || !writer) return;
+    if (listenpreis == null) {
+      handleArtikelPatches({ [key]: { ...alt, packungen_je_gebinde: packungen } });
+      setCloudMsg(`„${alt.ingredient_name}": ${packungen} Packung${packungen === 1 ? "" : "en"} je Gebinde festgehalten — zum Sichern oben „Speichern".`);
+      return;
+    }
+    const neu = gebindeUebernehmen(alt, listenpreis, packungen);
+    artikelPreisPatches({ [key]: neu });
+    setCloudMsg(`„${alt.ingredient_name}": ${fmtNum2(alt.package_price)} € → ${fmtNum2(neu.package_price)} € je Packung, Rezepturen neu gerechnet — zum Sichern oben „Speichern".`);
   };
 
   const handleProduktUpdate = (id, updates) => {
@@ -4622,6 +4969,37 @@ export default function KalkulationsApp() {
   // Datenpflege: Ei von Gramm auf Stück. Stückpreis aus dem Artikel „Eier“
   // (8,45 € je 30 = 0,28 €), 50 g je Ei als Gramm-Äquivalent - so rechnet
   // auch der Bestellvorschlag (Eimer 60 St = 3.000 g).
+  // Versteckte Stueck-Zeilen (Oreo "1 g") auf Stueck umstellen: Menge aus STUECK_VORGABEN bzw.
+  // der alten Zahl, Stueckpreis und Gramm je Stueck aus dem Artikel. Der Artikel bekommt
+  // Preisbasis Stueck und einen echten Grammpreis (Stueckpreis / Gramm je Stueck).
+  const handleStueckzeilenUmstellen = () => {
+    if (!writer) return;
+    const artikelNeu = {};
+    let zeilen = 0;
+    const next = produkte.map(p => {
+      let geaendert = false;
+      const zutaten = (p.zutaten || []).map(z => {
+        const key = (z.name || "").toLowerCase();
+        const artikel = priceList[key];
+        if (!versteckteStueckzeile(z, artikel)) return z;
+        geaendert = true; zeilen++;
+        const gramm = stueckGrammAusArtikel(artikel);
+        const jeStueck = stueckpreis({ ...artikel, preisbasis: "stueck" });
+        if (!artikelNeu[key]) {
+          artikelNeu[key] = { ...artikel, preisbasis: "stueck",
+            ...(gramm ? { gewicht_je_stueck_g: gramm, price_per_gram_ml: +(jeStueck / gramm).toFixed(10) } : {}) };
+        }
+        const stk = stueckVorgabe(z, p) ?? Math.max(1, Math.round(+z.menge_g || 0));
+        return normalisiereZutat({ ...z, einheit: "stk", menge_stk: stk, preis_je_stueck: jeStueck, gramm_je_stueck: gramm || null });
+      });
+      return geaendert ? { ...p, zutaten } : p;
+    });
+    if (!zeilen) { setCloudMsg("Keine Stückware in Gramm gefunden."); return; }
+    setProdukte(next);
+    handleArtikelPatches(artikelNeu);
+    setCloudMsg(`${zeilen} Rezeptzeile${zeilen === 1 ? "" : "n"} auf Stück umgestellt (${Object.values(artikelNeu).map(a => a.ingredient_name).join(", ")}) — zum Sichern oben „Speichern".`);
+  };
+
   const handleEiAufStueck = () => {
     if (!writer) return;
     const artikel = priceList["eier"]
@@ -4665,7 +5043,7 @@ export default function KalkulationsApp() {
     setCloudMsg(`✓ ${ids.length} Duplikate entfernt — oben „Speichern".`);
   };
 
-  const befunde = useMemo(() => pflegeBefunde(produkte, bowlBasis), [produkte, bowlBasis]);
+  const befunde = useMemo(() => pflegeBefunde(produkte, bowlBasis, priceList), [produkte, bowlBasis, priceList]);
 
   const handleProduktSave = (roh) => {
     // Rezeptzeilen gegen den Zutatenstamm verknuepfen (Stufe 1) - der Editor setzt zutat_id
@@ -4967,7 +5345,7 @@ export default function KalkulationsApp() {
         {aktiverTab === "Naehrwerte"     && <NaehrwerteTab produkte={naehrwerteJson.produkte} />}
         {aktiverTab === "Einkaufspreise" && (
           <EinkaufspreiseTab priceList={priceList} produkte={produkte} onUpdateArtikel={handleArtikelFelder} onAltAusbeute={handleAltAusbeuten}
-            onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel}
+            onFrischpreise={handleFrischpreise} onAddArtikel={handleAddArtikel} onGebinde={handleGebinde}
             onPreisAbgleich={handlePreisAbgleich} onDeleteArtikel={handleDeleteArtikel} canEdit={writer}
             onArtikelPatches={handleArtikelPatches}
             onSpeichern={cloudEnabled ? (writer ? handleCloudSave : null) : handleJsonDownload}
@@ -4995,11 +5373,11 @@ export default function KalkulationsApp() {
             onDelete={handleProduktDelete}
             onNeu={handleProduktNeu}
             bowlBasis={bowlBasis} onBowlBasis={writer ? setBowlBasis : null} canEdit={writer}
-            befunde={befunde} onEiUmstellen={handleEiAufStueck} onDuplikateEntfernen={handleDuplikateEntfernen} />
+            befunde={befunde} onEiUmstellen={handleEiAufStueck} onStueckUmstellen={handleStueckzeilenUmstellen} onDuplikateEntfernen={handleDuplikateEntfernen} />
         )}
       </main>
 
-      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport}
+      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport} onGebinde={handleGebinde}
         mappings={importMappings}
         onMappingMerken={(signatur, mapping, semantik, lieferant) =>
           setImportMappings(prev => ({ ...prev, [signatur]: { ...mapping, semantik, lieferant } }))} />

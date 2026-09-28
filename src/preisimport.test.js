@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalisiereNummer, verarbeitePreisimport, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
+import { normalisiereNummer, verarbeitePreisimport, erkenneSpalten, spaltenSignatur, gebindeUebernehmen } from "./preisimport.js";
 
 // Nachbauten echter Stammartikel (Struktur aus rezeptdatenbank.json)
 const ROTKOHL = {
@@ -279,5 +279,58 @@ describe("spaltenSignatur", () => {
 
   it("liefert fuer leere Spaltenlisten einen stabilen Schluessel", () => {
     expect(spaltenSignatur([])).toBe(spaltenSignatur(undefined));
+  });
+});
+
+// Oreo, 09/2026: Stamm = 1 Packung mit 14 Keksen, TG-Liste = Karton mit 16 Packungen
+const OREO = {
+  ingredient_name: "Oreo Cookies (154g)", article_number: "451991.0", unit: "Stück",
+  package_size: 14, package_price: 1.39, net_weight: 1, net_price_per_unit: 0.09928571429,
+  price_per_gram_ml: 0.09928571429, date_last_checked: "2025-03-21 00:00:00",
+};
+
+describe("verarbeitePreisimport - Gebinde und Preisspruenge", () => {
+  it("uebernimmt einen Kartonpreis NICHT stillschweigend, sondern meldet den Sprung", () => {
+    const r = verarbeitePreisimport({
+      zeilen: [{ name: "Oreo Original 154g", preis: 23.84, artNr: "451991" }],
+      priceList: { "oreo cookies (154g)": OREO }, heute: HEUTE,
+    });
+    expect(r.patches).toEqual({});
+    expect(r.geaendert).toBe(0);
+    expect(r.spruenge).toHaveLength(1);
+    expect(r.spruenge[0]).toMatchObject({ key: "oreo cookies (154g)", altPreis: 1.39, listenpreis: 23.84, vorschlag: 17 });
+  });
+
+  it("rechnet mit packungen_je_gebinde den Listenpreis auf die Stamm-Packung um", () => {
+    const r = verarbeitePreisimport({
+      zeilen: [{ name: "Oreo Original 154g", preis: 23.84, artNr: "451991" }],
+      priceList: { "oreo cookies (154g)": { ...OREO, packungen_je_gebinde: 16 } }, heute: HEUTE,
+    });
+    const neu = r.patches["oreo cookies (154g)"];
+    expect(neu.package_price).toBeCloseTo(1.49, 4);
+    expect(neu.price_per_gram_ml).toBeCloseTo(1.49 / 14, 6); // je Keks
+    expect(r.spruenge).toHaveLength(0);
+  });
+
+  it("meldet auch einen Sprung nach unten (Liste fuehrt kleinere Packung)", () => {
+    const spinat = { ingredient_name: "Babyspinat", article_number: "1", unit: "g", package_size: 1000, package_price: 7.53, price_per_gram_ml: 0.00753 };
+    const r = verarbeitePreisimport({ zeilen: [{ name: "Babyspinat 300g", preis: 2.196, artNr: "1" }], priceList: { babyspinat: spinat }, heute: HEUTE });
+    expect(r.spruenge).toHaveLength(1);
+    expect(r.spruenge[0].vorschlag).toBeNull();
+  });
+
+  it("gebindeUebernehmen teilt den Listenpreis und merkt sich das Gebinde", () => {
+    const neu = gebindeUebernehmen(OREO, 23.84, 16, HEUTE);
+    expect(neu.package_price).toBeCloseTo(1.49, 4);
+    expect(neu.packungen_je_gebinde).toBe(16);
+    expect(neu.price_per_gram_ml).toBeCloseTo(0.10642857, 6);
+    expect(neu.date_last_checked).toBe("2026-08-12 00:00:00");
+  });
+
+  it("repariert einen schon falsch importierten Kartonpreis (23,84 auf 14 Kekse)", () => {
+    const kaputt = { ...OREO, package_price: 23.84, price_per_gram_ml: 1.702857142857, net_price_per_unit: 1.702857142857 };
+    const neu = gebindeUebernehmen(kaputt, 23.84, 16, HEUTE);
+    expect(neu.package_price).toBeCloseTo(1.49, 4);
+    expect(neu.price_per_gram_ml).toBeCloseTo(0.10642857, 6);
   });
 });

@@ -45,8 +45,21 @@ export function lieferantVon(artikel) {
   return /^\s*bunzl\b/i.test(String(artikel?.article_number ?? "")) ? "BUNZL" : "Transgourmet";
 }
 
+/** Wie viele Stamm-Packungen stecken in einem Gebinde der Lieferantenliste? Standard 1.
+ *  Oreo: Stamm = 1 Packung (14 Kekse), TG-Liste = Karton mit 16 Packungen -> 16. */
+export function packungenJeGebinde(artikel) {
+  const n = +(artikel && artikel.packungen_je_gebinde) || 0;
+  return n > 0 ? n : 1;
+}
+
+// Ab diesem Faktor zwischen altem und neuem Packungspreis uebernimmt der Import nicht
+// stillschweigend. Echte Preisaenderungen liegen weit darunter; ein Sprung um das Doppelte
+// oder mehr heisst fast immer: Gebinde der Liste != Packung im Stamm (Oreo, 09/2026:
+// Kartonpreis 23,84 EUR auf eine 14er-Packung gerechnet = 1,70 EUR je Keks).
+export const SPRUNG_FAKTOR = 2;
+
 /** Preisfelder eines Artikels proportional auf den neuen Gebindepreis ziehen. */
-function skaliere(artikel, neuerGebindepreis) {
+export function skaliere(artikel, neuerGebindepreis) {
   const alt = +artikel.package_price || 0;
   const neu = { ...artikel, package_price: neuerGebindepreis };
   if (alt > 0) {
@@ -79,7 +92,10 @@ function skaliere(artikel, neuerGebindepreis) {
  *                   gemeldet werden nur Stammartikel dieses Lieferanten - sonst stuenden bei
  *                   jedem TG-Upload alle BUNZL-Artikel auf der Nachpflegeliste (und umgekehrt).
  * @returns { patches: {key: neuerArtikel}, geaendert, unveraendert,
- *            ohneMatch: [zeile], pruefen: [name], veraltet: [artikel] }
+ *            ohneMatch: [zeile], pruefen: [name], veraltet: [artikel],
+ *            spruenge: [{ key, name, altPreis, neuPreis, listenpreis, faktor, packungen, vorschlag }] }
+ *   spruenge = Preis aenderte sich um SPRUNG_FAKTOR oder mehr: NICHT uebernommen, der Nutzer
+ *   entscheidet (Gebinde festlegen oder Preis so uebernehmen).
  */
 export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde", heute = new Date(), lieferant = "Transgourmet" }) {
   const vomLieferanten = (a) => lieferantVon(a) === normalisiereLieferant(lieferant);
@@ -99,6 +115,7 @@ export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde",
   const ohneMatch = [];
   const pruefen = [];
   const nummernInCsv = new Set();
+  const spruenge = [];
   let geaendert = 0;
   let unveraendert = 0;
 
@@ -111,12 +128,23 @@ export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde",
       continue;
     }
     const basis = patches[key] || priceList[key];
+    const packungen = packungenJeGebinde(basis);
     const gebindepreis = semantik === "grundpreis"
       ? berechneGebindepreisAusGrundpreis(basis, zeile.preis)
-      : +zeile.preis;
+      : +zeile.preis / packungen;
     if (gebindepreis == null || !(gebindepreis > 0)) {
       ohneMatch.push(zeile);
       continue;
+    }
+    const altPreis = +basis.package_price || 0;
+    if (altPreis > 0) {
+      const faktor = gebindepreis / altPreis;
+      if (faktor >= SPRUNG_FAKTOR || faktor <= 1 / SPRUNG_FAKTOR) {
+        const vorschlag = faktor >= SPRUNG_FAKTOR ? Math.round(faktor) * packungen : null;
+        spruenge.push({ key, name: basis.ingredient_name, altPreis, neuPreis: gebindepreis,
+          listenpreis: +zeile.preis, faktor, packungen, vorschlag, listenname: zeile.name });
+        continue;
+      }
     }
     if (Math.abs((+basis.package_price || 0) - gebindepreis) < 0.0005) {
       unveraendert++;
@@ -142,7 +170,7 @@ export function verarbeitePreisimport({ zeilen, priceList, semantik = "gebinde",
     }
   }
 
-  return { patches, geaendert, unveraendert, ohneMatch, pruefen, veraltet };
+  return { patches, geaendert, unveraendert, ohneMatch, pruefen, veraltet, spruenge };
 }
 
 // ===========================================================================
@@ -320,6 +348,21 @@ export function spaltenSignatur(cols) {
     .filter(Boolean)
     .sort()
     .join("|");
+}
+
+/**
+ * Entscheidung zu einem Preissprung bzw. Gebinde-Befund umsetzen.
+ * packungen = Stamm-Packungen je Listen-Gebinde (1 = "Preis so uebernehmen").
+ * Der Listenpreis wird durch die Packungen geteilt und proportional auf alle Preisfelder
+ * gezogen; packungen_je_gebinde bleibt am Artikel, damit der naechste Import richtig rechnet.
+ */
+export function gebindeUebernehmen(artikel, listenpreis, packungen, heute = new Date()) {
+  const n = +packungen > 0 ? +packungen : 1;
+  const preis = +(+listenpreis / n).toFixed(4);
+  const { artikel: neu } = skaliere(artikel, preis);
+  neu.packungen_je_gebinde = n;
+  neu.date_last_checked = `${heute.toISOString().slice(0, 10)} 00:00:00`;
+  return neu;
 }
 
 /** Grundpreis (EUR/kg bzw. EUR/l) in den Gebindepreis des Artikels umrechnen. */
