@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { standardVorlage, aufloeseVorlage, gepflegt } from "./bon.js";
+import { frage } from "./ui/dialog.jsx";
 
 const PLATZHALTER = [
   { tag: "{produkt}",     hilfe: "Produktname" },
@@ -120,8 +121,8 @@ export default function BonVorlagenEditor({ warengruppen, vorlagen, onChange, ca
 
           {hatEigen && gewaehlt !== "_default" && canEdit && (
             <button
-              onClick={() => {
-                if (!window.confirm(`Eigene Vorlage für ${gewaehlt} löschen? Danach gilt wieder der Standard.`)) return;
+              onClick={async () => {
+                if (!(await frage({ text: `Eigene Vorlage für ${gewaehlt} löschen? Danach gilt wieder der Standard.`, ja: "Löschen", gefahr: true }))) return;
                 const next = { ...(vorlagen || {}) };
                 next[gewaehlt] = null;
                 onChange(next);

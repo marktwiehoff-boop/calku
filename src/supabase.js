@@ -51,16 +51,19 @@ export async function loadKalkulation() {
   return data || null;
 }
 
-// Speichert das komplette Dokument (nur Writer; sonst blockt RLS).
+// Speichert das komplette Dokument (nur Writer; sonst blockt RLS). Gibt den Zeitstempel zurueck,
+// damit die App das Echo ihrer eigenen Speicherung im Live-Sync erkennt.
 export async function saveKalkulation(payload) {
   const { data: u } = await supabase.auth.getUser();
+  const updated_at = new Date().toISOString();
   const { error } = await supabase.from("kalkulation_state").upsert({
     id: ROW_ID,
     data: payload,
-    updated_at: new Date().toISOString(),
+    updated_at,
     updated_by: u?.user?.email || null,
   });
   if (error) throw error;
+  return updated_at;
 }
 
 // Live-Sync: ruft cb(neuesDokument) bei jeder Änderung des Datensatzes.

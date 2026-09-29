@@ -15,6 +15,7 @@ import {
   zusammenfuehren, stempleStamm, bereinigeStueckgewichte, stammBefunde, bereinigeListe,
 } from "./zutaten.js";
 import { bereinigeArtikel } from "./artikelbereinigung.js";
+import { frage } from "./ui/dialog.jsx";
 
 const fmtNum = (v) => new Intl.NumberFormat("de-DE").format(Math.round(v || 0));
 const fmtG = (g) => (g >= 1000 ? `${new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(g / 1000)} kg` : `${fmtNum(g)} g`);
@@ -177,7 +178,7 @@ export default function ZutatenTab({ zutaten = [], produkte = [], priceList = {}
   const anlegenAusRezepten = () => {
     const { zutaten: neu, neu: n } = zutatenAusRezepten(produkte, priceList, zutaten);
     const { produkte: pn, verknuepft } = verknuepfeProdukte(produkte, neu);
-    setzeBeides(neu, pn, `${n} Zutaten angelegt, ${verknuepft} Rezeptzeilen verknüpft — bitte prüfen und oben „Speichern".`);
+    setzeBeides(neu, pn, `${n} Zutaten angelegt, ${verknuepft} Rezeptzeilen verknüpft`);
   };
 
   const patchZutat = (id, patch) => {
@@ -217,10 +218,10 @@ export default function ZutatenTab({ zutaten = [], produkte = [], priceList = {}
     setzeBeides(r.zutaten, r.produkte, `Zusammengeführt in „${ziel?.name}" — ${r.zeilen} Rezeptzeilen umgehängt.`);
   };
 
-  const loeschen = (id) => {
+  const loeschen = async (id) => {
     if (jeZeilen.get(id)) return;
     const z = zutaten.find((x) => x.id === id);
-    if (!window.confirm(`„${z?.name}" wirklich löschen?`)) return;
+    if (!(await frage({ text: `„${z?.name}“ wirklich löschen?`, ja: "Löschen", gefahr: true }))) return;
     setzeBeides(zutaten.filter((x) => x.id !== id), produkte, `„${z?.name}" gelöscht.`);
   };
 
@@ -238,7 +239,7 @@ export default function ZutatenTab({ zutaten = [], produkte = [], priceList = {}
   const artikelUebernehmen = () => {
     if (!bericht) return;
     onArtikelPatches(bericht.patches);
-    setMeldung(`${bericht.geaendert} Artikel bereinigt (Einheit, Packungsgröße, Preisbasis, Nettogewicht) — Preise unverändert. Bitte oben „Speichern".`);
+    setMeldung(`${bericht.geaendert} Artikel bereinigt (Einheit, Packungsgröße, Preisbasis, Nettogewicht) — Preise unverändert.`);
     setBericht(null);
   };
 
