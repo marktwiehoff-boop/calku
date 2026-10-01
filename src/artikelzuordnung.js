@@ -6,6 +6,7 @@
 // sie ueber artikel_nr laengst mit dem Artikel verknuepft. Jetzt:
 //   1. Name der Zeile = Artikelname (wie bisher)
 //   2. sonst: Zutat der Zeile (zutat_id, Name/Alias) -> artikel_nr -> Artikel mit dieser Nummer
+//   3. sonst: artikel_key der Zutat (Artikel ohne echte Nummer, im Zuordnungs-Assistenten gewaehlt)
 //
 // Pur und ohne React - Tests in artikelzuordnung.test.js.
 import { normalisiereNummer } from "./preisimport.js";
@@ -27,5 +28,8 @@ export function artikelKey(zeile, zuordnung) {
   if (name && zuordnung.priceList[name]) return name;
   const zutat = findeZutat(zuordnung.zutaten, zeile ?? {}, zuordnung.stamm);
   const nr = normalisiereNummer(zutat?.artikel_nr);
-  return (nr && zuordnung.jeNummer.get(nr)) || null;
+  if (nr && zuordnung.jeNummer.get(nr)) return zuordnung.jeNummer.get(nr);
+  // Artikel ohne echte Nummer (Z-Platzhalter, Handpflege): direkt ueber den Schluessel
+  const key = String(zutat?.artikel_key ?? "").toLowerCase();
+  return key && zuordnung.priceList[key] ? key : null;
 }

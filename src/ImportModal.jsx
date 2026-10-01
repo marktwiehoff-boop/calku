@@ -4,7 +4,13 @@ import { LIEFERANTEN, erkenneSpalten, spaltenSignatur } from "./preisimport.js";
 import Papa from "papaparse";
 import { FileSpreadsheet } from "lucide-react";
 import { fmtNum2 } from "./kalkulation.js";
-export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {}, onMappingMerken }) {
+import { istTgErweitert, repariereTgCsv } from "./tgimport.js";
+
+const fmt3 = (v) => new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 3 }).format(v || 0);
+// Preis je Basiseinheit lesbar: g/ml als EUR/kg bzw. EUR/l, Stueck als EUR/Stk
+const jeEinheit = (wert, basis) => basis === "stk" ? `${fmt3(wert)} €/Stk` : `${fmt3((wert || 0) * 1000)} €/${basis === "ml" ? "l" : "kg"}`;
+
+export function ImportModal({ open, onClose, onImport, onImportTg, onTgArtikel, onGebinde, mappings = {}, onMappingMerken }) {
   const [preview, setPreview] = useState(null);
   const [mapping, setMapping] = useState({ name: "", preis: "", einheit: "", artNr: "" });
   // Signatur der gerade geladenen Dateiform + Hinweis, ob die Zuordnung aus
@@ -22,6 +28,12 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
   // Preisspruenge: je Artikel die getroffene Entscheidung (Text) bzw. die eingetippte Packungszahl
   const [sprungErledigt, setSprungErledigt] = useState({});
   const [sprungAnzahl, setSprungAnzahl] = useState({});
+  // Transgourmet "CSV Erweitert": eigener Weg (tgimport.js) - Preis je kg/l/Stueck direkt aus
+  // Karton, Inhalt und Rezeptmenge, Stamm-Packung = Liefergebinde.
+  const [tg, setTg] = useState(null);              // { rows, anzahl }
+  const [tgErgebnis, setTgErgebnis] = useState(null);
+  const [tgErledigt, setTgErledigt] = useState({}); // key -> Text
+  const [neuUebernommen, setNeuUebernommen] = useState(false);
   const fileRef = useRef(null);
 
   if (!open) return null;
@@ -30,6 +42,11 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
     const f = e.target.files?.[0];
     if (!f) return;
     const uebernehmen = (res) => {
+        if (istTgErweitert(res.meta?.fields || [])) {
+          setLieferant("Transgourmet");
+          setTg({ rows: res.data, anzahl: res.data.length });
+          return;
+        }
         const cols = res.meta?.fields || [];
         setPreview({ rows: res.data.slice(0, 5), cols, all: res.data });
 
@@ -61,19 +78,24 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
     };
 
     // Erst als UTF-8 lesen. Steht danach das Ersatzzeichen im Text, war die
-    // Datei ANSI (Excel-Standard beim CSV-Export) - dann als windows-1252
-    // erneut lesen. Sonst sind alle Umlaute kaputt und Artikel wie
-    // "Erdnuesse" finden ihren Stamm-Eintrag nicht mehr.
-    const lesen = (encoding) => Papa.parse(f, {
-      header: true, skipEmptyLines: true, encoding,
-      complete: (res) => {
-        const probe = (res.meta?.fields || []).join("|")
-          + res.data.slice(0, 50).map(r => Object.values(r).join("|")).join("|");
-        if (!encoding && probe.includes("�")) { lesen("windows-1252"); return; }
-        uebernehmen(res);
-      },
+    // Datei ANSI (Excel-Standard beim CSV-Export, auch der TG-Shop) - dann als
+    // windows-1252. Sonst sind alle Umlaute kaputt und Artikel wie "Erdnuesse"
+    // finden ihren Stamm-Eintrag nicht mehr. Der Text wird vor dem Parsen
+    // gelesen, damit die kaputten Anfuehrungszeichen der TG-Liste repariert
+    // werden koennen.
+    f.arrayBuffer().then((buf) => {
+      let text = new TextDecoder("utf-8").decode(buf);
+      if (text.includes("\uFFFD")) text = new TextDecoder("windows-1252").decode(buf);
+      const kopf = text.slice(0, text.indexOf("\n") + 1);
+      if (kopf.includes("Rezeptmenge") && kopf.includes("Inhalt")) text = repariereTgCsv(text);
+      uebernehmen(Papa.parse(text, { header: true, skipEmptyLines: true }));
     });
-    lesen(undefined);
+  };
+
+  const tgImportieren = () => {
+    const bericht = onImportTg?.(tg.rows);
+    setTg(null);
+    setTgErgebnis(bericht || null);
   };
 
   const importieren = () => {
@@ -99,6 +121,7 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
   const schliessen = () => {
     setErgebnis(null); setPreview(null); setAusGedaechtnis(false); setSignatur("");
     setSprungErledigt({}); setSprungAnzahl({});
+    setTg(null); setTgErgebnis(null); setTgErledigt({}); setNeuUebernommen(false);
     onClose();
   };
 
@@ -112,7 +135,7 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
           <button onClick={schliessen} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
         </div>
         <div className="p-5 space-y-4">
-          {!ergebnis && (
+          {!ergebnis && !tg && !tgErgebnis && (
             <div className="flex items-center gap-2 text-sm text-gray-700">
               <span className="font-medium">Lieferant der Liste:</span>
               {LIEFERANTEN.map(l => (
@@ -123,7 +146,41 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
               ))}
             </div>
           )}
-          {ergebnis ? (
+          {tgErgebnis ? (
+            <TgErgebnis e={tgErgebnis} erledigt={tgErledigt} neuUebernommen={neuUebernommen}
+              onSprung={(sp, uebernehmen) => {
+                if (uebernehmen) onTgArtikel?.({ [sp.key]: sp.artikel }, false);
+                setTgErledigt(x => ({ ...x, [sp.key]: uebernehmen ? `übernommen: ${jeEinheit(sp.nachher, sp.zeile.basis)}` : "bleibt wie bisher" }));
+              }}
+              onAlleSpruenge={() => {
+                const offen = tgErgebnis.spruenge.filter(sp => sp.artikel && !tgErledigt[sp.key]);
+                onTgArtikel?.(Object.fromEntries(offen.map(sp => [sp.key, sp.artikel])), false);
+                setTgErledigt(x => ({ ...x, ...Object.fromEntries(offen.map(sp => [sp.key, `übernommen: ${jeEinheit(sp.nachher, sp.zeile.basis)}`])) }));
+              }}
+              onNeu={() => {
+                onTgArtikel?.(Object.fromEntries(tgErgebnis.neu.map(n => [n.artikel.ingredient_name.toLowerCase(), n.artikel])), true);
+                setNeuUebernommen(true);
+              }}
+              onFertig={schliessen} />
+          ) : tg ? (
+            <>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-emerald-900 space-y-1">
+                <div className="font-semibold">Transgourmet-Preisliste „CSV Erweitert“ erkannt · {tg.anzahl} Zeilen</div>
+                <p className="text-xs text-emerald-800">
+                  Der Preis je kg, l oder Stück wird direkt aus Kartonpreis, Inhalt und Rezeptmenge gerechnet.
+                  Jeder Artikel bekommt das Liefergebinde als Packung, Gebinde-Faktoren sind nicht mehr nötig.
+                  Abgeglichen wird über die Artikelnummer. Die neuen Preise fließen in alle Rezepturen, deren
+                  Zutat mit dem Artikel verknüpft ist.
+                </p>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setTg(null)} className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Zurück</button>
+                <button onClick={tgImportieren} className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-800">
+                  Preise übernehmen
+                </button>
+              </div>
+            </>
+          ) : ergebnis ? (
             <>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
@@ -320,3 +377,101 @@ export function ImportModal({ open, onClose, onImport, onGebinde, mappings = {},
   );
 }
 
+
+// Ergebnis des erweiterten TG-Imports: Kennzahlen, Spruenge zur Entscheidung, neue Artikel.
+function TgErgebnis({ e, erledigt, neuUebernommen, onSprung, onAlleSpruenge, onNeu, onFertig }) {
+  const offen = e.spruenge.filter(sp => sp.artikel && !erledigt[sp.key]).length;
+  const gruppen = {};
+  for (const n of e.neu) { const g = n.artikel.einkaufsgruppe || "ohne Gruppe"; gruppen[g] = (gruppen[g] || 0) + 1; }
+  const knopf = "px-2 py-1 rounded border text-xs whitespace-nowrap";
+  return (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {[
+          { label: "Preise aktualisiert", wert: e.geaendert, farbe: "text-green-700" },
+          { label: "bestätigt", wert: e.unveraendert, farbe: "text-gray-700" },
+          { label: "Sprünge zur Entscheidung", wert: e.spruenge.length, farbe: e.spruenge.length ? "text-red-600" : "text-gray-700" },
+          { label: "neu in der Liste", wert: e.neu.length, farbe: "text-gray-700" },
+          { label: "nicht mehr in der Liste", wert: e.veraltet.length, farbe: e.veraltet.length ? "text-amber-600" : "text-gray-700" },
+        ].map(k => (
+          <div key={k.label} className="border border-gray-200 rounded-lg p-3">
+            <div className="text-xs text-gray-500">{k.label}</div>
+            <div className={`text-xl font-bold tabular-nums ${k.farbe}`}>{k.wert}</div>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-gray-500">Preisstand der Liste: {e.stand}. Aktualisierte Preise sind schon in den verknüpften Rezepturen.</p>
+
+      {e.spruenge.length > 0 && (
+        <div className="border-2 border-red-200 rounded-lg p-3 space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs text-red-800 max-w-xl">
+              <b>Diese Preise sind noch nicht übernommen.</b> Sie ändern sich um das Doppelte oder mehr, oder die
+              Liste widerspricht sich selbst. Meist stand bisher ein Kartonpreis auf der Einzelpackung, dann ist der
+              neue Preis richtig. Gelbe Hinweise bitte genau ansehen.
+            </p>
+            {offen > 0 && (
+              <button onClick={onAlleSpruenge} className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-700 text-white hover:bg-red-800">
+                Alle {offen} übernehmen
+              </button>
+            )}
+          </div>
+          <table className="w-full text-xs">
+            <tbody>
+              {e.spruenge.map(sp => (
+                <tr key={sp.key} className="border-t border-gray-100 align-top">
+                  <td className="py-2 pr-2">
+                    <div className="font-medium text-gray-800">{sp.alt.ingredient_name}</div>
+                    {sp.faktor && (
+                      <div className="text-gray-500">
+                        bisher {jeEinheit(sp.vorher, sp.zeile.basis)} → Liste {jeEinheit(sp.nachher, sp.zeile.basis)} (×{new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(sp.faktor)})
+                      </div>
+                    )}
+                    {sp.grund && <div className="text-amber-700">{sp.grund}</div>}
+                    <div className="text-gray-400">{sp.zeile.name} · {fmtNum2(sp.zeile.preis)} € je Karton mit {sp.zeile.inhalt} × {sp.zeile.rm}</div>
+                  </td>
+                  <td className="py-2 text-right">
+                    {erledigt[sp.key] ? <span className="text-emerald-700 whitespace-nowrap">✓ {erledigt[sp.key]}</span>
+                      : sp.artikel ? (
+                        <span className="inline-flex gap-1">
+                          <button onClick={() => onSprung(sp, true)} className={`${knopf} border-emerald-300 text-emerald-800 hover:bg-emerald-50`}>Übernehmen</button>
+                          <button onClick={() => onSprung(sp, false)} className={`${knopf} border-gray-300 text-gray-600 hover:bg-gray-50`}>Nicht übernehmen</button>
+                        </span>
+                      ) : <span className="text-amber-700">von Hand</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {e.neu.length > 0 && (
+        <div className="border border-gray-200 rounded-lg p-3 space-y-2 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-gray-700 max-w-xl">
+              <b>{e.neu.length} Artikel der Liste fehlen im Stamm.</b> Übernommen stehen sie mit Preis, Packung und
+              Warengruppe bereit und tauchen als Vorschlag in der Zutaten-Zuordnung auf.
+              <span className="block text-gray-500 mt-1">{Object.entries(gruppen).map(([g, n]) => `${g} ${n}`).join(" · ")}</span>
+            </p>
+            {neuUebernommen
+              ? <span className="text-emerald-700">✓ übernommen</span>
+              : <button onClick={onNeu} className="px-3 py-1.5 rounded-lg font-medium bg-green-700 text-white hover:bg-green-800">{e.neu.length} Artikel übernehmen</button>}
+          </div>
+        </div>
+      )}
+
+      {e.veraltet.length > 0 && (
+        <details className="text-xs text-gray-600">
+          <summary className="cursor-pointer">{e.veraltet.length} Transgourmet-Artikel im Stamm, die diese Liste nicht führt</summary>
+          <textarea readOnly rows={Math.min(8, e.veraltet.length)} className="mt-2 w-full border border-gray-200 rounded-lg p-2 font-mono"
+            value={e.veraltet.map(a => `${a.article_number || "?"}  ${a.ingredient_name}`).join("\n")} />
+        </details>
+      )}
+
+      <div className="flex justify-end">
+        <button onClick={onFertig} className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-800">Fertig</button>
+      </div>
+    </>
+  );
+}

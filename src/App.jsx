@@ -24,11 +24,13 @@ import logoWeiss from "./assets/logo-weiss.png";
 import BonsTab from "./BonsTab.jsx";
 import { bonStatus } from "./bon.js";
 import ZutatenTab from "./ZutatenTab.jsx";
-import { verknuepfeProdukte, importiereZutaten, zutatAusRezeptzeilen, sortiereStamm as sortiereZutatenstamm } from "./zutaten.js";
+import { verknuepfeProdukte, importiereZutaten, zutatAusRezeptzeilen, sortiereStamm as sortiereZutatenstamm, findeZutat, artikelNummer, normalisiereStamm } from "./zutaten.js";
 
 import { DEFAULT_BOWL_BASIS, DEMO_PRODUKTE, EI_GEWICHT_G, EI_MUSTER, SCHWUND_PCT, WARENGRUPPEN, aufgeloesteProdukte, berechne, bowlBasisOderDefault, buildPlIndex, dokumentZumSpeichern, findPreisProG, fmtDate, fmtEUR, fmtNum, fmtNum2, fmtPct, istStueck, normalisiereZutat, normalizeRecipe, pflegeBefunde, stueckGrammAusArtikel, stueckVorgabe, stueckgewicht, stueckpreis, versteckteStueckzeile } from "./kalkulation.js";
 import { ProduktEditModal, leeresProdukt } from "./ProduktEditModal.jsx";
-import { EinkaufspreiseTab, FRISCH_ARTIKEL } from "./tabs/EinkaufspreiseTab.jsx";
+import { EinkaufspreiseTab, FRISCH_ARTIKEL, OHNE_GRUPPE, kategorisiereZutat } from "./tabs/EinkaufspreiseTab.jsx";
+import { verarbeiteTgErweitert } from "./tgimport.js";
+import ZuordnungTab from "./tabs/ZuordnungTab.jsx";
 import { InventurTab } from "./tabs/InventurTab.jsx";
 import { KampagnenTab, WarengruppenTab } from "./tabs/Warengruppen.jsx";
 import { ImportModal } from "./ImportModal.jsx";
@@ -457,6 +459,35 @@ export default function KalkulationsApp() {
     }
   };
 
+  // Transgourmet "CSV Erweitert" (tgimport.js): Preis je kg/l/Stueck direkt aus der Liste,
+  // Stamm-Packung = Liefergebinde. Aenderungen gehen sofort in Stamm und verknuepfte Rezepturen;
+  // Spruenge und neue Artikel entscheidet der Nutzer im Dialog (handleTgArtikel).
+  const handleTgImport = (rows) => {
+    const e = verarbeiteTgErweitert({ rows, priceList,
+      gruppeVorschlag: (name) => { const g = kategorisiereZutat(name); return g === OHNE_GRUPPE ? null : g; } });
+    artikelPreisPatches(e.patches);
+    setLetzterImport({ datum: new Date(), anzahl: rows.length, veraendert: e.geaendert });
+    setCloudMsg(`Transgourmet-Liste ${e.stand}: ${e.geaendert} Preise aktualisiert, ${e.unveraendert} bestätigt`
+      + (e.spruenge.length ? `, ${e.spruenge.length} Sprünge zur Entscheidung` : "")
+      + (e.neu.length ? `, ${e.neu.length} neue Artikel in der Liste` : "") + ".");
+    return e;
+  };
+
+  // Aus dem TG-Dialog: entschiedene Spruenge (neu = false, Preise in die Rezepturen) oder neue
+  // Artikel (neu = true). Neue Artikel mit einem Namen, den es schon gibt, bekommen die Nummer dazu.
+  const handleTgArtikel = (patches, neu) => {
+    if (!writer) return;
+    if (!neu) { artikelPreisPatches(patches); return; }
+    const sauber = {};
+    for (const a of Object.values(patches)) {
+      let name = a.ingredient_name;
+      if (priceList[name.toLowerCase()] || sauber[name.toLowerCase()]) name = `${name} (Art. ${a.article_number})`;
+      sauber[name.toLowerCase()] = { ...a, ingredient_name: name };
+    }
+    handleArtikelPatches(sauber);
+    setCloudMsg(`${Object.keys(sauber).length} Transgourmet-Artikel in den Stamm übernommen.`);
+  };
+
   const handlePriceImport = (aktualisierungen, semantik = "gebinde", lieferant = "Transgourmet") => {
     const ergebnis = verarbeitePreisimport({ zeilen: aktualisierungen, priceList, semantik, lieferant });
     artikelPreisPatches(ergebnis.patches);
@@ -738,7 +769,44 @@ export default function KalkulationsApp() {
   // auch der Bestellvorschlag (Eimer 60 St = 3.000 g).
   // Rezeptur-Check: Befunde fuer Tab und Zaehler. Frischpress-Saefte rechnen bewusst mit dem
   // Preis aus „Frischpress-Preise“, nicht mit dem Stamm.
-  const ohneStammabgleich = useMemo(() => new Set(FRISCH_ARTIKEL.map(a => a.zutat.toLowerCase())), []);
+  // Zutaten mit "eigener Kalkulation" (Zuordnung) brauchen keinen Artikel.
+  const ohneStammabgleich = useMemo(() => new Set([
+    ...FRISCH_ARTIKEL.map(a => a.zutat.toLowerCase()),
+    ...zutaten.filter(z => z.ohne_artikel).flatMap(z => [z.name, ...(z.aliase || [])].map(n => String(n).trim().toLowerCase())),
+  ]), [zutaten]);
+
+  // Zuordnungs-Assistent: Zutat <-> Einkaufsartikel im Zutatenstamm festhalten. key = Artikel,
+  // null + eigen = bewusst ohne Artikel, null ohne eigen = Zuordnung loesen.
+  const zutatSetzen = (name, key, eigen = false) => {
+    if (!writer) return;
+    const artikel = key ? priceList[key] : null;
+    let liste = [...zutaten];
+    let z = findeZutat(liste, { name });
+    if (!z) {
+      const zeilen = produkte.flatMap(p => (p.zutaten || []).filter(r => String(r.name || "").trim().toLowerCase() === name.trim().toLowerCase()));
+      z = zutatAusRezeptzeilen(name, zeilen, artikel);
+      let id = z.id || "zutat", n = 2;
+      while (liste.some(x => x.id === id)) id = `${z.id}-${n++}`;
+      z = { ...z, id };
+      liste.push(z);
+    }
+    const nr = artikel ? artikelNummer(artikel) : null;
+    const neu = normalisiereStamm({ ...z, artikel_nr: nr, artikel_key: artikel && !nr ? key : null, ohne_artikel: !artikel && eigen });
+    liste = sortiereZutatenstamm(liste.map(x => (x.id === z.id ? neu : x)));
+    setZutaten(liste);
+    setProdukte(prev => verknuepfeProdukte(prev, liste).produkte);
+    setCloudMsg(artikel ? `„${name}“ → ${artikel.ingredient_name}` : eigen ? `„${name}“: eigene Kalkulation` : `„${name}“: Zuordnung gelöst`);
+  };
+  const zuordnungOffen = useMemo(() => {
+    const namen = new Set();
+    for (const p of produkte) for (const z of p.zutaten || []) {
+      const n = String(z.name || "").trim();
+      if (!n || namen.has(n.toLowerCase())) continue;
+      if (!artikelVon(z) && !ohneStammabgleich.has(n.toLowerCase())) namen.add(n.toLowerCase());
+    }
+    return namen.size;
+  }, [produkte, artikelVon, ohneStammabgleich]);
+
   const rezepturBefunde = useMemo(
     () => pruefeRezepturen(produkte, { artikelVon, ohneStammabgleich }),
     [produkte, artikelVon, ohneStammabgleich]);
@@ -931,6 +999,7 @@ export default function KalkulationsApp() {
     { id: "Naehrwerte",     label: "Nährwerttabelle" },
     { id: "Einkaufspreise", label: "Einkaufspreise" },
     { id: "Zutaten",        label: "Zutaten" },
+    { id: "Zuordnung",      label: "Zuordnung" },
     { id: "Rezepturcheck",  label: "Rezeptur-Check" },
     { id: "Produktionsbons", label: "Produktionsbons" },
     { id: "Inventur",       label: "Inventur" },
@@ -1117,6 +1186,9 @@ export default function KalkulationsApp() {
                   if (t.id === "SystemWE")       return null;
                   if (t.id === "Einkaufspreise") return <span className="ml-1.5 text-xs text-gray-400">({Object.keys(priceList).length})</span>;
                   if (t.id === "Zutaten")        return <span className="ml-1.5 text-xs text-gray-400">({zutaten.length})</span>;
+                  if (t.id === "Zuordnung")      return zuordnungOffen
+                    ? <span className="ml-1.5 text-xs font-semibold text-amber-600">({zuordnungOffen})</span>
+                    : <span className="ml-1.5 text-xs text-emerald-600">✓</span>;
                   if (t.id === "Rezepturcheck")  return rezepturBefunde.length
                     ? <span className="ml-1.5 text-xs font-semibold text-amber-600">({rezepturBefunde.length})</span>
                     : <span className="ml-1.5 text-xs text-emerald-600">✓</span>;
@@ -1153,6 +1225,13 @@ export default function KalkulationsApp() {
             speichernMsg={cloudMsg} />
         )}
         {aktiverTab === "Inventur"       && <InventurTab inventur={inventurJson} />}
+        {aktiverTab === "Zuordnung" && (
+          <ZuordnungTab produkte={produkte} priceList={priceList} zuordnung={zuordnung} zutaten={zutaten} canEdit={writer}
+            onZuordnen={(name, key) => zutatSetzen(name, key)}
+            onEigen={(name) => zutatSetzen(name, null, true)}
+            onLoesen={(name) => zutatSetzen(name, null, false)}
+            onPreis={(e) => handleStammpreiseUebernehmen(e.rezeptzeilen.map(r => ({ produktId: r.produktId, zutat: e.name })))} />
+        )}
         {aktiverTab === "Rezepturcheck"  && (
           <RezepturCheckTab produkte={produkte} befunde={rezepturBefunde} canEdit={writer}
             onEdit={setEditProdukt} onPreiseUebernehmen={handleStammpreiseUebernehmen} />
@@ -1177,7 +1256,7 @@ export default function KalkulationsApp() {
 
       <DialogHost />
 
-      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport} onGebinde={handleGebinde}
+      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} onImport={handlePriceImport} onImportTg={handleTgImport} onTgArtikel={handleTgArtikel} onGebinde={handleGebinde}
         mappings={importMappings}
         onMappingMerken={(signatur, mapping, semantik, lieferant) =>
           setImportMappings(prev => ({ ...prev, [signatur]: { ...mapping, semantik, lieferant } }))} />
