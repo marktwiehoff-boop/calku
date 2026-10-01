@@ -102,3 +102,33 @@ export function artikelPreisAendern(artikel, patch, heute = new Date()) {
   }
   return { artikel: neu, proGAlt, proGNeu, geaendert };
 }
+
+// ---------------------------------------------------------------------------
+// Vertauschte Einheit (Befund 01.10.2026: 57 Artikel). Aus dem alten Formular "Neuer Artikel"
+// und dem Excel-Erbe stehen Packungen wie "Veganer Hirtenkäse 1000 kg" oder "Kokosdrink 1000 l"
+// im Stamm: die Menge ist in Gramm/Milliliter gemeint, die Einheit sagt kg/l. Der Preis je
+// Gramm stimmt (er wurde aus Preis / Menge gerechnet), aber jede spaetere Aenderung des
+// Packungspreises rechnete mit 1000-fach zu viel Ware. Reparatur: nur die Einheit auf g bzw.
+// ml stellen - Menge und alle Preisfelder bleiben, Rezepturen aendern sich nicht.
+
+const GROSS = { kg: "g", l: "ml", liter: "ml" };
+const AB_MENGE = 50; // 50 kg oder 50 l in einer Packung kauft niemand - darunter ist es echt
+
+/** Ist die Einheit vertauscht? ("1000 kg" = 1000 g) */
+export function einheitVertauscht(artikel) {
+  const einheit = String((artikel && artikel.unit) || "").trim().toLowerCase();
+  return einheit in GROSS && (+(artikel && artikel.package_size) || 0) >= AB_MENGE;
+}
+
+/** Artikel mit richtiger Einheit; Menge und Preise unveraendert. */
+export function einheitReparieren(artikel) {
+  if (!einheitVertauscht(artikel)) return artikel;
+  return { ...artikel, unit: GROSS[String(artikel.unit).trim().toLowerCase()] };
+}
+
+/** Alle betroffenen Artikel als Patches { key: reparierterArtikel }. */
+export function einheitenReparatur(priceList = {}) {
+  const patches = {};
+  for (const [key, a] of Object.entries(priceList)) if (einheitVertauscht(a)) patches[key] = einheitReparieren(a);
+  return patches;
+}

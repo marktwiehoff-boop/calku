@@ -71,3 +71,27 @@ describe("artikelPreisAendern", () => {
     expect(istPreisPatch({ package_price: 1 })).toBe(true);
   });
 });
+
+import { einheitVertauscht, einheitReparieren, einheitenReparatur, artikelPreisAendern as aendern } from "./artikelpreis.js";
+
+describe("Vertauschte Einheit (kg statt g)", () => {
+  const KAESE = { ingredient_name: "Veganer Hirtenkäse", unit: "kg", package_size: 1000, package_price: 9.5, price_per_gram_ml: 0.0095 };
+  it("erkennt 1000 kg / 3500 Liter, nicht aber echte 2,5 kg oder 1 Liter", () => {
+    expect(einheitVertauscht(KAESE)).toBe(true);
+    expect(einheitVertauscht({ unit: "Liter", package_size: 3500 })).toBe(true);
+    expect(einheitVertauscht({ unit: "kg", package_size: 2.5 })).toBe(false);
+    expect(einheitVertauscht({ unit: "Liter", package_size: 1 })).toBe(false);
+    expect(einheitVertauscht({ unit: "g", package_size: 1000 })).toBe(false);
+  });
+  it("stellt nur die Einheit um, Preise bleiben", () => {
+    expect(einheitReparieren(KAESE)).toEqual({ ...KAESE, unit: "g" });
+    expect(einheitReparieren({ unit: "l", package_size: 1000 }).unit).toBe("ml");
+  });
+  it("danach rechnet eine Preisaenderung richtig (vorher 1000-fach zu niedrig)", () => {
+    expect(aendern(KAESE, { package_price: 10 }).artikel.price_per_gram_ml).toBeCloseTo(0.00001, 8);
+    expect(aendern(einheitReparieren(KAESE), { package_price: 10 }).artikel.price_per_gram_ml).toBeCloseTo(0.01, 8);
+  });
+  it("liefert Patches nur fuer betroffene Artikel", () => {
+    expect(Object.keys(einheitenReparatur({ kaese: KAESE, ok: { unit: "kg", package_size: 1 } }))).toEqual(["kaese"]);
+  });
+});

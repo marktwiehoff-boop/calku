@@ -7,6 +7,7 @@ import { Download, Pencil, Plus, RotateCcw, Search, Trash2, X } from "lucide-rea
 import { gebindeBefunde } from "../gebinde.js";
 import { PREISBASEN, fmtDate, fmtNum2, preisbasisAuto, stueckgewicht, stueckpreis } from "../kalkulation.js";
 import { frage } from "../ui/dialog.jsx";
+import { einheitenReparatur } from "../artikelpreis.js";
 // ============================================================
 //  EINKAUFSPREISE — Zutaten aus dem priceList, gruppiert
 // ============================================================
@@ -298,6 +299,38 @@ export function GebindeCheck({ priceList, onGebinde }) {
 // Warengruppen-Pflege: Artikel ohne gepflegte Gruppe. Der Vorschlag aus dem Namen wird mit einem
 // Klick festgeschrieben; was keinen Vorschlag hat, steht unter "Ohne Gruppe" und wird in der
 // Tabelle einzeln zugeordnet.
+// Vertauschte Einheiten ("1000 kg" = 1000 g): ein Klick stellt alle auf g bzw. ml. Menge und
+// Preise bleiben, die Rezepturen aendern sich nicht (artikelpreis.js, einheitenReparatur).
+export function EinheitenPflege({ priceList, onArtikelPatches }) {
+  const patches = useMemo(() => einheitenReparatur(priceList || {}), [priceList]);
+  const [msg, setMsg] = useState("");
+  const liste = Object.values(patches);
+  if (!liste.length && !msg) return null;
+  if (!liste.length) {
+    return <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-xs text-emerald-800">{msg}</div>;
+  }
+  const beispiele = liste.slice(0, 3).map(a => `„${a.ingredient_name}“ ${new Intl.NumberFormat("de-DE").format(a.package_size)} ${priceList[a.ingredient_name.toLowerCase()]?.unit}`).join(", ");
+  const reparieren = async () => {
+    const ok = await frage({ titel: "Einheiten reparieren", ja: `${liste.length} Artikel reparieren`,
+      text: `${liste.length} Artikel bekommen g bzw. ml statt kg bzw. l. Packungsgröße, Packungspreis und Kilopreis bleiben gleich, die Rezepturen ändern sich nicht.` });
+    if (!ok) return;
+    onArtikelPatches?.(patches);
+    setMsg(`✓ ${liste.length} Einheiten repariert. Packungspreise lassen sich jetzt gefahrlos ändern.`);
+  };
+  return (
+    <div className="bg-red-50 border-2 border-red-200 rounded-xl px-4 py-3 text-xs text-red-900 flex flex-wrap items-center justify-between gap-3">
+      <span className="max-w-3xl">
+        <b>{liste.length} Artikel mit vertauschter Einheit</b>, z. B. {beispiele}. Gemeint sind Gramm bzw. Milliliter.
+        Der Kilopreis stimmt, aber eine Änderung des Packungspreises würde 1.000-fach zu niedrig rechnen.
+        Bitte vor der Preispflege reparieren.
+      </span>
+      <button onClick={reparieren} className="shrink-0 rounded-lg px-3 py-1.5 font-medium bg-red-700 text-white hover:bg-red-800">
+        Einheiten reparieren
+      </button>
+    </div>
+  );
+}
+
 export function GruppenPflege({ zutaten, priceList, onArtikelPatches, onZeigen }) {
   const [msg, setMsg] = useState("");
   const mitVorschlag = zutaten.filter(z => !z.gruppeGepflegt && z.untergruppe !== OHNE_GRUPPE);
@@ -761,6 +794,8 @@ export function EinkaufspreiseTab({ priceList, produkte = [], onFrischpreise, on
       {canEdit && <StammUebernahme priceList={priceList} onArtikelPatches={onArtikelPatches} />}
 
       {canEdit && <GebindeCheck priceList={priceList} onGebinde={onGebinde} />}
+
+      {canEdit && <EinheitenPflege priceList={priceList} onArtikelPatches={onArtikelPatches} />}
 
       {canEdit && <GruppenPflege zutaten={zutaten} priceList={priceList} onArtikelPatches={onArtikelPatches}
         onZeigen={() => setGruppe(OHNE_GRUPPE)} />}
