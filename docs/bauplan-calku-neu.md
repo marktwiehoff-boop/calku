@@ -29,6 +29,10 @@ Version 2 beseitigt die Ursachen. Damit entfallen die Reparaturwerkzeuge, und au
    Verkaufszeitraum (ab, bis). So kann dasselbe Produkt nicht mehr doppelt angelegt werden (bisher Korean Glaze Bowl und
    Dragon Fruit Refresher je einmal unter Bowls bzw. Iced Drinks und unter Kampagnen). Warengruppen in Version 1:
    Smoothies, Juices, Iced Drinks, Bowls (inkl. Untergruppe Açaí Bowls), Wraps, Bagels, Frozen Yoghurt.
+7. **Ablage für ausgelaufene Rezepte.** Eine Aktion, die endet, wird in die Ablage verschoben. Das Rezept bleibt
+   vollständig erhalten (Zutaten, Größen, Mengen, Kassen-IDs), zählt aber nirgends mehr mit: nicht im Wareneinsatz,
+   nicht in Übersicht, Umsatzmix und Prüfungen, nicht in Pipeline und IG Store. Mit einem Klick ist es wieder aktiv,
+   etwa wenn eine Aktion zurückkommt.
 
 ## 3. Datenmodell (Supabase, eigene Tabellen im bestehenden CALKU-Projekt)
 
@@ -54,7 +58,7 @@ artikel ──< zutat ──< rezept_zeile >── rezept ──< rezept_groesse
 - `ausbeute_prozent`, `stueck_gramm`, `einheit` (g | ml | stk), `arbeitseinheit`, `klasse`
 
 **`rezept`**: Verkaufsprodukt
-- `id`, `name`, `warengruppe` (nie „Kampagnen“), `untergruppe`, `artikelart` (Pflicht/Zusatz), `mwst_satz`, `verkauf_ab/_bis` (Verkaufszeitraum für Aktionen), `status` (aktiv | archiv), `basis_waehlbar` (Bowls), `notiz`
+- `id`, `name`, `warengruppe` (nie „Kampagnen“), `untergruppe`, `artikelart` (Pflicht/Zusatz), `mwst_satz`, `verkauf_ab/_bis` (Verkaufszeitraum für Aktionen), `status` (aktiv | ablage), `abgelegt_am`, `abgelegt_grund`, `basis_waehlbar` (Bowls), `notiz`
 - `bon` (JSON, unverändert aus der alten App übernommen, für Version 2)
 
 **`rezept_groesse`**: `id`, `rezept_id`, `label` („400 ml“, „Klein“), `sortierung`, **`kassen_id`** (die bisherige Produkt-ID, z. B. `smoothie_r040`, stabil für Kasse und Pipeline), `kassen_alias` (weitere IDs aus zusammengeführten Doppelungen), `vk_in_brutto`, `vk_out_brutto`, `verpackung_eur`
@@ -90,6 +94,9 @@ Jede Tabelle führt `geaendert_am` und `geaendert_von`. Gespeichert wird je Zeil
   - Zutaten als Zeilen: Artikelwahl mit Suche und Preisanzeige, Menge je Größe, Kosten je Größe.
 - Neue Zutat = Artikel suchen und wählen. Hausgemachtes bekommt einen eigenen Preis mit Begründung.
 - Prüfmarkierungen direkt an Zeile und Größe.
+- **Ablage:** Knopf „In Ablage“ am Rezept (mit Grund, z. B. „Aktion SEOUL MATE beendet“), Filter „Ablage“ in der
+  Liste, dort „Wieder aktivieren“. Rezepte mit abgelaufenem Verkaufszeitraum zeigt die Liste als „abgelaufen“ mit
+  dem Vorschlag, sie abzulegen. Abgelegt wird nie automatisch.
 
 **Einkauf**
 - Artikeltabelle: Suche, Warengruppe, Preis je kg, l oder Stück, Liefergebinde, Preisstand, Lieferant. Ein Klick zeigt die Preishistorie und „wird verwendet in“.
@@ -99,7 +106,10 @@ Jede Tabelle führt `geaendert_am` und `geaendert_von`. Gespeichert wird je Zeil
 
 **Übersicht**
 - Alle Produkte und Größen mit Wareneinsatz im Haus und außer Haus, Ampel, Filter „außerhalb 15–35 %“.
-- System-Wareneinsatz nach Umsatzmix.
+- System-Wareneinsatz nach Umsatzmix. Der Mix ist die Gewichtung der Warengruppen am Umsatz (heute von Hand gepflegt,
+  z. B. Bowls 30 %, Wraps 22 %) und ergibt den Soll-Wareneinsatz des ganzen Systems. Bei der Übernahme geht der
+  Kampagnen-Anteil (3 %) anteilig an die übrigen Gruppen. Später kann der Mix aus den echten Kassenumsätzen in
+  BigQuery kommen.
 - Datenqualität in einer Zeile: Zutaten ohne Preis, Rezepte mit Prüfmarkierung, Artikelpreise älter als 8 Wochen.
 
 **Einstellungen** (kleines Menü, kein Reiter): Bowl-Basis, Umsatzmix, Ziele je Warengruppe, Schreibrechte.
@@ -127,6 +137,8 @@ Version 2 schreibt nach jeder Änderung (gebündelt, wenige Sekunden verzögert)
 | Soll-Wareneinsatz (systemzentrale, Worktree `soll-wes`) | Rezepte über BigQuery | unverändert über die Pipeline |
 | Export-Datei (igorder) | Gesamtdokument | Knopf „Export“ bleibt |
 
+Rezepte in der Ablage werden mit `gruppe = "Archiv"` ausgegeben. Die Pipeline überspringt diese Gruppe schon heute,
+damit erscheinen sie weder in igorder noch in IG Store. Ihre Kassen-IDs bleiben reserviert.
 Zusätzlich liefert Version 2 die Felder `produkte`, `mix`, `zutaten`, `meta.generiert_am`. Für jede `kassen_alias`-ID
 wird das Produkt zusätzlich unter dieser ID ausgegeben, bis geprüft ist, welche ID die Kasse wirklich nutzt
 (BigQuery `igorder_mapping_verkaufsartikel`). Der Erzeuger der Schnittstelle (`vertrag.js`) bekommt einen **Vergleichstest gegen den letzten Export der alten App**. Gleiche Produkt-IDs, gleiche Zutatnamen, gleiche Mengen, Abweichungen nur dort, wo die Übernahme bewusst korrigiert hat (Bericht).
