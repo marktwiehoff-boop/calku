@@ -2,6 +2,7 @@
 
 Stand: 03.10.2026 · Entscheidung Mark Twiehoff: Neuaufbau des Kerns, Zutat-Ebene bleibt (unsichtbar),
 Version 1 = Rezepte, Einkauf, Übersicht, Schnittstelle · neue Adresse, Umstellung nach Abnahme.
+Ergänzung 03.10.2026: Die Warengruppe „Kampagnen“ entfällt (Abschnitt 2, Punkt 6).
 
 ## 1. Warum neu
 
@@ -24,6 +25,10 @@ Version 2 beseitigt die Ursachen. Damit entfallen die Reparaturwerkzeuge, und au
 3. **Zutaten hängen über eine feste Verknüpfung am Artikel**, nicht über den Namen. Die Zutat ist für den Nutzer unsichtbar: Er wählt beim Rezeptschreiben einen Artikel, die Zutat entsteht nebenbei.
 4. **Prüfungen stehen dort, wo man arbeitet.** Eine rote Markierung im Rezept statt eines eigenen Prüf-Reiters.
 5. **Die abhängigen Systeme merken den Umstieg nicht.** Version 2 liefert die bisherige Schnittstelle weiter (Abschnitt 6).
+6. **Keine Warengruppe „Kampagnen“.** Eine Aktion ist ein normales Rezept in seiner echten Warengruppe, mit optionalem
+   Verkaufszeitraum (ab, bis). So kann dasselbe Produkt nicht mehr doppelt angelegt werden (bisher Korean Glaze Bowl und
+   Dragon Fruit Refresher je einmal unter Bowls bzw. Iced Drinks und unter Kampagnen). Warengruppen in Version 1:
+   Smoothies, Juices, Iced Drinks, Bowls (inkl. Untergruppe Açaí Bowls), Wraps, Bagels, Frozen Yoghurt.
 
 ## 3. Datenmodell (Supabase, eigene Tabellen im bestehenden CALKU-Projekt)
 
@@ -49,10 +54,10 @@ artikel ──< zutat ──< rezept_zeile >── rezept ──< rezept_groesse
 - `ausbeute_prozent`, `stueck_gramm`, `einheit` (g | ml | stk), `arbeitseinheit`, `klasse`
 
 **`rezept`**: Verkaufsprodukt
-- `id`, `name`, `warengruppe`, `untergruppe`, `artikelart` (Pflicht/Zusatz), `mwst_satz`, `kampagne_start/_ende`, `status` (aktiv | archiv), `basis_waehlbar` (Bowls), `notiz`
+- `id`, `name`, `warengruppe` (nie „Kampagnen“), `untergruppe`, `artikelart` (Pflicht/Zusatz), `mwst_satz`, `verkauf_ab/_bis` (Verkaufszeitraum für Aktionen), `status` (aktiv | archiv), `basis_waehlbar` (Bowls), `notiz`
 - `bon` (JSON, unverändert aus der alten App übernommen, für Version 2)
 
-**`rezept_groesse`**: `id`, `rezept_id`, `label` („400 ml“, „Klein“), `sortierung`, **`kassen_id`** (die bisherige Produkt-ID, z. B. `smoothie_r040`, stabil für Kasse und Pipeline), `vk_in_brutto`, `vk_out_brutto`, `verpackung_eur`
+**`rezept_groesse`**: `id`, `rezept_id`, `label` („400 ml“, „Klein“), `sortierung`, **`kassen_id`** (die bisherige Produkt-ID, z. B. `smoothie_r040`, stabil für Kasse und Pipeline), `kassen_alias` (weitere IDs aus zusammengeführten Doppelungen), `vk_in_brutto`, `vk_out_brutto`, `verpackung_eur`
 
 **`rezept_zeile`**: `id`, `rezept_id`, `zutat_id`, `sortierung`, `bon_anweisung`
 **`rezept_menge`**: `zeile_id`, `groesse_id`, `menge` (in der Einheit der Zutat)
@@ -80,7 +85,7 @@ Jede Tabelle führt `geaendert_am` und `geaendert_von`. Gespeichert wird je Zeil
 **Rezepte**
 - Links die Liste mit Suche und Warengruppe als Filter (statt sechs Reitern). Je Rezept die Ampel aller Größen.
 - Rechts der Editor:
-  - Kopf: Name, Warengruppe, Artikelart, MwSt, Kampagnenzeitraum.
+  - Kopf: Name, Warengruppe, Artikelart, MwSt, Verkaufszeitraum (für Aktionen).
   - Größen als Spalten: VK im Haus und außer Haus, Verpackung, Material und Wareneinsatz live.
   - Zutaten als Zeilen: Artikelwahl mit Suche und Preisanzeige, Menge je Größe, Kosten je Größe.
 - Neue Zutat = Artikel suchen und wählen. Hausgemachtes bekommt einen eigenen Preis mit Begründung.
@@ -117,12 +122,14 @@ Version 2 schreibt nach jeder Änderung (gebündelt, wenige Sekunden verzögert)
 | Leser | liest | Version 2 liefert |
 |---|---|---|
 | BigQuery-Pipeline `calku_rezepte.py` (igorder_rezept, igorder_calku_produkt, IG Store) | `produkte_aufgeloest[]`: id, name, gruppe, untergruppe, artikelart, kampagne_start/_ende, zutaten[name, menge_g] | je Größe ein Produkt mit `kassen_id` als id, Bowl-Varianten aufgelöst, Zutatnamen wie bisher, Stückzutaten mit Gramm-Äquivalent |
-| IG Store Verkaufsartikel (über Pipeline) | artikelart | unverändert |
+| IG Store Verkaufsartikel (über Pipeline) | artikelart, gruppe, kampagne_start/_ende | `gruppe` = echte Warengruppe (nie mehr „Kampagnen“), Verkaufszeitraum als kampagne_start/_ende. **Anpassung in IG Store vor dem Umstieg:** `src/lib/sortiment.js` prüft den Zeitraum bisher nur für die Gruppe „Kampagnen“, künftig für jedes Produkt mit Zeitraum (heute verhaltensgleich, weil nur Kampagnen einen Zeitraum haben). |
 | iginventur `preise.js` | `artikel[]`: article_number, ingredient_name, package_price, date_last_checked, unit, lieferant; `geloescht` | aus `artikel` abgeleitet, Packung = Liefergebinde (iginventur wählt die passende Lesart schon heute selbst) |
 | Soll-Wareneinsatz (systemzentrale, Worktree `soll-wes`) | Rezepte über BigQuery | unverändert über die Pipeline |
 | Export-Datei (igorder) | Gesamtdokument | Knopf „Export“ bleibt |
 
-Zusätzlich liefert Version 2 die Felder `produkte`, `mix`, `zutaten`, `meta.generiert_am`. Der Erzeuger der Schnittstelle (`vertrag.js`) bekommt einen **Vergleichstest gegen den letzten Export der alten App**. Gleiche Produkt-IDs, gleiche Zutatnamen, gleiche Mengen, Abweichungen nur dort, wo die Übernahme bewusst korrigiert hat (Bericht).
+Zusätzlich liefert Version 2 die Felder `produkte`, `mix`, `zutaten`, `meta.generiert_am`. Für jede `kassen_alias`-ID
+wird das Produkt zusätzlich unter dieser ID ausgegeben, bis geprüft ist, welche ID die Kasse wirklich nutzt
+(BigQuery `igorder_mapping_verkaufsartikel`). Der Erzeuger der Schnittstelle (`vertrag.js`) bekommt einen **Vergleichstest gegen den letzten Export der alten App**. Gleiche Produkt-IDs, gleiche Zutatnamen, gleiche Mengen, Abweichungen nur dort, wo die Übernahme bewusst korrigiert hat (Bericht).
 
 ## 7. Übernahme der Daten (einmalig, wiederholbar)
 
@@ -163,7 +170,7 @@ Deine Korrekturen der nächsten Tage in der alten App (Import, Einheiten, Zuordn
 | 2 Rechenkern und Schnittstelle | Rechenkern, Prüfungen, `vertrag.js` mit Vergleichstest | Wareneinsatz alt gegen neu je Produkt, Schnittstelle deckungsgleich |
 | 3 Rezepte und Einkauf | Rezept-Editor mit Größen, Artikeltabelle, Preisimport mit Wirkungsvorschau | erste Arbeitsversion unter neuer Adresse |
 | 4 Übersicht und Schattenbetrieb | Übersicht, Einstellungen. Version 2 schreibt die Schnittstelle zum Vergleich in `kalkulation_state` mit `id = 'v2'`, die alte App bleibt führend. | Probelauf der Pipeline gegen `v2` ohne Unterschiede |
-| 5 Umstieg | letzte Übernahme nach deinen Korrekturen, alte App nur lesend (Schreibrechte entzogen), Version 2 schreibt `main`, Adresse igcalku zeigt auf Version 2, die alte App bleibt unter eigener Adresse lesbar | CALKU 2 im Echtbetrieb |
+| 5 Umstieg | IG Store prüft den Verkaufszeitraum für alle Gruppen; letzte Übernahme nach deinen Korrekturen, alte App nur lesend (Schreibrechte entzogen), Version 2 schreibt `main`, Adresse igcalku zeigt auf Version 2, die alte App bleibt unter eigener Adresse lesbar | CALKU 2 im Echtbetrieb |
 
 Grobe Schätzung: drei bis fünf Arbeitssitzungen bis Etappe 5. Nach jeder Etappe nimmst du ab, bevor die nächste beginnt.
 
