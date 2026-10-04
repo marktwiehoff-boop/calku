@@ -461,6 +461,19 @@ function TgErgebnis({ e, erledigt, neuUebernommen, onSprung, onAlleSpruenge, onN
         </div>
       )}
 
+      {e.neuPruefen?.length > 0 && (
+        <div className="border border-amber-300 bg-amber-50 rounded-lg p-3 space-y-1 text-xs">
+          <p className="text-amber-900"><b>{e.neuPruefen.length} neue Artikel nicht übernommen:</b> Bezeichnung und Liste
+            widersprechen sich bei der Menge. Bitte mit der Rechnung prüfen und von Hand anlegen.</p>
+          {e.neuPruefen.map(n => (
+            <div key={n.zeile.artNr} className="border-t border-amber-200 pt-1">
+              <span className="font-medium">{n.zeile.artNr} · {n.zeile.name}</span>
+              <span className="block text-amber-800">{n.grund}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {e.veraltet.length > 0 && (
         <details className="text-xs text-gray-600">
           <summary className="cursor-pointer">{e.veraltet.length} Transgourmet-Artikel im Stamm, die diese Liste nicht führt</summary>

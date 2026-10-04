@@ -104,15 +104,30 @@ export function tgZeile(r) {
     if (n && n > rm) rm = n;
   }
   const preis = zahl(r["Preis pro Einzeleinheit"]) || zahl(r["Preis pro Gebinde"]);
-  const menge = basis === "stk" ? inhalt * rm : inhalt * rm * 1000;
   const netto = zahl(r["Nettogewicht in KG"]);
+  // Rezeptmenge passt nicht zur Einzeleinheit: Karton aus Beuteln ("Hä.br.Geschnet. TK10kg",
+  // 1 KA, Rezeptmenge 2,5 KG, Nettogewicht 10 KG) oder Stueckzahl als kg ("Himb.Brown.Schn.
+  // 1050g", Rezeptmenge "12 KG" = 12 Schnitten, Nettogewicht 1,05 KG). Bestaetigt die
+  // Bezeichnung das Nettogewicht, gilt das Nettogewicht. Nicht bei Ware nach Gewicht (Einheit KG/LT, Preis je kg) und
+  // nicht bei Konserven (Nettogewicht mit Aufguss, Rezeptmenge = Abtropfgewicht).
+  const einheit = String(r.Einheit ?? "").trim().toUpperCase();
+  const nameMenge = mengeAusName(r.Artikeltext1);
+  const konserve = basis === "g" && /\d\s*(ml|l)(?![a-z])/i.test(String(r.Artikeltext1 ?? ""));
+  const karton = (basis === "g" || basis === "ml") && !["KG", "LT"].includes(einheit) && !konserve
+    && netto > 0 && rm > 0 && (netto >= rm * 1.5 || netto <= rm / 1.5) && nameMenge > 0
+    && [netto * 1000, inhalt * netto * 1000].some((x) => Math.abs(nameMenge / x - 1) < 0.25);
+  const korrektur = karton
+    ? `Liste rechnet mit ${inhalt.toLocaleString("de-DE")} × ${rm.toLocaleString("de-DE")} ${basis === "g" ? "kg" : "l"}, Bezeichnung und Nettogewicht nennen ${(inhalt * netto).toLocaleString("de-DE")} ${basis === "g" ? "kg" : "l"} je Karton – gerechnet mit ${(inhalt * netto).toLocaleString("de-DE")} ${basis === "g" ? "kg" : "l"}`
+    : null;
+  if (karton) rm = netto;
+  const menge = Math.round((basis === "stk" ? inhalt * rm : inhalt * rm * 1000) * 10000) / 10000;
   return {
     artNr: String(r.Artikelnr ?? "").trim(),
     name: String(r.Artikeltext1 ?? "").trim(),
     text2: String(r.Artikeltext2 ?? "").trim(),
     katalog: String(r["Katalogebene 1"] ?? "").trim(),
     gueltigAb: String(r["Preis gültig von"] ?? "").trim(),
-    preis, inhalt, rm, basis, menge,
+    preis, inhalt, rm, basis, menge, korrektur,
     jeBasis: basis && menge > 0 && preis > 0 ? preis / menge : null,
     // Gramm je Stueck, wo die Liste es hergibt (Nettogewicht je Einzeleinheit / Stueck darin)
     grammJeStueck: basis === "stk" && netto > 0 && rm > 0 ? Math.round((netto * 1000) / rm * 10) / 10 : null,
@@ -122,13 +137,13 @@ export function tgZeile(r) {
     // Die Menge der Bezeichnung gilt je Einzeleinheit oder fuers ganze Gebinde - passt keins, fragen.
     widerspruch: (() => {
       if (basis !== "g" && basis !== "ml") return null;
-      const n = mengeAusName(r.Artikeltext1);
+      if (["KG", "LT"].includes(einheit)) return null; // Ware nach Gewicht: Preis je kg/l, Bezeichnung nennt den Karton
+      const n = nameMenge;
       if (!(n > 0)) return null;
       const passt = [rm * 1000, inhalt * rm * 1000].some((x) => x > 0 && Math.abs(n / x - 1) < 0.25);
       if (passt) return null;
       const text = `Bezeichnung nennt ${(n / 1000).toLocaleString("de-DE")} ${basis === "g" ? "kg" : "l"}, die Liste rechnet mit ${inhalt.toLocaleString("de-DE")} × ${rm.toLocaleString("de-DE")} ${basis === "g" ? "kg" : "l"}`;
       // Konserve: Bezeichnung in ml/l (Dosenvolumen), Liste in kg (Abtropfgewicht) - dann stimmt die Liste
-      const konserve = basis === "g" && /\d\s*(ml|l)(?![a-z])/i.test(String(r.Artikeltext1 ?? ""));
       return konserve ? `${text}. Bei Konserven ist das meist das Abtropfgewicht – dann stimmt die Liste.` : text;
     })(),
   };
@@ -209,7 +224,8 @@ export const TG_SPRUNG = 2; // Faktor beim Preis je kg/l/Stueck, ab dem der Nutz
  * @param rows       geparste Zeilen der reparierten Liste
  * @param priceList  { key: Artikel }
  * @returns { patches, geaendert, unveraendert, spruenge: [{key, artikel, alt, neu, faktor, zeile}],
- *            neu: [{ zeile, artikel }], ohnePreis: [zeile], veraltet: [artikel], stand }
+ *            neu: [{ zeile, artikel }], neuPruefen: [{ zeile, artikel, grund }], ohnePreis: [zeile],
+ *            veraltet: [artikel], stand }
  */
 export function verarbeiteTgErweitert({ rows = [], priceList = {}, heute = new Date(), gruppeVorschlag = null }) {
   const stempel = `${heute.toISOString().slice(0, 10)} 00:00:00`;
@@ -224,7 +240,7 @@ export function verarbeiteTgErweitert({ rows = [], priceList = {}, heute = new D
   const zeilen = rows.map(tgZeile).filter((z) => z.artNr && z.name && !gesehen.has(z.artNr) && gesehen.add(z.artNr));
   const stand = zeilen.find((z) => z.gueltigAb)?.gueltigAb || heute.toLocaleDateString("de-DE");
   const quelle = `Transgourmet-Liste ${stand}`;
-  const patches = {}, spruenge = [], neu = [], ohnePreis = [];
+  const patches = {}, spruenge = [], neu = [], neuPruefen = [], ohnePreis = [];
   const nummern = new Set();
   let geaendert = 0, unveraendert = 0;
 
@@ -238,7 +254,10 @@ export function verarbeiteTgErweitert({ rows = [], priceList = {}, heute = new D
       const artikel = artikelAusTg({ ingredient_name: z.name, manuell: true, einkaufsgruppe: gruppe ?? undefined,
         ...(NONFOOD.has(gruppe) ? { nonfood: true } : {}) }, z, stempel, quelle);
       if (!gruppe) delete artikel.einkaufsgruppe;
-      neu.push({ zeile: z, artikel });
+      // Neue Artikel mit Widerspruch nicht ungeprueft anlegen - sie landen sonst unbemerkt mit
+      // falschem Gebinde im Stamm und schlagen erst bei der Zuordnung zu einer Zutat durch.
+      if (z.widerspruch) neuPruefen.push({ zeile: z, artikel, grund: z.widerspruch });
+      else neu.push({ zeile: z, artikel });
       continue;
     }
     const alt = priceList[key];
@@ -253,8 +272,10 @@ export function verarbeiteTgErweitert({ rows = [], priceList = {}, heute = new D
     const artikel = artikelAusTg(alt, zz, stempel, quelle);
     z = zz;
     const faktor = vorher ? z.jeBasis / vorher : null;
-    if ((faktor && (faktor >= TG_SPRUNG || faktor <= 1 / TG_SPRUNG)) || z.widerspruch) {
-      spruenge.push({ key, artikel, alt, vorher, nachher: z.jeBasis, faktor, zeile: z, grund: z.widerspruch });
+    // Widerspruch, den der Stamm schon so fuehrt (Konserve mit Abtropfgewicht, bereits bestaetigt): nicht jedes Mal fragen
+    const bestaetigt = faktor && Math.abs(faktor - 1) < 0.005 && +alt.package_size === artikel.package_size;
+    if ((faktor && (faktor >= TG_SPRUNG || faktor <= 1 / TG_SPRUNG)) || (z.widerspruch && !bestaetigt)) {
+      spruenge.push({ key, artikel, alt, vorher, nachher: z.jeBasis, faktor, zeile: z, grund: z.widerspruch ?? z.korrektur });
       continue;
     }
     if (faktor && Math.abs(faktor - 1) < 0.0005 && +alt.package_price === artikel.package_price && +alt.package_size === artikel.package_size) unveraendert++;
@@ -267,5 +288,5 @@ export function verarbeiteTgErweitert({ rows = [], priceList = {}, heute = new D
     const nr = abgleichNummer(a.article_number);
     return nr && !/^z\d+$/.test(nr) && !nummern.has(nr);
   });
-  return { patches, geaendert, unveraendert, spruenge, neu, ohnePreis, veraltet, stand };
+  return { patches, geaendert, unveraendert, spruenge, neu, neuPruefen, ohnePreis, veraltet, stand };
 }

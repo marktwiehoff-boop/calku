@@ -86,12 +86,56 @@ describe("Widerspruch Bezeichnung <-> Liste", () => {
     expect(mengeAusName("Pull.Beef Bar.Halal TK 12x500g")).toBe(6000);
     expect(mengeAusName("Jalapeno grün Schb.Adr.3,1l")).toBe(3100);
   });
-  it("legt einen Artikel vor, wenn die Bezeichnung 10 kg nennt und die Liste mit 2,5 kg rechnet", () => {
-    const HAE = '"8","995825","Hä.br.Geschnet.gebr.Vos.TK10kg","","","1,000","KA","72,890","v","26.09.2026","","2,500","KG,"2,500","7.0","2100","","Transgourmet","","0","1","0","Tiefkühlprodukte","","","","https://x/995825,"KA","72,890",';
-    const rows = parse([HAE]).data;
+  // Echte Zeilen der Liste vom 26.09.2026
+  const HAE = '"3892","995825","Hä.br.Geschnet.gebr.Vos.TK10kg","GEWÜ.GEBR65X10X15MM KA.4X2,5KG","","1,000","KA","72,890","v","26.09.2026","","2,500","KG,"10,000","7.0","2174","","Transgourmet","","0","1","0","Tiefkühlprodukte","TK Fleischwaren","","","https://x/995825,"KA","72,890",';
+  const BULGUR = '"8430","65601","Bulgur Köfte TK Veg.8x500g","vegan, roh Ka 8xca.500g","A","1,000","KG","7,238","v","26.09.2026","","1,000","KG,"4,000","7.0","2168","","Transgourmet","","0","1","0","Tiefkühlprodukte","","","","https://x/65601,"KG","7,238",';
+  const JALA = '"1","783286","Jalapeno grün Schb.Adr.3,1l","","","6,000","DS","19,920","v","26.09.2026","","1,500","KG,"3,000","7.0","2100","","Transgourmet","","0","1","0","Lebensmittel - ungekühlt","","","","https://x/783286,"KA","19,920",';
+  const zeile = (z) => tgZeile(parse([z]).data[0]);
+
+  it("Karton aus Beuteln: rechnet mit dem Nettogewicht, wenn die Bezeichnung es bestätigt (Hähnchen 4 x 2,5 kg)", () => {
+    const z = zeile(HAE);
+    expect(z.menge).toBe(10000);
+    expect(z.jeBasis * 1000).toBeCloseTo(7.289, 3);
+    expect(z.widerspruch).toBeNull();
+    expect(z.korrektur).toContain("10 kg");
+  });
+  it("Ware nach Gewicht (Einheit KG) bleibt beim Preis je kg (Bulgur Köfte), ohne Widerspruch", () => {
+    const z = zeile(BULGUR);
+    expect(z.menge).toBe(1000);
+    expect(z.korrektur).toBeNull();
+    expect(z.widerspruch).toBeNull();
+  });
+  it("Stückzahl als kg: rechnet mit dem Nettogewicht, wenn die Bezeichnung es bestätigt (Brownie 6 x 1,05 kg)", () => {
+    const BROWNIE = '"7529","222224","Himb.Brown.Schn.TK Erl.1050g","","","6,000","KU","143,880","v","26.09.2026","","12,000","KG,"1,050","7.0","2150","","Transgourmet","","0","1","0","Tiefkühlprodukte","","","","https://x/222224,"KA","143,880",';
+    const z = zeile(BROWNIE);
+    expect(z.menge).toBe(6300);
+    expect(z.jeBasis * 1000).toBeCloseTo(22.84, 2);
+    expect(z.widerspruch).toBeNull();
+  });
+  it("Konserve bleibt beim Abtropfgewicht der Liste", () => {
+    const z = zeile(JALA);
+    expect(z.menge).toBe(9000);
+    expect(z.korrektur).toBeNull();
+  });
+  it("Hähnchen-Stamm mit 10 kg: Preis wird normal aktualisiert, kein Scheinsprung", () => {
     const pl = { h: { ingredient_name: "TK Hähnchengeschnetzeltes", article_number: "995825", unit: "g", package_size: 10000, package_price: 71.6, price_per_gram_ml: 0.00716 } };
-    const e = verarbeiteTgErweitert({ rows, priceList: pl });
-    expect(e.patches).toEqual({});
-    expect(e.spruenge[0].grund).toContain("10 kg");
+    const e = verarbeiteTgErweitert({ rows: parse([HAE]).data, priceList: pl });
+    expect(e.spruenge).toEqual([]);
+    expect(e.patches.h.package_size).toBe(10000);
+    expect(e.patches.h.package_price).toBe(72.89);
+  });
+  it("Konserve, die der Stamm schon mit Abtropfgewicht führt, wird nicht bei jedem Import erneut vorgelegt", () => {
+    const pl = { j: { ingredient_name: "Jalapenos", article_number: "783286", unit: "g", package_size: 9000, package_price: 19.92, price_per_gram_ml: 19.92 / 9000 } };
+    const e = verarbeiteTgErweitert({ rows: parse([JALA]).data, priceList: pl });
+    expect(e.spruenge).toEqual([]);
+    expect(e.patches.j.package_size).toBe(9000);
+  });
+  it("neuer Artikel mit Widerspruch wird nicht ungeprüft angelegt", () => {
+    const KAPUTT = '"9","111","Testware TK10kg","","","1,000","KA","50,000","v","26.09.2026","","2,500","KG,"2,500","7.0","2100","","Transgourmet","","0","1","0","Tiefkühlprodukte","","","","https://x/111,"KA","50,000",';
+    const e = verarbeiteTgErweitert({ rows: parse([KAPUTT, HAE]).data, priceList: {} });
+    expect(e.neuPruefen.map((n) => n.zeile.artNr)).toEqual(["111"]);
+    expect(e.neuPruefen[0].grund).toContain("10 kg");
+    expect(e.neu.map((n) => n.zeile.artNr)).toEqual(["995825"]);
+    expect(e.neu[0].artikel.package_size).toBe(10000);
   });
 });
