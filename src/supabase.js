@@ -20,9 +20,15 @@ export const WRITER_EMAILS = [
   "pascal.hammesfahr@mein-immergruen.de",
 ];
 export const ALLOWED_DOMAIN = "mein-immergruen.de";
-const ROW_ID = "main";
+
+// Archiv (Umstieg auf CALKU 2, Etappe 5): Build-Variable VITE_CALKU_ARCHIV = "1" (netlify.toml).
+// Die App liest dann die Sicherung "alt_archiv" (letzter Stand vor dem Umstieg) und speichert
+// nichts mehr - "main" gehört CALKU 2. Ohne die Variable verhält sie sich wie bisher.
+export const ARCHIV = import.meta.env.VITE_CALKU_ARCHIV === "1";
+const ROW_ID = ARCHIV ? "alt_archiv" : "main";
 
 export function isWriter(email) {
+  if (ARCHIV) return false;
   return !!email && WRITER_EMAILS.includes(email.toLowerCase());
 }
 
@@ -54,6 +60,7 @@ export async function loadKalkulation() {
 // Speichert das komplette Dokument (nur Writer; sonst blockt RLS). Gibt den Zeitstempel zurueck,
 // damit die App das Echo ihrer eigenen Speicherung im Live-Sync erkennt.
 export async function saveKalkulation(payload) {
+  if (ARCHIV) throw new Error("Archiv: Speichern ist abgeschaltet. Gearbeitet wird in CALKU 2.");
   const { data: u } = await supabase.auth.getUser();
   const updated_at = new Date().toISOString();
   const { error } = await supabase.from("kalkulation_state").upsert({

@@ -17,7 +17,7 @@ import icedDrinksV1 from "./data/iced_drinks_v1.json";
 import standAktuell from "./data/stand_2026-06-05.json"; // Aktueller Stand inkl. Susannes Korrekturen (05.06.2026)
 import {
   cloudEnabled, isWriter, signInWithGoogle, signOut,
-  loadKalkulation, saveKalkulation, subscribeKalkulation, supabase,
+  loadKalkulation, saveKalkulation, subscribeKalkulation, supabase, ARCHIV,
 } from "./supabase";
 import inventurJson from "./data/inventur.json";
 import logoWeiss from "./assets/logo-weiss.png";
@@ -1077,6 +1077,12 @@ export default function KalkulationsApp() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {ARCHIV && (
+        <div className="bg-amber-100 border-b border-amber-300 text-amber-900 text-sm px-6 py-2 text-center">
+          <b>Archiv:</b> Stand der alten Kalkulation vor dem Umstieg, nur lesbar. Gearbeitet wird in{" "}
+          <a href="https://igcalku.netlify.app" className="underline font-medium">CALKU 2 (igcalku.netlify.app)</a>.
+        </div>
+      )}
       {/* Header */}
       <header className="text-white app-chrome-header" style={{ background: HEADER_GRADIENT, borderBottom: "3px solid #96c31e" }}>
         <div className="max-w-7xl mx-auto px-6 py-5">
