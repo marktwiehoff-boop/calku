@@ -2,6 +2,10 @@
   command = "npm run build"
   publish = "dist"
 
+# Umstieg auf CALKU 2 (12.10.2026): alte App nur noch als Archiv, siehe calku2/docs/umstieg.md
+[build.environment]
+  VITE_CALKU_ARCHIV = "1"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
